@@ -11,6 +11,6 @@ package com.fpt.ptcd.nhatrosystem;
 public class NhaTroSystem {
 
     public static void main(String[] args) {
-        System.out.println("Pham Dang Khoa!");
+        System.out.println("Pham Dang Khoa!!");
     }
 }
