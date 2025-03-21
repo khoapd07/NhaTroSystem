@@ -18,5 +18,7 @@ public class NhaTroSystem {
                 new NhaTroSystemJFrame().setVisible(true);
             }
         });
+        
+        System.out.println("Khoa");
     }
 }
