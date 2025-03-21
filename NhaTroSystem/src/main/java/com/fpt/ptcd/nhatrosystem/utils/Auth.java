@@ -4,22 +4,24 @@
  */
 package com.fpt.ptcd.nhatrosystem.utils;
 
+import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
+
 /**
  *
  * @author 24010
  */
 public class Auth {
-//    public static NhanVien user = null;
-//    
-//    public static void clear() {
-//        Auth.user = null;
-//    }
-//    
-//    public static boolean isLogin() {
-//        return Auth.user != null;
-//    }
-//    
-//    public static boolean isManager() {
-//        return Auth.isLogin() && user.isVaiTro();
-//    }
+    public static NhanVien user = null;
+    
+    public static void clear() {
+        Auth.user = null;
+    }
+    
+    public static boolean isLogin() {
+        return Auth.user != null;
+    }
+    
+    public static boolean isManager() {
+        return Auth.isLogin() && user.isVaiTro();
+    }
 }

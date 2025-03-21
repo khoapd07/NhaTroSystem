@@ -4,6 +4,12 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.LoaiPhongDAO;
+import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +22,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     public LoaiPhongJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -50,7 +57,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
         btnPrev = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         btnLast = new javax.swing.JButton();
-        spnGiaPhong = new javax.swing.JSpinner();
+        txtGiaPhong = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLoaiPhong = new javax.swing.JTable();
@@ -207,7 +214,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtDTPhong)
                             .addComponent(txtTenLP)
-                            .addComponent(spnGiaPhong)))
+                            .addComponent(txtGiaPhong)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblGhiChu)
@@ -232,7 +239,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblGiaPhong)
-                    .addComponent(spnGiaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGiaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addComponent(lblGhiChu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -254,7 +261,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "Mã Loại", "Tên Loại", "Diện Tích", "Giá Phòng", "Ghi Chú"
             }
         ));
         tblLoaiPhong.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -407,12 +414,41 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblMaLP;
     private javax.swing.JLabel lblQL;
     private javax.swing.JLabel lblTenLP;
-    private javax.swing.JSpinner spnGiaPhong;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JTable tblLoaiPhong;
     private javax.swing.JTextField txtDTPhong;
     private javax.swing.JTextArea txtGhiChu;
+    private javax.swing.JSpinner txtGiaPhong;
     private javax.swing.JTextField txtMaLP;
     private javax.swing.JTextField txtTenLP;
     // End of variables declaration//GEN-END:variables
+    LoaiPhongDAO dao = new LoaiPhongDAO(); //làm việc với bảng nhanvien
+    int row = -1; //hàng được chọn hiện tại trên bảng
+    
+    void init(){
+        this.setLocationRelativeTo(null);
+        
+        this.fillTable();
+        this.row = -1;
+//        this.updateStatus();
+    }
+    
+
+
+void fillTable(){
+        DefaultTableModel model = (DefaultTableModel) tblLoaiPhong.getModel();
+        model.setRowCount(0); //xáo tất cả các hàng trên JTable
+        try{
+            List<LoaiPhong> list = dao.selectAll(); // đọc dữ liệu từ CSDL
+            for(LoaiPhong lp : list){
+                Object[] row = {lp.getMaLoai(), lp.getTenLoai(), lp.getDienTich(),lp.getGiaPhong(),lp.getGhiChu()
+                };
+                model.addRow(row); //thêm một hàng vào JTable
+            }
+        }
+        catch(Exception e){
+            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        }
+    }
+
 }

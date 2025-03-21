@@ -4,6 +4,12 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.KhachHangDAO;
+import com.fpt.ptcd.nhatrosystem.entity.KhachHang;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +22,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     public KhachHangJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -49,7 +56,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
         txtCCCD = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblNguoiHoc = new javax.swing.JTable();
+        tblKhachHang = new javax.swing.JTable();
         lblQL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -215,7 +222,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
 
         tabs.addTab("Chỉnh Sửa", jPanel1);
 
-        tblNguoiHoc.setModel(new javax.swing.table.DefaultTableModel(
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -223,15 +230,15 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "Mã Khách Hàng", "Tên Khách Hàng", "Số Điện Thoại", "Địa Chỉ", "CCCD"
             }
         ));
-        tblNguoiHoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblNguoiHocMouseClicked(evt);
+                tblKhachHangMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblNguoiHoc);
+        jScrollPane1.setViewportView(tblKhachHang);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -279,9 +286,9 @@ public class KhachHangJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblNguoiHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNguoiHocMouseClicked
+    private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblNguoiHocMouseClicked
+    }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
@@ -393,11 +400,41 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblQL;
     private javax.swing.JLabel lblSoDT;
     private javax.swing.JTabbedPane tabs;
-    private javax.swing.JTable tblNguoiHoc;
+    private javax.swing.JTable tblKhachHang;
     private javax.swing.JTextField txtCCCD;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtHoVaTen;
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSoDT;
     // End of variables declaration//GEN-END:variables
+
+    KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
+    int row = -1; //hàng được chọn hiện tại trên bảng
+    
+    void init(){
+        this.setLocationRelativeTo(null);
+        
+        this.fillTable();
+        this.row = -1;
+//        this.updateStatus();
+    }
+    
+
+
+void fillTable(){
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        model.setRowCount(0); //xáo tất cả các hàng trên JTable
+        try{
+            List<KhachHang> list = dao.selectAll(); // đọc dữ liệu từ CSDL
+            for(KhachHang kh : list){
+                Object[] row = {kh.getMaKhach(), kh.getTenKhach(), kh.getSoDT(),kh.getDiaChi(),kh.getCanCCD()
+                };
+                model.addRow(row); //thêm một hàng vào JTable
+            }
+        }
+        catch(Exception e){
+            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        }
+    }
+
 }

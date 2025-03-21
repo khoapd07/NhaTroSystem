@@ -4,6 +4,8 @@
 
 package com.fpt.ptcd.nhatrosystem;
 
+import com.fpt.ptcd.nhatrosystem.ui.NhaTroSystemJFrame;
+
 /**
  *
  * @author phamd
@@ -11,6 +13,10 @@ package com.fpt.ptcd.nhatrosystem;
 public class NhaTroSystem {
 
     public static void main(String[] args) {
-        System.out.println("Pham Dang Khoa!!");
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NhaTroSystemJFrame().setVisible(true);
+            }
+        });
     }
 }

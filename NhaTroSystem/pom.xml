@@ -11,4 +11,50 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.fpt.ptcd.nhatrosystem.NhaTroSystem</exec.mainClass>
     </properties>
+               <dependencies>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>10.2.2.jre17</version> <!-- Chọn phiên bản phù hợp -->
+        </dependency>
+    </dependencies>
+    <name>NhaTroSystem</name>
+<build>
+    <plugins>
+        <!-- Plugin đóng gói JAR kèm dependencies -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <transformers>
+                            <!-- Thiết lập main class -->
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.fpt.ptcd.nhatrosystem.NhaTroSystem</mainClass>
+                            </transformer>
+                        </transformers>
+                        <!-- Loại bỏ file chữ ký gây lỗi -->
+                        <filters>
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/*.SF</exclude>
+                                    <exclude>META-INF/*.DSA</exclude>
+                                    <exclude>META-INF/*.RSA</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+
 </project>

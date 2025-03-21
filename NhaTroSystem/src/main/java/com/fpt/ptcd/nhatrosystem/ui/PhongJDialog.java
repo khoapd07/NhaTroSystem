@@ -4,6 +4,12 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.PhongDAO;
+import com.fpt.ptcd.nhatrosystem.entity.Phong;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +22,7 @@ public class PhongJDialog extends javax.swing.JDialog {
     public PhongJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -53,7 +60,7 @@ public class PhongJDialog extends javax.swing.JDialog {
         btnLast = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblPhongTro = new javax.swing.JTable();
+        tblPhong = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         txtTimKiem1 = new javax.swing.JTextField();
         btnTimKiem1 = new javax.swing.JButton();
@@ -245,7 +252,7 @@ public class PhongJDialog extends javax.swing.JDialog {
 
         tabs.addTab("Chỉnh Sửa", jPanel1);
 
-        tblPhongTro.setModel(new javax.swing.table.DefaultTableModel(
+        tblPhong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -253,15 +260,15 @@ public class PhongJDialog extends javax.swing.JDialog {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "Mã Phòng", "Mã Loại", "Tên Loại", "Trạng Thái", "Ghi Chú"
             }
         ));
-        tblPhongTro.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblPhong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblPhongTroMouseClicked(evt);
+                tblPhongMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblPhongTro);
+        jScrollPane1.setViewportView(tblPhong);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Tìm kiếm"));
 
@@ -338,9 +345,9 @@ public class PhongJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblPhongTroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhongTroMouseClicked
+    private void tblPhongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhongMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblPhongTroMouseClicked
+    }//GEN-LAST:event_tblPhongMouseClicked
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
@@ -451,11 +458,40 @@ public class PhongJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblTenPT;
     private javax.swing.JLabel lblTrangThai;
     private javax.swing.JTabbedPane tabs;
-    private javax.swing.JTable tblPhongTro;
+    private javax.swing.JTable tblPhong;
     private javax.swing.JTextArea txtGhiChu;
     private javax.swing.JTextField txtMaPT;
     private javax.swing.JTextField txtTenPT;
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTimKiem1;
     // End of variables declaration//GEN-END:variables
+
+    PhongDAO dao = new PhongDAO(); //làm việc với bảng nhanvien
+    int row = -1; //hàng được chọn hiện tại trên bảng
+    
+    void init(){
+        this.setLocationRelativeTo(null);
+        
+        this.fillTable();
+        this.row = -1;
+//        this.updateStatus();
+    }
+    
+
+
+void fillTable(){
+        DefaultTableModel model = (DefaultTableModel) tblPhong.getModel();
+        model.setRowCount(0); //xáo tất cả các hàng trên JTable
+        try{
+            List<Phong> list = dao.selectAll(); // đọc dữ liệu từ CSDL
+            for(Phong ph : list){
+                Object[] row = {ph.getMaPhong(), ph.getMaLoai(), ph.getTenPhong(),ph.isTrangThai()?"Đã thuê" : "Còn trống",ph.getGhiChu()
+                };
+                model.addRow(row); //thêm một hàng vào JTable
+            }
+        }
+        catch(Exception e){
+            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        }
+    }
 }

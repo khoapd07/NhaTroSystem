@@ -94,7 +94,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtDTPhong" max="32767" attributes="0"/>
                                   <Component id="txtTenLP" max="32767" attributes="0"/>
-                                  <Component id="spnGiaPhong" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtGiaPhong" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" pref="487" max="32767" attributes="0"/>
@@ -128,7 +128,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Component id="lblGhiChu" min="-2" max="-2" attributes="0"/>
@@ -326,7 +326,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JSpinner" name="spnGiaPhong">
+            <Component class="javax.swing.JSpinner" name="txtGiaPhong">
             </Component>
           </SubComponents>
         </Container>
@@ -371,11 +371,11 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="4">
-                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 4" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 5" type="java.lang.Object"/>
+                        <Column editable="true" title="M&#xe3; Lo&#x1ea1;i" type="java.lang.Object"/>
+                        <Column editable="true" title="T&#xea;n Lo&#x1ea1;i" type="java.lang.Object"/>
+                        <Column editable="true" title="Di&#x1ec7;n T&#xed;ch" type="java.lang.Object"/>
+                        <Column editable="true" title="Gi&#xe1; Ph&#xf2;ng" type="java.lang.Object"/>
+                        <Column editable="true" title="Ghi Ch&#xfa;" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">

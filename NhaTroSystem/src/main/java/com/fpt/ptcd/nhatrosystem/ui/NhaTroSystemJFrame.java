@@ -1,33 +1,27 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
-//import com.fpt.ptcd.nhatrosystem.Auth;
-//import com.fpt.ptcd.nhatrosystem.MsgBox;
-//import com.fpt.ptcd.nhatrosystem.XImage;
-import java.awt.Image;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 /**
  *
- * @author 24010
+ * @author accgs
  */
-public class NhaTroLand extends javax.swing.JDialog {
+public class NhaTroSystemJFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form NhaTroLand
+     * Creates new form NhaTroLandJFrame
      */
-    public NhaTroLand(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public NhaTroSystemJFrame() {
         initComponents();
         init();
     }
@@ -57,7 +51,7 @@ public class NhaTroLand extends javax.swing.JDialog {
         pnlTrangThai = new javax.swing.JPanel();
         lblHeQuanLyDaoTao = new javax.swing.JLabel();
         lblDongHo = new javax.swing.JLabel();
-        menuBar = new javax.swing.JMenuBar();
+        jMenuBar1 = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
         mniDangNhap = new javax.swing.JMenuItem();
         mniDangXuat = new javax.swing.JMenuItem();
@@ -77,38 +71,43 @@ public class NhaTroLand extends javax.swing.JDialog {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         mniDoanhThu = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblHinh.setBackground(new java.awt.Color(255, 255, 255));
         lblHinh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblHinh.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\NhaTroLand.png")); // NOI18N
         lblHinh.setOpaque(true);
 
         tbaCongCu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tbaCongCu.setRollover(true);
 
-        btnQLTaiKhoan.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Billboard.png")); // NOI18N
         btnQLTaiKhoan.setText("Quản lý tài khoản");
         btnQLTaiKhoan.setFocusable(false);
         btnQLTaiKhoan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQLTaiKhoan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnQLTaiKhoan);
 
-        btnQLLoaiPhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Brick house.png")); // NOI18N
         btnQLLoaiPhong.setText("Quản lý loại phòng");
         btnQLLoaiPhong.setFocusable(false);
         btnQLLoaiPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQLLoaiPhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnQLLoaiPhong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQLLoaiPhongActionPerformed(evt);
+            }
+        });
         tbaCongCu.add(btnQLLoaiPhong);
 
-        btnPhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Home.png")); // NOI18N
         btnPhong.setText("Quản lý phòng");
         btnPhong.setFocusable(false);
         btnPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPhong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhongActionPerformed(evt);
+            }
+        });
         tbaCongCu.add(btnPhong);
 
-        btnKhachHang.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\User group.png")); // NOI18N
         btnKhachHang.setText("Quản lý khách hàng");
         btnKhachHang.setFocusable(false);
         btnKhachHang.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -120,7 +119,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         });
         tbaCongCu.add(btnKhachHang);
 
-        btnMucGia.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Money.png")); // NOI18N
         btnMucGia.setText("Quản lý mức giá");
         btnMucGia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMucGia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -129,26 +127,27 @@ public class NhaTroLand extends javax.swing.JDialog {
         jSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tbaCongCu.add(jSeparator1);
 
-        btnThuePhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Handshake.png")); // NOI18N
         btnThuePhong.setText("Thuê phòng");
         btnThuePhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnThuePhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThuePhong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThuePhongActionPerformed(evt);
+            }
+        });
         tbaCongCu.add(btnThuePhong);
 
-        btnTraPhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Friends.png")); // NOI18N
         btnTraPhong.setText("Trả phòng");
         btnTraPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnTraPhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnTraPhong);
 
-        btnHoaDon.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Notes.png")); // NOI18N
         btnHoaDon.setText("Hóa đơn");
         btnHoaDon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHoaDon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnHoaDon);
         tbaCongCu.add(jSeparator2);
 
-        btnDangXuat.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Log out.png")); // NOI18N
         btnDangXuat.setText("Đặng xuất");
         btnDangXuat.setFocusable(false);
         btnDangXuat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -162,10 +161,7 @@ public class NhaTroLand extends javax.swing.JDialog {
 
         pnlTrangThai.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblHeQuanLyDaoTao.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Info.png")); // NOI18N
         lblHeQuanLyDaoTao.setText("Hệ quản lý nhà trọ");
-
-        lblDongHo.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Clock.png")); // NOI18N
 
         javax.swing.GroupLayout pnlTrangThaiLayout = new javax.swing.GroupLayout(pnlTrangThai);
         pnlTrangThai.setLayout(pnlTrangThaiLayout);
@@ -191,7 +187,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuHeThong.setText("Hệ thống ");
 
         mniDangNhap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniDangNhap.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Login.png")); // NOI18N
         mniDangNhap.setText("Đăng nhập");
         mniDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +196,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuHeThong.add(mniDangNhap);
 
         mniDangXuat.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniDangXuat.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Log out.png")); // NOI18N
         mniDangXuat.setText("Đăng xuất");
         mniDangXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,7 +205,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuHeThong.add(mniDangXuat);
         mnuHeThong.add(jSeparator3);
 
-        mniDoiMatKhau.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Refresh.png")); // NOI18N
         mniDoiMatKhau.setText("Đổi mật khẩu");
         mniDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,7 +215,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuHeThong.add(jSeparator4);
 
         mniKetThuc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
-        mniKetThuc.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Stop.png")); // NOI18N
         mniKetThuc.setText("Kết thúc");
         mniKetThuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,12 +223,11 @@ public class NhaTroLand extends javax.swing.JDialog {
         });
         mnuHeThong.add(mniKetThuc);
 
-        menuBar.add(mnuHeThong);
+        jMenuBar1.add(mnuHeThong);
 
         mnuQuanLy.setText("Quán lý");
 
         mniTaiKhoan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniTaiKhoan.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Billboard.png")); // NOI18N
         mniTaiKhoan.setText("Tài khoản");
         mniTaiKhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,7 +237,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuQuanLy.add(mniTaiKhoan);
 
         mniLoaiPhong.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniLoaiPhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Brick house.png")); // NOI18N
         mniLoaiPhong.setText("Loại phòng");
         mniLoaiPhong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -256,12 +246,10 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuQuanLy.add(mniLoaiPhong);
 
         mniPhong.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniPhong.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Home.png")); // NOI18N
         mniPhong.setText("Phòng");
         mnuQuanLy.add(mniPhong);
 
         mniKhachHang.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniKhachHang.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\User group.png")); // NOI18N
         mniKhachHang.setText("Khách hàng");
         mniKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -272,7 +260,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuQuanLy.add(jSeparator7);
 
         mniGiaThanh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mniGiaThanh.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Money.png")); // NOI18N
         mniGiaThanh.setText("Giá thành");
         mniGiaThanh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -281,12 +268,11 @@ public class NhaTroLand extends javax.swing.JDialog {
         });
         mnuQuanLy.add(mniGiaThanh);
 
-        menuBar.add(mnuQuanLy);
+        jMenuBar1.add(mnuQuanLy);
 
         mnuThongKe.setText("Thông kê");
 
         mniNguoiDK.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        mniNguoiDK.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Clien list.png")); // NOI18N
         mniNguoiDK.setText("Số người đặng ký");
         mniNguoiDK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,7 +283,6 @@ public class NhaTroLand extends javax.swing.JDialog {
         mnuThongKe.add(jSeparator6);
 
         mniDoanhThu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        mniDoanhThu.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Bar chart.png")); // NOI18N
         mniDoanhThu.setText("Daonh thu");
         mniDoanhThu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -306,15 +291,15 @@ public class NhaTroLand extends javax.swing.JDialog {
         });
         mnuThongKe.add(mniDoanhThu);
 
-        menuBar.add(mnuThongKe);
+        jMenuBar1.add(mnuThongKe);
 
-        setJMenuBar(menuBar);
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbaCongCu, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
+            .addComponent(tbaCongCu, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
             .addComponent(lblHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlTrangThai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -332,60 +317,72 @@ public class NhaTroLand extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mniDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDangNhapActionPerformed
-        
+
     }//GEN-LAST:event_mniDangNhapActionPerformed
 
     private void mniDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDangXuatActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniDangXuatActionPerformed
 
     private void mniDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoiMatKhauActionPerformed
-        
+
     }//GEN-LAST:event_mniDoiMatKhauActionPerformed
 
     private void mniKetThucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniKetThucActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniKetThucActionPerformed
 
     private void mniTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniTaiKhoanActionPerformed
-        
+
     }//GEN-LAST:event_mniTaiKhoanActionPerformed
 
     private void mniLoaiPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLoaiPhongActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniLoaiPhongActionPerformed
 
     private void mniKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniKhachHangActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniKhachHangActionPerformed
 
     private void mniGiaThanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniGiaThanhActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniGiaThanhActionPerformed
 
     private void mniNguoiDKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniNguoiDKActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniNguoiDKActionPerformed
 
     private void mniDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_mniDoanhThuActionPerformed
+
+    private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
+        this.openKhachHang();
+    }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
-    private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnKhachHangActionPerformed
+    private void btnQLLoaiPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQLLoaiPhongActionPerformed
+        openLoaiPhong();
+    }//GEN-LAST:event_btnQLLoaiPhongActionPerformed
+
+    private void btnPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhongActionPerformed
+        openPhong();
+    }//GEN-LAST:event_btnPhongActionPerformed
+
+    private void btnThuePhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThuePhongActionPerformed
+        openThuePhong();
+    }//GEN-LAST:event_btnThuePhongActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,30 +401,23 @@ public class NhaTroLand extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NhaTroLand.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NhaTroSystemJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NhaTroLand.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NhaTroSystemJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NhaTroLand.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NhaTroSystemJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NhaTroLand.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NhaTroSystemJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NhaTroLand dialog = new NhaTroLand(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new NhaTroSystemJFrame().setVisible(true);
             }
         });
     }
@@ -442,6 +432,7 @@ public class NhaTroLand extends javax.swing.JDialog {
     private javax.swing.JButton btnQLTaiKhoan;
     private javax.swing.JButton btnThuePhong;
     private javax.swing.JButton btnTraPhong;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -451,7 +442,6 @@ public class NhaTroLand extends javax.swing.JDialog {
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JLabel lblHeQuanLyDaoTao;
     private javax.swing.JLabel lblHinh;
-    private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem mniDangNhap;
     private javax.swing.JMenuItem mniDangXuat;
     private javax.swing.JMenuItem mniDoanhThu;
@@ -469,15 +459,15 @@ public class NhaTroLand extends javax.swing.JDialog {
     private javax.swing.JPanel pnlTrangThai;
     private javax.swing.JToolBar tbaCongCu;
     // End of variables declaration//GEN-END:variables
-    
+
     private void init(){
 //        setIconImage(XImage.getAppIcon());
-//        setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
 //        
-//        new ChaoJDialog(this, true).setVisible(true);
-//        new DangNhapJDialog(this, true).setVisible(true);
+        new ChaoJDialog(this, true).setVisible(true);
+        new DangNhapJDialog(this, true).setVisible(true);
 //        
-//        this.startDongHo();
+        this.startDongHo();
     }
     
     private void startDongHo(){
@@ -490,5 +480,41 @@ public class NhaTroLand extends javax.swing.JDialog {
                 lblDongHo.setText(text);
             }  
         }).start();
+    }
+    
+    void openKhachHang(){
+        if(Auth.isLogin()){
+            new KhachHangJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        }
+    }
+    
+    void openLoaiPhong(){
+        if(Auth.isLogin()){
+            new LoaiPhongJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        }
+    }
+    
+    void openPhong(){
+        if(Auth.isLogin()){
+            new PhongJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        }        
+    }
+    
+    void openThuePhong(){
+        if(Auth.isLogin()){
+            new ThuePhongJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        }        
     }
 }
