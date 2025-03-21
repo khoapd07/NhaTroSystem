@@ -19,6 +19,6 @@ public class NhaTroSystem {
             }
         });
         
-        System.out.println("Kha lol");
+        System.out.println("Kha lolllllllllll");
     }
 }
