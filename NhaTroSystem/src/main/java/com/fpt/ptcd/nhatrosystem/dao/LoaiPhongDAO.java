@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class LoaiPhongDAO extends QLNhaTroDAO<LoaiPhong,String>{
                    public void insert(LoaiPhong model){
+                       System.out.println("lol");
         String sql="INSERT INTO LoaiPhong (MaLoai, TenLoai, DienTich, GiaPhong, GhiChu) VALUES (?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
                 model.getMaLoai(), 

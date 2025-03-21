@@ -17,7 +17,9 @@ import java.util.List;
  * @author accgs
  */
 public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
+   
                 public void insert(KhachHang model){
+                    System.out.println("cac");
         String sql="INSERT INTO KhachHang (MaKhach, TenKhach, SDT, DiaChi, CCCD) VALUES (?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
                 model.getMaKhach(), 
