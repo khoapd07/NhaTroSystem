@@ -19,7 +19,7 @@ import java.util.List;
 public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
    
                 public void insert(KhachHang model){
-                    System.out.println("cacc");
+                    System.out.println("cac");
         String sql="INSERT INTO KhachHang (MaKhach, TenKhach, SDT, DiaChi, CCCD) VALUES (?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
                 model.getMaKhach(), 
