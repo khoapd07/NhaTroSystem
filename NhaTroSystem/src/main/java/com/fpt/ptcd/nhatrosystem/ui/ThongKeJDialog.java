@@ -237,7 +237,7 @@ public class ThongKeJDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         fillTableKhachHang();
         
-        fillComboBoxNam();
+//        fillComboBoxNam();
         fillTableDoanhThu();
         
         this.selectTab(0);
@@ -261,14 +261,14 @@ public class ThongKeJDialog extends javax.swing.JDialog {
         }
     }
             
-    void fillComboBoxNam(){
-        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
-        model.removeAllElements();
-        List<Integer> list = tpdao.selectYears();
-        for(Integer year : list){
-            model.addElement(year);
-        }
-    }
+//    void fillComboBoxNam(){
+//        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
+//        model.removeAllElements();
+//        List<Integer> list = tpdao.selectYears();
+//        for(Integer year : list){
+//            model.addElement(year);
+//        }
+//    }
     void fillTableDoanhThu() {
         DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
         model.setRowCount(0);
