@@ -4,10 +4,21 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.KhachHangDAO;
+import com.fpt.ptcd.nhatrosystem.dao.NhanVienDAO;
+import com.fpt.ptcd.nhatrosystem.dao.PhongDAO;
 import com.fpt.ptcd.nhatrosystem.dao.ThuePhongDAO;
+import com.fpt.ptcd.nhatrosystem.entity.KhachHang;
+import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
+import com.fpt.ptcd.nhatrosystem.entity.Phong;
 import com.fpt.ptcd.nhatrosystem.entity.ThuePhong;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import com.fpt.ptcd.nhatrosystem.utils.XDate;
+import java.awt.HeadlessException;
+import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,17 +46,16 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         lblQL = new javax.swing.JLabel();
+        tabs = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lblMaPhieuT = new javax.swing.JLabel();
         lblNgayThue = new javax.swing.JLabel();
         lblTienCT = new javax.swing.JLabel();
         lblMaKH = new javax.swing.JLabel();
         lblMaPhong = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblThuePhong = new javax.swing.JTable();
-        txtMaPhieuT = new javax.swing.JTextField();
+        txtMaPhieuThue = new javax.swing.JTextField();
         txtNgayThue = new javax.swing.JTextField();
-        txtTienCT = new javax.swing.JTextField();
+        txtTienCoc = new javax.swing.JTextField();
         cboMaKH = new javax.swing.JComboBox<>();
         cboMaPhong = new javax.swing.JComboBox<>();
         btnFirst = new javax.swing.JButton();
@@ -56,6 +66,12 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
         btnThem = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         btnPrev = new javax.swing.JButton();
+        cboMaNV = new javax.swing.JComboBox<>();
+        lblMaPhong1 = new javax.swing.JLabel();
+        btnGetDate = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblThuePhong = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,27 +89,17 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
 
         lblMaPhong.setText("Mã phòng");
 
-        tblThuePhong.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Mã Phiếu Thuê", "Mã Phòng", "Mã Khách", "Mã Nhân Viên", "Tiền Cọc", "Ngày Thuê"
-            }
-        ));
-        tblThuePhong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblThuePhongMouseClicked(evt);
+        cboMaKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboMaKHActionPerformed(evt);
             }
         });
-        jScrollPane1.setViewportView(tblThuePhong);
 
-        cboMaKH.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cboMaPhong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboMaPhong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboMaPhongActionPerformed(evt);
+            }
+        });
 
         btnFirst.setText("|<");
         btnFirst.addActionListener(new java.awt.event.ActionListener() {
@@ -151,6 +157,21 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
             }
         });
 
+        cboMaNV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboMaNVActionPerformed(evt);
+            }
+        });
+
+        lblMaPhong1.setText("Mã Nhân Viên");
+
+        btnGetDate.setText("Get");
+        btnGetDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -158,43 +179,43 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblMaPhong)
                             .addComponent(lblMaKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblTienCT)
                             .addComponent(lblMaPhieuT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNgayThue))
+                            .addComponent(lblNgayThue)
+                            .addComponent(lblMaPhong)
+                            .addComponent(lblMaPhong1))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMaPhieuT)
-                            .addComponent(txtNgayThue)
-                            .addComponent(txtTienCT)
-                            .addComponent(cboMaKH, 0, 245, Short.MAX_VALUE)
-                            .addComponent(cboMaPhong, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 63, Short.MAX_VALUE)
-                                    .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
+                                    .addComponent(txtMaPhieuThue)
+                                    .addComponent(txtNgayThue)
+                                    .addComponent(txtTienCoc)
+                                    .addComponent(cboMaKH, 0, 245, Short.MAX_VALUE)
+                                    .addComponent(cboMaPhong, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
+                                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGetDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnMoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 54, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(cboMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(171, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,35 +223,79 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaPhieuT)
-                    .addComponent(txtMaPhieuT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnThem)
-                    .addComponent(btnFirst))
+                    .addComponent(txtMaPhieuThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMoi))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNgayThue)
                     .addComponent(txtNgayThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSua)
-                    .addComponent(btnPrev))
+                    .addComponent(btnGetDate))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTienCT, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTienCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoa)
-                    .addComponent(btnNext))
+                    .addComponent(txtTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnThem))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaKH)
                     .addComponent(cboMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMoi)
-                    .addComponent(btnLast))
+                    .addComponent(btnXoa))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboMaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMaPhong)
-                    .addComponent(cboMaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSua))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMaPhong1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNext)
+                    .addComponent(btnLast)
+                    .addComponent(btnPrev)
+                    .addComponent(btnFirst))
+                .addGap(5, 5, 5))
+        );
+
+        tabs.addTab("Cập Nhật", jPanel1);
+
+        tblThuePhong.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Mã Phiếu Thuê", "Mã Phòng", "Mã Khách", "Mã Nhân Viên", "Tiền Cọc", "Ngày Thuê"
+            }
+        ));
+        tblThuePhong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblThuePhongMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblThuePhong);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        tabs.addTab("Danh Sách", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -239,10 +304,10 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblQL)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(319, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,55 +315,74 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(lblQL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tabs))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblThuePhongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuePhongMouseClicked
-        // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            this.row = tblThuePhong.getSelectedRow();
+            this.edit();
+        }
     }//GEN-LAST:event_tblThuePhongMouseClicked
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-        //        this.first();
+                this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        //        this.last();
+                this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-        //        this.clearForm();
+                this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        //        this.delete();
+                this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        //        this.update();
+                this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
-        //        this.insert();
+
+                this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        //        this.next();
+                this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        //        this.prev();
+                this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
+
+    private void cboMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaKHActionPerformed
+        
+    }//GEN-LAST:event_cboMaKHActionPerformed
+
+    private void cboMaPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaPhongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboMaPhongActionPerformed
+
+    private void cboMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaNVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboMaNVActionPerformed
+
+    private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
+        txtNgayThue.setText(XDate.toString(new Date(), "yyyy-MM-dd"));
+    }//GEN-LAST:event_btnGetDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,6 +429,7 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFirst;
+    private javax.swing.JButton btnGetDate;
     private javax.swing.JButton btnLast;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnNext;
@@ -353,22 +438,29 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cboMaKH;
+    private javax.swing.JComboBox<String> cboMaNV;
     private javax.swing.JComboBox<String> cboMaPhong;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblMaPhieuT;
     private javax.swing.JLabel lblMaPhong;
+    private javax.swing.JLabel lblMaPhong1;
     private javax.swing.JLabel lblNgayThue;
     private javax.swing.JLabel lblQL;
     private javax.swing.JLabel lblTienCT;
+    private javax.swing.JTabbedPane tabs;
     private javax.swing.JTable tblThuePhong;
-    private javax.swing.JTextField txtMaPhieuT;
+    private javax.swing.JTextField txtMaPhieuThue;
     private javax.swing.JTextField txtNgayThue;
-    private javax.swing.JTextField txtTienCT;
+    private javax.swing.JTextField txtTienCoc;
     // End of variables declaration//GEN-END:variables
-
+    
+    KhachHangDAO khdao = new KhachHangDAO();
     ThuePhongDAO dao = new ThuePhongDAO(); //làm việc với bảng nhanvien
+    PhongDAO phongdao = new PhongDAO();
+    NhanVienDAO nhanviendao = new NhanVienDAO();
     int row = -1; //hàng được chọn hiện tại trên bảng
     
     void init(){
@@ -377,6 +469,9 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
         this.fillTable();
         this.row = -1;
 //        this.updateStatus();
+        this.fillCboKhachHang();
+        this.fillCboPhong();
+        this.fillCboMaNV();
     }
     
 
@@ -397,4 +492,157 @@ void fillTable(){
         }
     }
 
-}
+    void fillCboKhachHang(){
+
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaKH.getModel();
+        model.removeAllElements();
+        try{
+            List<KhachHang> list = khdao.selectAll();
+            for(KhachHang kh : list){
+                model.addElement(kh.getMaKhach());
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+    
+    void fillCboPhong(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaPhong.getModel();
+        model.removeAllElements();
+        try{
+            List<Phong> list = phongdao.selectAll();
+            for(Phong ph : list){
+                model.addElement(ph.getMaPhong());
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+    
+    void fillCboMaNV(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaNV.getModel();
+        model.removeAllElements();
+        try{
+            List<NhanVien> list = nhanviendao.selectAll();
+            for(NhanVien nv : list){
+                model.addElement(nv.getMaNV());
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+    
+    void clearForm(){
+        boolean edit = (this.row >= 0);
+        ThuePhong tp = new ThuePhong();
+        tp.setMaNV(Auth.user.getMaNV());
+        tp.setNgayThue(new Date());
+        this.setForm(tp);
+        txtMaPhieuThue.setEnabled(edit);
+        btnThem.setEnabled(edit);
+    }
+    ThuePhong getForm() {
+        ThuePhong tp = new ThuePhong();
+        tp.setMaPhieuThue(txtMaPhieuThue.getText());
+        tp.setNgayThue(XDate.toDate(txtNgayThue.getText(), "yyyy-MM-dd"));
+        tp.setTienCoc(Double.valueOf(txtTienCoc.getText()));
+        tp.setMaKhach((String) cboMaKH.getSelectedItem());
+        tp.setMaPhong ( (String) cboMaPhong.getSelectedItem());
+        tp.setMaNV((String) cboMaNV.getSelectedItem());
+        return tp;
+    }
+    
+    void setForm(ThuePhong tp){
+        txtMaPhieuThue.setText(tp.getMaPhieuThue());
+        txtTienCoc.setText(String.valueOf(tp.getTienCoc()));
+        txtNgayThue.setText(XDate.toString(tp.getNgayThue(), "yyyy-MM-dd"));
+        cboMaKH.setSelectedItem(tp.getMaKhach());
+        cboMaPhong.setSelectedItem(tp.getMaPhong());
+        cboMaNV.setSelectedItem(tp.getMaNV());
+    }
+    
+    void insert() {
+        ThuePhong model = getForm();
+        try {
+            dao.insert(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (HeadlessException e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+    
+    void update(){
+        ThuePhong model = getForm();
+        try {
+            dao.update(model);
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete(){
+            String maPhieuThue = txtMaPhieuThue.getText();
+            try {
+                dao.delete(maPhieuThue);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }            
+        }
+    
+    void edit() {
+        String mapt = (String) tblThuePhong.getValueAt(this.row, 0);
+        ThuePhong tp = dao.selectById(mapt);
+        this.setForm(tp);
+        this.updateStatus();
+        tabs.setSelectedIndex(0);
+    }
+        
+        void first(){
+        this.row = 0;
+        this.edit();
+    }
+    void prev(){
+        if(this.row > 0){
+            this.row--;
+            this.edit();
+        }
+    }
+    void next(){
+        if(this.row < tblThuePhong.getRowCount() - 1){
+            this.row++;
+            this.edit();
+        }
+    }
+    void last(){
+         this.row = tblThuePhong.getRowCount() - 1;
+        this.edit();
+    }
+    
+    void updateStatus(){
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblThuePhong.getRowCount() - 1);
+        // Trạng thái form
+        txtMaPhieuThue.setEnabled(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+    
+} 
+
