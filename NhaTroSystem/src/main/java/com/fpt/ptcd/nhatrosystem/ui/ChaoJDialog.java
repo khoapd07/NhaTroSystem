@@ -40,7 +40,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
         lblLogo.setBackground(new java.awt.Color(255, 255, 255));
         lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLogo.setIcon(new javax.swing.ImageIcon("D:\\JAva_Du_An_Tot_Nghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\NhaTroLand.png")); // NOI18N
+        lblLogo.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\NhaTroLand.png")); // NOI18N
         lblLogo.setAutoscrolls(true);
         lblLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblLogo.setOpaque(true);

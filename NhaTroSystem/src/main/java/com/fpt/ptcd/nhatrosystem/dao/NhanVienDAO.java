@@ -75,4 +75,9 @@ public class NhanVienDAO extends QLNhaTroDAO<NhanVien,String> {
         }
         return list;
     }
+
+    public List<NhanVien> selectByKeyword(String keyword){
+        String sql = "SELECT * FROM NhanVien WHERE MaNV LIKE ?";
+        return this.selectBySql(sql, "%" + keyword + "%");
+    }
 }

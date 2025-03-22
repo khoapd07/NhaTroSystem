@@ -51,8 +51,8 @@
         <Container class="javax.swing.JPanel" name="jPanel1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Ch&#x1ec9;nh S&#x1eed;a">
-                <Property name="tabTitle" type="java.lang.String" value="Ch&#x1ec9;nh S&#x1eed;a"/>
+              <JTabbedPaneConstraints tabName="CH&#x1ec8;NH S&#x1eec;A">
+                <Property name="tabTitle" type="java.lang.String" value="CH&#x1ec8;NH S&#x1eec;A"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

@@ -14,6 +14,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Login.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng nh&#x1ead;p"/>
               </Properties>
               <Events>
@@ -25,6 +28,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Log out.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
               </Properties>
               <Events>
@@ -35,6 +41,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mniDoiMatKhau">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Refresh.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i m&#x1ead;t kh&#x1ea9;u"/>
               </Properties>
               <Events>
@@ -47,6 +56,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="F10"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\No.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="K&#x1ebf;t th&#xfa;c"/>
               </Properties>
@@ -66,6 +78,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F1"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Billboard.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="T&#xe0;i kho&#x1ea3;n"/>
               </Properties>
               <Events>
@@ -76,6 +91,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F2"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Brick house.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i ph&#xf2;ng"/>
               </Properties>
@@ -88,6 +106,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F3"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Home.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Ph&#xf2;ng"/>
               </Properties>
             </MenuItem>
@@ -95,6 +116,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F4"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\User group.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng"/>
               </Properties>
@@ -108,6 +132,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F5"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Money.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Gi&#xe1; th&#xe0;nh"/>
               </Properties>
@@ -127,6 +154,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+F1"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Clien list.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="S&#x1ed1; ng&#x1b0;&#x1edd;i &#x111;&#x1eb7;ng k&#xfd;"/>
               </Properties>
               <Events>
@@ -140,7 +170,10 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+F2"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Daonh thu"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Bar chart.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Doanh thu"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniDoanhThuActionPerformed"/>
@@ -174,7 +207,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tbaCongCu" alignment="0" pref="781" max="32767" attributes="0"/>
+          <Component id="tbaCongCu" alignment="0" pref="910" max="32767" attributes="0"/>
           <Component id="lblHinh" alignment="0" max="32767" attributes="0"/>
           <Component id="pnlTrangThai" alignment="0" max="32767" attributes="0"/>
       </Group>
@@ -184,7 +217,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="tbaCongCu" min="-2" pref="73" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblHinh" max="32767" attributes="0"/>
+              <Component id="lblHinh" min="-2" pref="423" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnlTrangThai" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -198,6 +231,9 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\NhaTroLand.png"/>
+        </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>
@@ -215,6 +251,9 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnQLTaiKhoan">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Billboard.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; t&#xe0;i kho&#x1ea3;n"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -223,6 +262,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnQLLoaiPhong">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Brick house.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; lo&#x1ea1;i ph&#xf2;ng"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -234,6 +276,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnPhong">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Home.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; ph&#xf2;ng"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -245,6 +290,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnKhachHang">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\User group.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; kh&#xe1;ch h&#xe0;ng"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -256,6 +304,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnMucGia">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Money.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; m&#x1ee9;c gi&#xe1;"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -272,6 +323,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnThuePhong">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Handshake.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Thu&#xea; ph&#xf2;ng"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -282,6 +336,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnTraPhong">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Friends.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Tr&#x1ea3; ph&#xf2;ng"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -289,6 +346,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnHoaDon">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Notes.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="H&#xf3;a &#x111;&#x1a1;n"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -298,6 +358,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnDangXuat">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Exit.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#x1eb7;ng xu&#x1ea5;t"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -346,10 +409,18 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblHeQuanLyDaoTao">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Info.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="H&#x1ec7; qu&#x1ea3;n l&#xfd; nh&#xe0; tr&#x1ecd;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblDongHo">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PRODuAnToNghiep\NhaTroSystem\NhaTroSystem\src\main\resources\logo\icon\Clock.png"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

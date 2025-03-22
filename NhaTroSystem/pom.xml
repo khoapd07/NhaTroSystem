@@ -11,11 +11,24 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.fpt.ptcd.nhatrosystem.NhaTroSystem</exec.mainClass>
     </properties>
-               <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>10.2.2.jre17</version> <!-- Chọn phiên bản phù hợp -->
+            <version>12.8.1.jre11</version>
+        </dependency>
+        <!-- API, java.xml.bind module -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <!-- Runtime, com.sun.xml.bind module -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
     <name>NhaTroSystem</name>

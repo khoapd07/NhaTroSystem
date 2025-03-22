@@ -228,7 +228,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabs.addTab("Chỉnh Sửa", jPanel1);
+        tabs.addTab("CHỈNH SỬA", jPanel1);
 
         tblTraPhong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

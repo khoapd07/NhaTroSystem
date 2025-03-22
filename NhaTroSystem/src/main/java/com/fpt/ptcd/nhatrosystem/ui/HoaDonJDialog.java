@@ -234,7 +234,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        tabs.addTab("Chỉnh Sửa", jPanel1);
+        tabs.addTab("CHỈNH SỬA", jPanel1);
 
         tblNguoiHoc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

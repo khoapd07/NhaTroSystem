@@ -75,17 +75,20 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
 
         lblHinh.setBackground(new java.awt.Color(255, 255, 255));
         lblHinh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblHinh.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\NhaTroLand.png")); // NOI18N
         lblHinh.setOpaque(true);
 
         tbaCongCu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tbaCongCu.setRollover(true);
 
+        btnQLTaiKhoan.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Billboard.png")); // NOI18N
         btnQLTaiKhoan.setText("Quản lý tài khoản");
         btnQLTaiKhoan.setFocusable(false);
         btnQLTaiKhoan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQLTaiKhoan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnQLTaiKhoan);
 
+        btnQLLoaiPhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Brick house.png")); // NOI18N
         btnQLLoaiPhong.setText("Quản lý loại phòng");
         btnQLLoaiPhong.setFocusable(false);
         btnQLLoaiPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -97,6 +100,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         });
         tbaCongCu.add(btnQLLoaiPhong);
 
+        btnPhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Home.png")); // NOI18N
         btnPhong.setText("Quản lý phòng");
         btnPhong.setFocusable(false);
         btnPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -108,6 +112,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         });
         tbaCongCu.add(btnPhong);
 
+        btnKhachHang.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\User group.png")); // NOI18N
         btnKhachHang.setText("Quản lý khách hàng");
         btnKhachHang.setFocusable(false);
         btnKhachHang.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -119,6 +124,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         });
         tbaCongCu.add(btnKhachHang);
 
+        btnMucGia.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Money.png")); // NOI18N
         btnMucGia.setText("Quản lý mức giá");
         btnMucGia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMucGia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -127,6 +133,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         jSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tbaCongCu.add(jSeparator1);
 
+        btnThuePhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Handshake.png")); // NOI18N
         btnThuePhong.setText("Thuê phòng");
         btnThuePhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnThuePhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -137,17 +144,20 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         });
         tbaCongCu.add(btnThuePhong);
 
+        btnTraPhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Friends.png")); // NOI18N
         btnTraPhong.setText("Trả phòng");
         btnTraPhong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnTraPhong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnTraPhong);
 
+        btnHoaDon.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Notes.png")); // NOI18N
         btnHoaDon.setText("Hóa đơn");
         btnHoaDon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnHoaDon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         tbaCongCu.add(btnHoaDon);
         tbaCongCu.add(jSeparator2);
 
+        btnDangXuat.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Exit.png")); // NOI18N
         btnDangXuat.setText("Đặng xuất");
         btnDangXuat.setFocusable(false);
         btnDangXuat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -161,7 +171,10 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
 
         pnlTrangThai.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        lblHeQuanLyDaoTao.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Info.png")); // NOI18N
         lblHeQuanLyDaoTao.setText("Hệ quản lý nhà trọ");
+
+        lblDongHo.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Clock.png")); // NOI18N
 
         javax.swing.GroupLayout pnlTrangThaiLayout = new javax.swing.GroupLayout(pnlTrangThai);
         pnlTrangThai.setLayout(pnlTrangThaiLayout);
@@ -187,6 +200,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuHeThong.setText("Hệ thống ");
 
         mniDangNhap.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniDangNhap.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Login.png")); // NOI18N
         mniDangNhap.setText("Đăng nhập");
         mniDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,6 +210,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuHeThong.add(mniDangNhap);
 
         mniDangXuat.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniDangXuat.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Log out.png")); // NOI18N
         mniDangXuat.setText("Đăng xuất");
         mniDangXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,6 +220,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuHeThong.add(mniDangXuat);
         mnuHeThong.add(jSeparator3);
 
+        mniDoiMatKhau.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Refresh.png")); // NOI18N
         mniDoiMatKhau.setText("Đổi mật khẩu");
         mniDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +231,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuHeThong.add(jSeparator4);
 
         mniKetThuc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+        mniKetThuc.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\No.png")); // NOI18N
         mniKetThuc.setText("Kết thúc");
         mniKetThuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,6 +245,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuQuanLy.setText("Quán lý");
 
         mniTaiKhoan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniTaiKhoan.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Billboard.png")); // NOI18N
         mniTaiKhoan.setText("Tài khoản");
         mniTaiKhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,6 +255,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuQuanLy.add(mniTaiKhoan);
 
         mniLoaiPhong.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniLoaiPhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Brick house.png")); // NOI18N
         mniLoaiPhong.setText("Loại phòng");
         mniLoaiPhong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,10 +265,12 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuQuanLy.add(mniLoaiPhong);
 
         mniPhong.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniPhong.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Home.png")); // NOI18N
         mniPhong.setText("Phòng");
         mnuQuanLy.add(mniPhong);
 
         mniKhachHang.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniKhachHang.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\User group.png")); // NOI18N
         mniKhachHang.setText("Khách hàng");
         mniKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,6 +281,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuQuanLy.add(jSeparator7);
 
         mniGiaThanh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniGiaThanh.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Money.png")); // NOI18N
         mniGiaThanh.setText("Giá thành");
         mniGiaThanh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,6 +295,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuThongKe.setText("Thông kê");
 
         mniNguoiDK.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        mniNguoiDK.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Clien list.png")); // NOI18N
         mniNguoiDK.setText("Số người đặng ký");
         mniNguoiDK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,7 +306,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mnuThongKe.add(jSeparator6);
 
         mniDoanhThu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        mniDoanhThu.setText("Daonh thu");
+        mniDoanhThu.setIcon(new javax.swing.ImageIcon("D:\\PRODuAnToNghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\Bar chart.png")); // NOI18N
+        mniDoanhThu.setText("Doanh thu");
         mniDoanhThu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniDoanhThuActionPerformed(evt);
@@ -299,7 +323,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbaCongCu, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+            .addComponent(tbaCongCu, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
             .addComponent(lblHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlTrangThai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -308,7 +332,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tbaCongCu, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );

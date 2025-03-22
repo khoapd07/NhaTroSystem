@@ -64,7 +64,5 @@ public class LoaiPhong {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
-    }
-    
-    
+    } 
 }

@@ -64,7 +64,5 @@ public class KhachHang {
 
     public void setCanCCD(String canCCD) {
         this.canCCD = canCCD;
-    }
-    
-    
+    }  
 }

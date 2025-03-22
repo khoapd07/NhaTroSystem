@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.fpt.ptcd.nhatrosystem.ui;
-
+import com.fpt.ptcd.nhatrosystem.dao.NhanVienDAO;
+import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author 24010
@@ -16,6 +21,7 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     public TaiKhoanJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -69,9 +75,22 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
                 {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Mã nhân viên", "Tên nhân viên", "Vai trò"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblTaiKhoan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTaiKhoanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblTaiKhoan);
 
         lblMaNV.setText("Mã Nhân Viên");
@@ -87,8 +106,6 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
 
         buttonGroup1.add(rdoChuTro);
         rdoChuTro.setText("Chủ trọ");
-
-        txtMatKhau.setText("jPasswordField1");
 
         btnLast.setText(">|");
         btnLast.addActionListener(new java.awt.event.ActionListener() {
@@ -229,6 +246,11 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Tìm kiếm"));
 
         btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -281,43 +303,56 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-//        this.last();
+        this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-//        this.first();
+        this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-//        this.prev();
+        this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-//        this.next();
+        this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-//        this.insert();
+        this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-//        this.update();
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-//        this.delete();
+        this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-//        this.clearForm();
+        this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
+
+    private void tblTaiKhoanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTaiKhoanMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.row = tblTaiKhoan.getSelectedRow();
+            this.edit();
+        }
+    }//GEN-LAST:event_tblTaiKhoanMouseClicked
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        this.timKiem();
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -391,4 +426,232 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtMatKhau;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    NhanVienDAO dao = new NhanVienDAO();
+    int row = -1;
+    private void init() {
+        setLocationRelativeTo(null); // đưa cửa sổ ra giữa màn hình
+        this.fillTable(); // đổ dữ liệu nhân viên vào bảng
+        this.updateStatus(); // cập nhật trạng thái form
+    }
+    
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblTaiKhoan.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtTimKiem.getText();
+            List<NhanVien> list = dao.selectByKeyword(keyword);
+            for (NhanVien nv : list) {
+                Object[] row = {
+                    nv.getMaNV(),
+                    nv.getHoTen(),
+//                    nv.getMatKhau(),
+                    nv.isVaiTro()?"Chủ trọ":"Nhân viên"
+                };
+                model.addRow(row);
+            }
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    private void insert(){
+        if (!validateForm()) {
+            return;
+        }
+
+        NhanVien model = getForm();
+        if (dao.selectById(model.getMaNV()) != null) {
+            MsgBox.alert(this, "Mã nhân viên đã tồn tại!");
+            return;
+        }
+
+        try {
+            dao.insert(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại! Lỗi: " + e.getMessage());
+        }
+    }
+
+    private void update(){
+        if (!validateForm()) {
+            return;
+        }
+
+        NhanVien model = getForm();
+        if (dao.selectById(model.getMaNV()) == null) {
+            MsgBox.alert(this, "Mã nhân viên không tồn tại!");
+            return;
+        }
+
+        try {
+            dao.update(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại! Lỗi: " + e.getMessage());
+        }
+    }
+
+    private void delete(){
+        String manv = txtMaNV.getText().trim();
+        
+        if (manv.isEmpty()) {
+            MsgBox.alert(this, "Vui lòng nhập mã nhân viên cần xóa!");
+            return;
+        }
+
+        if (dao.selectById(manv) == null) {
+            MsgBox.alert(this, "Nhân viên không tồn tại!");
+            return;
+        }
+        if (MsgBox.confirm(this, "Bạn có muốn xóa nhân viên này không?")) {
+            try {
+                dao.delete(manv);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại! Lỗi: " + e.getMessage());
+            }
+        }
+    }
+
+    private void clearForm(){
+        this.setForm(new NhanVien());
+        this.row = -1;
+        this.updateStatus();
+    }
+
+    private void setForm(NhanVien nv){
+        txtMaNV.setText(nv.getMaNV());
+        txtHoVaTen.setText(nv.getHoTen());
+        txtMatKhau.setText(nv.getMatKhau());
+        if (nv.isVaiTro()) {
+            rdoChuTro.setSelected(true);
+        } else {
+            rdoNhanVien.setSelected(true);
+        }
+    }
+    
+    private NhanVien getForm(){
+        NhanVien nv = new NhanVien();
+        nv.setMaNV(txtMaNV.getText());
+        nv.setHoTen(txtHoVaTen.getText());
+        nv.setMatKhau(txtMatKhau.getText());
+        nv.setVaiTro(rdoChuTro.isSelected());
+        return nv;
+    }
+    
+    private void timKiem(){
+        this.fillTable();
+        this.clearForm();
+        this.row = -1;
+    }
+    
+        
+    private void edit() {
+        if (this.row < 0 || this.row >= tblTaiKhoan.getRowCount()) {
+            MsgBox.alert(this, "Không có dữ liệu để chỉnh sửa!");
+            return;
+        }
+
+        String manv = (String) tblTaiKhoan.getValueAt(this.row, 0);
+        NhanVien nv = dao.selectById(manv);
+        if (nv == null) {
+            MsgBox.alert(this, "Không tìm thấy thông tin nhân viên!");
+            return;
+        }
+
+        this.setForm(nv);
+        this.updateStatus();
+    }
+    
+    private void first(){
+        this.row = 0;
+        this.edit();
+    }
+    
+    private void prev(){
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
+        }
+    }
+    
+    private void next(){
+        if (this.row < tblTaiKhoan.getRowCount()) {
+            this.row++;
+            this.edit();
+        }
+    }
+    
+    private void last(){
+        this.row = tblTaiKhoan.getRowCount() - 1;
+        this.edit();
+    }
+    
+    private void updateStatus() {
+        boolean edit = (this.row >= 0);
+        boolean empty = (tblTaiKhoan.getRowCount() == 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblTaiKhoan.getRowCount() - 1);
+
+        // Nếu danh sách trống thì vô hiệu hóa các nút chỉnh sửa
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit && !empty);
+        btnXoa.setEnabled(edit && !empty);
+
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first && !empty);
+        btnPrev.setEnabled(edit && !first && !empty);
+        btnNext.setEnabled(edit && !last && !empty);
+        btnLast.setEnabled(edit && !last && !empty);
+    }
+    
+    private boolean validateForm() {
+        String maNV = txtMaNV.getText().trim();
+        String hoTen = txtHoVaTen.getText().trim();
+        String matKhau = txtMatKhau.getText().trim();
+
+        if (maNV.isEmpty()) {
+            MsgBox.alert(this, "Mã nhân viên không được để trống!");
+            txtMaNV.requestFocus();
+            return false;
+        }
+        if (hoTen.isEmpty()) {
+            MsgBox.alert(this, "Họ và tên không được để trống!");
+            txtHoVaTen.requestFocus();
+            return false;
+        }
+        if (matKhau.isEmpty()) {
+            MsgBox.alert(this, "Mật khẩu không được để trống!");
+            txtMatKhau.requestFocus();
+            return false;
+        }
+        if (matKhau.length() < 6) {
+            MsgBox.alert(this, "Mật khẩu phải có ít nhất 6 ký tự!");
+            txtMatKhau.requestFocus();
+            return false;
+        }
+        
+        if (!maNV.matches("^[a-zA-Z0-9]+$")) {
+            MsgBox.alert(this, "Mã nhân viên không được chứa ký tự đặc biệt!");
+            txtMaNV.requestFocus();
+            return false;
+        }
+
+        if (!hoTen.matches("^[\\p{L} ]+$")) {
+            MsgBox.alert(this, "Họ và tên chỉ được chứa chữ cái và khoảng trắng!");
+            txtHoVaTen.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
 }

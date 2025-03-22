@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.fpt.ptcd.nhatrosystem.ui;
-
 import com.fpt.ptcd.nhatrosystem.dao.LoaiPhongDAO;
 import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -202,10 +202,6 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblMaLP)
-                        .addGap(12, 12, 12)
-                        .addComponent(txtMaLP))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTenLP)
                             .addComponent(lblDTPhong)
@@ -218,7 +214,11 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblGhiChu)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblMaLP)
+                        .addGap(14, 14, 14)
+                        .addComponent(txtMaLP)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -251,7 +251,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 .addGap(0, 7, Short.MAX_VALUE))
         );
 
-        tabs.addTab("Chỉnh Sửa", jPanel1);
+        tabs.addTab("CHỈNH SỬA", jPanel1);
 
         tblLoaiPhong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -261,9 +261,17 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã Loại", "Tên Loại", "Diện Tích", "Giá Phòng", "Ghi Chú"
+                "Mã Loại", "Tên Loại", "Giá Phòng", "Diện Tích", "Ghi Chú"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblLoaiPhong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblLoaiPhongMouseClicked(evt);
@@ -315,39 +323,50 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
+        this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
+        this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
+        this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
+        this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void tblLoaiPhongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLoaiPhongMouseClicked
         // TODO add your handling code here:
-
+        if (evt.getClickCount() == 2) {
+            this.row = tblLoaiPhong.getSelectedRow();
+            this.edit();
+        }
     }//GEN-LAST:event_tblLoaiPhongMouseClicked
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
+        this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
+        this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     /**
@@ -422,33 +441,249 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtMaLP;
     private javax.swing.JTextField txtTenLP;
     // End of variables declaration//GEN-END:variables
-    LoaiPhongDAO dao = new LoaiPhongDAO(); //làm việc với bảng nhanvien
-    int row = -1; //hàng được chọn hiện tại trên bảng
     
-    void init(){
-        this.setLocationRelativeTo(null);
-        
-        this.fillTable();
-        this.row = -1;
-//        this.updateStatus();
+    LoaiPhongDAO dao = new LoaiPhongDAO();
+    int row = -1;
+    
+    private void init() {
+        setLocationRelativeTo(null); // Đưa cửa sổ ra giữa màn hình
+        this.fillTable(); // Đổ dữ liệu loại phòng vào bảng
+        this.updateStatus(); // Cập nhật trạng thái form
     }
     
-
-
-void fillTable(){
+    private void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblLoaiPhong.getModel();
-        model.setRowCount(0); //xáo tất cả các hàng trên JTable
-        try{
-            List<LoaiPhong> list = dao.selectAll(); // đọc dữ liệu từ CSDL
-            for(LoaiPhong lp : list){
-                Object[] row = {lp.getMaLoai(), lp.getTenLoai(), lp.getDienTich(),lp.getGiaPhong(),lp.getGhiChu()
+        model.setRowCount(0);
+        try {
+            List<LoaiPhong> list = dao.selectAll();
+            for (LoaiPhong lp : list) {
+                Object[] row = {
+                    lp.getMaLoai(),
+                    lp.getTenLoai(),
+                    lp.getGiaPhong(),
+                    lp.getDienTich(),
+                    lp.getGhiChu()
                 };
-                model.addRow(row); //thêm một hàng vào JTable
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+    
+    private void insert(){
+        if (!validateForm()) {
+            return;
+        }
+
+        LoaiPhong model = getForm();
+        if (model == null) return; // Tránh lỗi khi getForm() trả về null
+
+        if (dao.selectById(model.getMaLoai()) != null) {
+            MsgBox.alert(this, "Mã loại phòng đã tồn tại!");
+            return;
+        }
+
+        try {
+            dao.insert(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại! Lỗi: " + e.getMessage());
+        }
+    }
+    
+    private void update(){
+        if (!validateForm()) {
+            return;
+        }
+
+        LoaiPhong model = getForm();
+        if (dao.selectById(model.getMaLoai()) == null) {
+            MsgBox.alert(this, "Mã loại phòng không tồn tại!");
+            return;
+        }
+
+        try {
+            dao.update(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại! Lỗi: " + e.getMessage());
+        }
+    }
+    
+    private void delete(){
+        String maLP = txtMaLP.getText().trim();
+        if (maLP.isEmpty()) {
+            MsgBox.alert(this, "Vui lòng nhập mã loại phòng cần xóa!");
+            return;
+        }
+
+        if (dao.selectById(maLP) == null) {
+            MsgBox.alert(this, "Loại phòng không tồn tại!");
+            return;
+        }
+        if (MsgBox.confirm(this, "Bạn có muốn xóa loại phòng này không?")) {
+            try {
+                dao.delete(maLP);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại! Lỗi: " + e.getMessage());
             }
         }
-        catch(Exception e){
-            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+    }
+    
+    private void clearForm(){
+        this.setForm(new LoaiPhong());
+        this.row = -1;
+        this.updateStatus();
+    }
+    
+    private void setForm(LoaiPhong lp) {
+        txtMaLP.setText(lp.getMaLoai());
+        txtTenLP.setText(lp.getTenLoai());
+
+        // Kiểm tra và chuyển đổi giá phòng
+        Object giaPhong = lp.getGiaPhong();
+        if (giaPhong instanceof Number) {
+            txtGiaPhong.setValue(((Number) giaPhong).doubleValue());
+        } else {
+            txtGiaPhong.setValue(0.0); // Giá trị mặc định
+        }
+
+        txtDTPhong.setText(String.valueOf(lp.getDienTich()));
+        txtGhiChu.setText(lp.getGhiChu());
+    }
+    
+    private LoaiPhong getForm(){
+        LoaiPhong lp = new LoaiPhong();
+        lp.setMaLoai(txtMaLP.getText().trim());
+        lp.setTenLoai(txtTenLP.getText().trim());
+
+        // Kiểm tra giá phòng tránh NullPointerException
+        Object value = txtGiaPhong.getValue();
+        if (value instanceof Number) {
+            lp.setGiaPhong(((Number) value).doubleValue());
+        } else {
+            lp.setGiaPhong(0.0); // Giá trị mặc định nếu null
+        }
+
+        // Kiểm tra diện tích có đúng định dạng số không
+        try {
+            lp.setDienTich(Integer.parseInt(txtDTPhong.getText().trim()));
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Diện tích phòng phải là số nguyên!");
+            txtDTPhong.requestFocus();
+            return null;
+        }
+
+        lp.setGhiChu(txtGhiChu.getText().trim());
+        return lp;
+    }
+    
+    private void edit() {
+        if (this.row < 0 || this.row >= tblLoaiPhong.getRowCount()) {
+            MsgBox.alert(this, "Không có dữ liệu để chỉnh sửa!");
+            return;
+        }
+
+        String malp = (String) tblLoaiPhong.getValueAt(this.row, 0);
+        LoaiPhong lp = dao.selectById(malp);
+        if (lp == null) {
+            MsgBox.alert(this, "Không tìm thấy thông tin loại phòng!");
+            return;
+        }
+
+        this.setForm(lp);
+        this.updateStatus();
+    }
+    
+    private void first(){
+        this.row = 0;
+        this.edit();
+    }
+    
+    private void prev(){
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
         }
     }
+    
+    private void next(){
+        if (this.row < tblLoaiPhong.getRowCount()) {
+            this.row++;
+            this.edit();
+        }
+    }
+    
+    private void last(){
+        this.row = tblLoaiPhong.getRowCount() - 1;
+        this.edit();
+    }
+    
+    private void updateStatus(){
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblLoaiPhong.getRowCount() - 1);
+        
+        // Trạng thái form
+        txtMaLP.setEditable(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+    
+    private boolean validateForm() {
+        String maLP = txtMaLP.getText().trim();
+        String tenLP = txtTenLP.getText().trim();
+        String dtPhong = txtDTPhong.getText().trim();
 
+        // Kiểm tra mã loại phòng
+        if (maLP.isEmpty()) {
+            MsgBox.alert(this, "Mã loại phòng không được để trống!");
+            txtMaLP.requestFocus();
+            return false;
+        }
+
+        // Kiểm tra tên loại phòng
+        if (tenLP.isEmpty()) {
+            MsgBox.alert(this, "Tên loại phòng không được để trống!");
+            txtTenLP.requestFocus();
+            return false;
+        }
+
+        // Kiểm tra diện tích có đúng định dạng số không
+        if (!dtPhong.matches("\\d+")) {
+            MsgBox.alert(this, "Diện tích phòng phải là số nguyên!");
+            txtDTPhong.requestFocus();
+            return false;
+        }
+
+        // Kiểm tra giá phòng
+        Object value = txtGiaPhong.getValue();
+        double giaPhong = 0.0;
+        if (value instanceof Number) {
+            giaPhong = ((Number) value).doubleValue();
+        }
+
+        if (giaPhong <= 0) {
+            MsgBox.alert(this, "Giá phòng phải lớn hơn 0!");
+            txtGiaPhong.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
 }

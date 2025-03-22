@@ -220,7 +220,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
-        tabs.addTab("Chỉnh Sửa", jPanel1);
+        tabs.addTab("CHỈNH SỬA", jPanel1);
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
