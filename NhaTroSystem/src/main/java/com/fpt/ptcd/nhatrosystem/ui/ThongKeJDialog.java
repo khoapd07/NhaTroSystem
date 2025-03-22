@@ -4,6 +4,15 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.ThongKeDAO;
+import com.fpt.ptcd.nhatrosystem.dao.ThuePhongDAO;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +25,7 @@ public class ThongKeJDialog extends javax.swing.JDialog {
     public ThongKeJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -28,18 +38,50 @@ public class ThongKeJDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         tabs = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblSoLuongKH = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblDoanhThu = new javax.swing.JTable();
         lblNam = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         cboNam = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblSoLuongKH = new javax.swing.JTable();
         lblThongKe = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        tblSoLuongKH.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Năm", "Số Lượng Khách", "Đăng Ký Sớm Nhất", "Đăng Ký Muộn Nhất"
+            }
+        ));
+        jScrollPane1.setViewportView(tblSoLuongKH);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tabs.addTab("Khách Hàng", jPanel2);
 
         tblDoanhThu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,38 +139,6 @@ public class ThongKeJDialog extends javax.swing.JDialog {
         );
 
         tabs.addTab(" Doanh Thu", jPanel4);
-
-        tblSoLuongKH.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tblSoLuongKH);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabs.addTab("Khách Hàng", jPanel2);
 
         lblThongKe.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblThongKe.setForeground(new java.awt.Color(0, 0, 204));
@@ -219,4 +229,53 @@ public class ThongKeJDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblDoanhThu;
     private javax.swing.JTable tblSoLuongKH;
     // End of variables declaration//GEN-END:variables
+
+    ThongKeDAO dao = new ThongKeDAO();
+    ThuePhongDAO tpdao = new ThuePhongDAO();
+
+    void init() {
+        setLocationRelativeTo(null);
+        fillTableKhachHang();
+        
+        fillComboBoxNam();
+        fillTableDoanhThu();
+        
+        this.selectTab(0);
+        if(!Auth.isManager()){
+            tabs.remove(1);
+        }
+
+    }
+
+    public void selectTab(int index){
+        tabs.setSelectedIndex(index);
+    }
+
+
+    void fillTableKhachHang(){
+        DefaultTableModel model = (DefaultTableModel) tblSoLuongKH.getModel();
+        model.setRowCount(0);
+        List<Object[]> list = dao.getLuongNguoiDK();
+        for(Object[] row : list){
+            model.addRow(row);
+        }
+    }
+            
+    void fillComboBoxNam(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
+        model.removeAllElements();
+        List<Integer> list = tpdao.selectYears();
+        for(Integer year : list){
+            model.addElement(year);
+        }
+    }
+    void fillTableDoanhThu() {
+        DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
+        model.setRowCount(0);
+        int nam = (Integer)cboNam.getSelectedItem();
+        List<Object[]> list = dao.getDoanhThu(nam);
+        for(Object[] row : list){
+            model.addRow(row);
+        }
+    }
 }
