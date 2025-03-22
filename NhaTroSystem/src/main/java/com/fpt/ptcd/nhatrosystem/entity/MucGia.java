@@ -9,34 +9,49 @@ package com.fpt.ptcd.nhatrosystem.entity;
  * @author DUNG
  */
 public class MucGia {
-    private int id;
-    private double tienDien;
+
+    private double tienDienBac1;
+    private double tienDienBac2;
+    private double tienDienBac3;
     private double tienNuoc;
     private double tienWifi;
     private double tienRac;
 
-    public MucGia(int id, double tienDien, double tienNuoc, double tienWifi, double tienRac) {
-        this.id = id;
-        this.tienDien = tienDien;
+    public MucGia(double tienDienBac1, double tienDienBac2, double tienDienBac3, double tienNuoc, double tienWifi, double tienRac) {
+        this.tienDienBac1 = tienDienBac1;
+        this.tienDienBac2 = tienDienBac2;
+        this.tienDienBac3 = tienDienBac3;
         this.tienNuoc = tienNuoc;
         this.tienWifi = tienWifi;
         this.tienRac = tienRac;
     }
 
-    public int getId() {
-        return id;
+    public MucGia() {
+        
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public double getTienDienBac1() {
+        return tienDienBac1;
     }
 
-    public double getTienDien() {
-        return tienDien;
+    public void setTienDienBac1(double tienDienBac1) {
+        this.tienDienBac1 = tienDienBac1;
     }
 
-    public void setTienDien(double tienDien) {
-        this.tienDien = tienDien;
+    public double getTienDienBac2() {
+        return tienDienBac2;
+    }
+
+    public void setTienDienBac2(double tienDienBac2) {
+        this.tienDienBac2 = tienDienBac2;
+    }
+
+    public double getTienDienBac3() {
+        return tienDienBac3;
+    }
+
+    public void setTienDienBac3(double tienDienBac3) {
+        this.tienDienBac3 = tienDienBac3;
     }
 
     public double getTienNuoc() {

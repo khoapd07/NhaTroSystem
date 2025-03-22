@@ -79,4 +79,9 @@ public class PhongDAO extends QLNhaTroDAO<Phong,String> {
         }
         return list;
     }
+    
+    public List<Phong> selectByKeyword(String keyword){
+        String sql="SELECT * FROM Phong WHERE TenPhong LIKE ?";
+        return this.selectBySql(sql, "%"+keyword+"%");
+    }
 }

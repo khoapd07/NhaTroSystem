@@ -25,7 +25,7 @@ public class Phong {
         this.trangThai = trangThai;
         this.ghiChu = ghiChu;
     }
-
+    
     public String getMaPhong() {
         return maPhong;
     }

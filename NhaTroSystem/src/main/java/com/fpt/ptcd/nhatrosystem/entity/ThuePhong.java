@@ -17,6 +17,7 @@ public class ThuePhong {
     private String maNV;
     private double tienCoc;
     private Date ngayThue;
+    private Date ngayTra;
 
     public ThuePhong() {
     }
@@ -76,6 +77,14 @@ public class ThuePhong {
 
     public void setNgayThue(Date ngayThue) {
         this.ngayThue = ngayThue;
+    }
+
+    public Date getNgayTra() {
+        return ngayTra;
+    }
+
+    public void setNgayTra(Date ngayTra) {
+        this.ngayTra = ngayTra;
     }
     
     

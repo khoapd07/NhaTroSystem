@@ -19,30 +19,20 @@ import java.util.List;
 public class MucGiaDAO extends QLNhaTroDAO<MucGia, Integer> {
 
     public void insert(MucGia model) {
-        String sql = "INSERT INTO MucGia (TienDien, TienNuoc, TienWifi, TienRac) VALUES (?, ?, ?, ?)";
-        XJdbc.update(sql, model.getTienDien(), model.getTienNuoc(), model.getTienWifi(), model.getTienRac());
+        String sql = "INSERT INTO MucGia (TienDienBac1, TienDienBac2, TienDienBac3, TienNuoc, TienWifi, TienRac) VALUES (?, ?, ?, ?, ?, ?)";
+        XJdbc.update(sql, model.getTienDienBac1(), model.getTienDienBac2(), model.getTienDienBac3(), 
+                          model.getTienNuoc(), model.getTienWifi(), model.getTienRac());
     }
 
     public void update(MucGia model) {
-        String sql = "UPDATE MucGia SET TienDien=?, TienNuoc=?, TienWifi=?, TienRac=? WHERE Id=?";
-        XJdbc.update(sql, model.getTienDien(), model.getTienNuoc(), model.getTienWifi(), model.getTienRac(), model.getId());
+        String sql = "UPDATE MucGia SET TienDienBac1=?, TienDienBac2=?, TienDienBac3=?, TienNuoc=?, TienWifi=?, TienRac=?";
+        XJdbc.update(sql, model.getTienDienBac1(), model.getTienDienBac2(), model.getTienDienBac3(),
+                          model.getTienNuoc(), model.getTienWifi(), model.getTienRac());
     }
 
-    public void delete(Integer id) {
-        String sql = "DELETE FROM MucGia WHERE Id=?";
-        XJdbc.update(sql, id);
-    }
-
-    
     public List<MucGia> selectAll() {
         String sql = "SELECT * FROM MucGia";
         return this.selectBySql(sql);
-    }
-
-    public MucGia selectById(Integer id) {
-        String sql = "SELECT * FROM MucGia WHERE Id=?";
-        List<MucGia> list = this.selectBySql(sql, id);
-        return list.size() > 0 ? list.get(0) : null;
     }
 
     protected List<MucGia> selectBySql(String sql, Object... args) {
@@ -51,8 +41,9 @@ public class MucGiaDAO extends QLNhaTroDAO<MucGia, Integer> {
             ResultSet rs = XJdbc.query(sql, args);
             while (rs.next()) {
                 MucGia entity = new MucGia(
-                        rs.getInt("Id"),
-                        rs.getDouble("TienDien"),
+                        rs.getDouble("TienDienBac1"),
+                        rs.getDouble("TienDienBac2"),
+                        rs.getDouble("TienDienBac3"),
                         rs.getDouble("TienNuoc"),
                         rs.getDouble("TienWifi"),
                         rs.getDouble("TienRac")
@@ -64,5 +55,17 @@ public class MucGiaDAO extends QLNhaTroDAO<MucGia, Integer> {
             throw new RuntimeException(ex);
         }
         return list;
+    }
+
+
+    public void delete(Integer id) {
+       
+    }
+
+
+    public MucGia selectById(Integer id) {
+     
+        return null;
+     
     }
 }

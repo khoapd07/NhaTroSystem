@@ -4,6 +4,12 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.MucGiaDAO;
+import com.fpt.ptcd.nhatrosystem.entity.MucGia;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +22,7 @@ public class MucGiaJDialog extends javax.swing.JDialog {
     public MucGiaJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -35,10 +42,21 @@ public class MucGiaJDialog extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         btnLuu = new javax.swing.JButton();
         btnThoat = new javax.swing.JButton();
-        spnTienDien = new javax.swing.JSpinner();
+        spnTienDienBac1 = new javax.swing.JSpinner();
         spnTienNuoc = new javax.swing.JSpinner();
         spnTienRac = new javax.swing.JSpinner();
         spnTienWifi = new javax.swing.JSpinner();
+        spnTienDienBac2 = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblkWhBac1 = new javax.swing.JLabel();
+        lblkWhBac2 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        spnTienDienBac3 = new javax.swing.JSpinner();
+        lblkWhBac3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -56,16 +74,42 @@ public class MucGiaJDialog extends javax.swing.JDialog {
 
         jLabel5.setText("Tiền Rác/phòng");
 
-        btnLuu.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Tick.png")); // NOI18N
         btnLuu.setText("Lưu");
         btnLuu.setHideActionText(true);
         btnLuu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnLuu.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
 
-        btnThoat.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\No.png")); // NOI18N
         btnThoat.setText("Thoát");
         btnThoat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnThoat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnThoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThoatActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Bậc 1");
+
+        jLabel6.setText("Bậc 2");
+
+        lblkWhBac1.setText("0kWh-50kWh");
+
+        lblkWhBac2.setText("51kWh-150kWh");
+
+        jLabel9.setText("Bậc 3");
+
+        lblkWhBac3.setText("Trên 150kWh");
+
+        jLabel7.setText("VNĐ /");
+
+        jLabel8.setText("VNĐ /");
+
+        jLabel10.setText("VNĐ /");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,50 +118,92 @@ public class MucGiaJDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(spnTienDien, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                    .addComponent(spnTienNuoc)
-                    .addComponent(spnTienRac, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(spnTienWifi))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(spnTienNuoc, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                            .addComponent(spnTienRac, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(spnTienWifi)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(spnTienDienBac1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel9))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(spnTienDienBac3)
+                                    .addComponent(spnTienDienBac2))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblkWhBac1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblkWhBac2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblkWhBac3))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLuu)
-                    .addComponent(btnThoat))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addComponent(btnThoat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(spnTienDien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(spnTienNuoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(spnTienWifi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(spnTienRac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(9, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(spnTienDienBac1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblkWhBac1)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spnTienDienBac2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(lblkWhBac2)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(spnTienDienBac3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblkWhBac3)
+                            .addComponent(jLabel10)))
+                    .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(spnTienNuoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(spnTienWifi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spnTienRac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(87, 87, 87))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -127,20 +213,33 @@ public class MucGiaJDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblQL)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(267, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblQL)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        // TODO add your handling code here:
+        this.update();
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
+        // TODO add your handling code here:
+        this.thoat();
+    }//GEN-LAST:event_btnThoatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,15 +293,145 @@ public class MucGiaJDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLuu;
     private javax.swing.JButton btnThoat;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblQL;
-    private javax.swing.JSpinner spnTienDien;
+    private javax.swing.JLabel lblkWhBac1;
+    private javax.swing.JLabel lblkWhBac2;
+    private javax.swing.JLabel lblkWhBac3;
+    private javax.swing.JSpinner spnTienDienBac1;
+    private javax.swing.JSpinner spnTienDienBac2;
+    private javax.swing.JSpinner spnTienDienBac3;
     private javax.swing.JSpinner spnTienNuoc;
     private javax.swing.JSpinner spnTienRac;
     private javax.swing.JSpinner spnTienWifi;
     // End of variables declaration//GEN-END:variables
+    MucGiaDAO dao = new MucGiaDAO();
+
+    void init() {
+        setLocationRelativeTo(null); // đưa cửa sổ ra giữa màn hình
+        this.fillForm(); // đổ dữ liệu nhân viên vào bảng
+
+    }
+
+    void fillForm() {
+        List<MucGia> list = dao.selectAll();
+        if (!list.isEmpty()) {
+            MucGia mucGia = list.get(0);// nhằm hiểu có 1 bảng 
+
+            spnTienDienBac1.setValue((double) mucGia.getTienDienBac1());
+            spnTienDienBac2.setValue((double) mucGia.getTienDienBac2());
+            spnTienDienBac3.setValue((double) mucGia.getTienDienBac3());
+            spnTienNuoc.setValue((double) mucGia.getTienNuoc());
+            spnTienWifi.setValue((double) mucGia.getTienWifi());
+            spnTienRac.setValue((double) mucGia.getTienRac());
+        }
+    }
+
+    void update() {
+        MucGia mucGia = this.getForm();
+        boolean kqkt = kiemTraDinhDang(mucGia);
+        if (kqkt) {
+            try {
+                dao.update(mucGia);
+
+                MsgBox.alert(this, "Cập nhật mức giá thành công!");
+                fillForm();
+            } catch (Exception e) {
+                MsgBox.alert(this, "Cập nhật thất bại loi: " + e.getMessage());
+            }
+        }
+    }
+
+    MucGia getForm() {
+        MucGia mucGia = new MucGia();
+
+        mucGia.setTienDienBac1(((Number) spnTienDienBac1.getValue()).doubleValue());
+        mucGia.setTienDienBac2(((Number) spnTienDienBac2.getValue()).doubleValue());
+        mucGia.setTienDienBac3(((Number) spnTienDienBac3.getValue()).doubleValue());
+        mucGia.setTienNuoc(((Number) spnTienNuoc.getValue()).doubleValue());
+        mucGia.setTienWifi(((Number) spnTienWifi.getValue()).doubleValue());
+        mucGia.setTienRac(((Number) spnTienRac.getValue()).doubleValue());
+
+        return mucGia;
+    }
+
+    boolean kiemTraDinhDang(MucGia mucGia) {
+        try {
+            double bac1 = mucGia.getTienDienBac1();
+            double bac2 = mucGia.getTienDienBac2();
+            double bac3 = mucGia.getTienDienBac3();
+            double nuoc = mucGia.getTienNuoc();
+            double wifi = mucGia.getTienWifi();
+            double rac = mucGia.getTienRac();
+
+            if (bac1 < 0 || bac2 < 0 || bac3 < 0 || nuoc < 0 || wifi < 0 || rac < 0) {
+                MsgBox.alert(this, "Giá trị không được âm.");
+                return false;
+            }
+
+            if (bac1 > bac2 || bac2 > bac3) {
+                MsgBox.alert(this, "Giá tiền điện phải tăng dần theo bậc.");
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Vui lòng nhập số hợp lệ.");
+            return false;
+        }
+    }
+
+    void thoat() {
+        setVisible(false);
+    }
+
+    //Chưa thử
+    public double tinhTienDien(double soKWh, double bac1, double bac2, double bac3) {
+        double tienDien = 0;
+
+        if (soKWh <= 50) {
+            // nếu dùng dưới 50 kWh tính theo giá bậc 1
+            tienDien = soKWh * bac1;
+        } else if (soKWh <= 150) {
+            // nếu dùng từ 51-150 kWh
+            tienDien = (50 * bac1) + ((soKWh - 50) * bac2);
+        } else {
+            // nếu dùng trên 150 kWh
+            tienDien = (50 * bac1) + (100 * bac2) + ((soKWh - 150) * bac3);
+        }
+
+        return tienDien;
+    }
+
+    public double tinhTienNuoc(double soM3, double giaNuoc) {
+        if (soM3 < 0) {
+            MsgBox.alert(this, "Số m³ nước không thể âm!");
+        }
+        return soM3 * giaNuoc;
+    }
+
+    public double tinhTienWifi(double giaWifi) {
+        if (giaWifi < 0) {
+            throw new IllegalArgumentException("Tiền WiFi không thể âm!");
+        }
+        return giaWifi;
+    }
+
+    public double tinhTienRac(double giaRac) {
+        if (giaRac < 0) {
+            MsgBox.alert(this, "Tiền rác không thể âm!");
+        }
+        return giaRac;
+    }
+
 }

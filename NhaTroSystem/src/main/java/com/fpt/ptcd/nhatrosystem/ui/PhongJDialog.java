@@ -4,10 +4,14 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.LoaiPhongDAO;
 import com.fpt.ptcd.nhatrosystem.dao.PhongDAO;
+import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
 import com.fpt.ptcd.nhatrosystem.entity.Phong;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -95,13 +99,11 @@ public class PhongJDialog extends javax.swing.JDialog {
 
         lblMaPT.setText("Mã phòng trọ");
 
-        cboTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đã thuê", "Còn trống" }));
 
         txtGhiChu.setColumns(20);
         txtGhiChu.setRows(5);
         jScrollPane2.setViewportView(txtGhiChu);
-
-        cboMaLP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lblGhiChu.setText("Ghi chú");
 
@@ -262,7 +264,15 @@ public class PhongJDialog extends javax.swing.JDialog {
             new String [] {
                 "Mã Phòng", "Mã Loại", "Tên Loại", "Trạng Thái", "Ghi Chú"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblPhong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblPhongMouseClicked(evt);
@@ -273,6 +283,11 @@ public class PhongJDialog extends javax.swing.JDialog {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Tìm kiếm"));
 
         btnTimKiem1.setText("Tìm kiếm");
+        btnTimKiem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiem1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -347,47 +362,57 @@ public class PhongJDialog extends javax.swing.JDialog {
 
     private void tblPhongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhongMouseClicked
         // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            this.row = tblPhong.getSelectedRow();
+            this.edit();
+        }
+        
     }//GEN-LAST:event_tblPhongMouseClicked
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-        //        this.clearForm();
+        this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        //        this.delete();
+        this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        //        this.update();
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        //        this.insert();
+        this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        //        this.next();
+                this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        //        this.prev();
+                this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-        //        this.first();
+                this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        //        this.last();
+                this.last();
     }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnTimKiem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem1ActionPerformed
+        // TODO add your handling code here:
+        timKiem();
+    }//GEN-LAST:event_btnTimKiem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -465,33 +490,207 @@ public class PhongJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTimKiem1;
     // End of variables declaration//GEN-END:variables
-
+    LoaiPhongDAO lpdao = new LoaiPhongDAO();
     PhongDAO dao = new PhongDAO(); //làm việc với bảng nhanvien
     int row = -1; //hàng được chọn hiện tại trên bảng
-    
-    void init(){
+
+    void init() {
         this.setLocationRelativeTo(null);
-        
+        fillComboboxMaLoaiPhong();
+
         this.fillTable();
         this.row = -1;
-//        this.updateStatus();
+        this.updateStatus();
     }
-    
 
-
-void fillTable(){
+    void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblPhong.getModel();
         model.setRowCount(0); //xáo tất cả các hàng trên JTable
-        try{
-            List<Phong> list = dao.selectAll(); // đọc dữ liệu từ CSDL
-            for(Phong ph : list){
-                Object[] row = {ph.getMaPhong(), ph.getMaLoai(), ph.getTenPhong(),ph.isTrangThai()?"Đã thuê" : "Còn trống",ph.getGhiChu()
+        try {
+            String keyword = txtTimKiem1.getText();
+            List<Phong> list = dao.selectByKeyword(keyword); // đọc dữ liệu từ CSDL
+            for (Phong ph : list) {
+                Object[] row = {ph.getMaPhong(), ph.getMaLoai(), ph.getTenPhong(), ph.isTrangThai() ? "Đã thuê" : "Còn trống", ph.getGhiChu()
                 };
                 model.addRow(row); //thêm một hàng vào JTable
             }
-        }
-        catch(Exception e){
-            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
+
+    void fillComboboxMaLoaiPhong() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaLP.getModel();
+        model.removeAllElements();
+        List<LoaiPhong> list = lpdao.selectAll();
+        for (LoaiPhong lp : list) {
+            model.addElement(lp);
+        }
+    }
+
+    void insert() {
+        Phong phong = this.getForm();
+        boolean kqkt = kiemTraDinhDang(phong);
+
+        if (kqkt) {
+            try {
+                dao.insert(phong);
+                fillTable();
+                clearForm();
+                MsgBox.alert(this, "Thêm mới thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Thêm mới thất bại!");
+            }
+        }
+    }
+
+    void update() {
+        Phong phong = this.getForm();
+        boolean kqkt = kiemTraDinhDang(phong);
+        if (kqkt) {
+            try {
+                Phong existingPhong = dao.selectById(phong.getMaPhong());
+                if (existingPhong == null) {
+                    MsgBox.alert(this, "Phòng không tồn tại! Không thể sửa.");
+                    return;
+                }
+                dao.update(phong);
+                fillTable();
+//                clearForm();
+                MsgBox.alert(this, "Sửa thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Sửa thất bại!");
+            }
+        }
+    }
+
+    void delete() {
+//        if(!Auth.isManager()){
+//            MsgBox.alert(this, "Bạn không có quyền xóa phòng!");
+//        }
+
+        if (txtMaPT.getText().trim().isEmpty()) {
+            MsgBox.alert(this, "Kiểm tra mã phòng và thử lại!");
+            return;
+        } else {
+            String maPhongTro = txtMaPT.getText();
+            MsgBox.confirm(this, "Bạn thực sự muốn xóa phòng trọ này?");
+            try {
+                dao.delete(maPhongTro);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }
+        }
+
+    }
+
+    private void timKiem() {
+        this.fillTable();
+        this.clearForm();
+        this.row = -1;
+        this.updateStatus();
+    }
+
+    Phong getForm() {
+        Phong phong = new Phong();
+        phong.setMaPhong(txtMaPT.getText());
+
+        // Lấy đối tượng LoaiPhong từ ComboBox và lấy mã loại
+        LoaiPhong selectedLoaiPhong = (LoaiPhong) cboMaLP.getSelectedItem();
+        phong.setMaLoai(selectedLoaiPhong != null ? selectedLoaiPhong.getMaLoai() : null);
+
+//        phong.setMaLoai((String) cboMaLP.getSelectedItem());
+        phong.setTenPhong(txtTenPT.getText());
+        phong.setTrangThai(xacDinhTrangThai((String) cboTrangThai.getSelectedItem()));
+        phong.setGhiChu(txtGhiChu.getText());
+        return phong;
+    }
+
+    void clearForm() {
+        Phong phong = new Phong();
+        this.setForm(phong);
+        this.row = -1;
+        updateStatus();
+
+    }
+
+    void setForm(Phong phong) {
+        txtMaPT.setText(phong.getMaPhong());
+        txtTenPT.setText(phong.getTenPhong());
+        txtGhiChu.setText(phong.getGhiChu());
+        cboMaLP.setSelectedItem(phong.getMaLoai());
+        cboTrangThai.setSelectedItem(phong.isTrangThai() ? "Đã thuê" : "Còn phòng");
+    }
+
+    boolean xacDinhTrangThai(String trangThai) {
+        return "Đã thuê".equals(trangThai);
+    }
+
+    boolean kiemTraDinhDang(Phong phong) {
+        if (phong.getMaPhong().trim().isEmpty()) {
+            MsgBox.alert(this, "Không bỏ trống mã phòng");
+            return false;
+        }
+
+        if (phong.getTenPhong().trim().isEmpty()) {
+            MsgBox.alert(this, "Không bỏ trống tên phòng");
+            return false;
+        }
+        if (phong.getMaLoai() == null || phong.getMaLoai().trim().isEmpty()) {
+            MsgBox.alert(this, "Vui lòng chọn mã loại phòng");
+            return false;
+        }
+
+        return true;
+    }
+    
+    void updateStatus(){
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblPhong.getRowCount() - 1);
+        // Trạng thái form
+        txtMaPT.setEditable(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+    
+    void first(){
+        this.row = 0;
+        this.edit();
+    }
+    void prev(){
+        if(this.row > 0){
+            this.row--;
+            this.edit();
+        }
+    }
+    void next(){
+        if(this.row < tblPhong.getRowCount() - 1){
+            this.row++;
+            this.edit();
+        }
+    }
+    void last(){
+        this.row = tblPhong.getRowCount() - 1;
+        this.edit();
+    }
+    
+    void edit() {
+        String maPT = (String) tblPhong.getValueAt(this.row, 0);
+        Phong phong = dao.selectById(maPT);
+        this.setForm(phong);
+        tabs.setSelectedIndex(0);
+        this.updateStatus();
+    }
+
 }

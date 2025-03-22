@@ -25,6 +25,10 @@ public class LoaiPhong {
         this.giaPhong = giaPhong;
         this.ghiChu = ghiChu;
     }
+    @Override
+    public String toString() {
+        return this.maLoai;
+    }
 
     public String getMaLoai() {
         return maLoai;
