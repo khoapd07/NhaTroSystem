@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -417,6 +418,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     private void btnTimKiem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem1ActionPerformed
         // TODO add your handling code here:
         this.timKiem();
+        System.out.println("");
     }//GEN-LAST:event_btnTimKiem1ActionPerformed
 
     /**
