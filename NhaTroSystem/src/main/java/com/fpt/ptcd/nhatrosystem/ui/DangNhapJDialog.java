@@ -8,7 +8,8 @@ import com.fpt.ptcd.nhatrosystem.dao.NhanVienDAO;
 import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
 import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
-
+import java.awt.Color;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -93,14 +94,14 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         jLabel1.setText("LOGIN");
 
         jLabel2.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Tên Đăng Nhập");
 
         txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtMaNV.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel3.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Password");
 
         btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -260,35 +261,46 @@ public class DangNhapJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtMatKhau;
     // End of variables declaration//GEN-END:variables
 
- NhanVienDAO nhanVienDAO = new NhanVienDAO();
- 
-     private void init() {
+    NhanVienDAO nhanVienDAO = new NhanVienDAO();
+
+    private void init() {
 //        this.setLocationRelativeTo(null);
     }
- 
+
     private void dangNhap() {
-      String maNV = txtMaNV.getText();
-      String matKhau = new String(txtMatKhau.getPassword());
-      NhanVien nhanVien = nhanVienDAO.selectById(maNV);
-      if(nhanVien == null){
+        String maNV = txtMaNV.getText();
+        String matKhau = new String(txtMatKhau.getPassword());
+        txtMaNV.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        txtMatKhau.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        if (maNV.isEmpty() || matKhau.isEmpty()) {
+            MsgBox.alert(this, "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
+
+            // Nếu trống, đổi viền thành màu đỏ
+            if (maNV.isEmpty()) {
+                txtMaNV.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            }
+            if (matKhau.isEmpty()) {
+                txtMatKhau.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            }
+            return;
+        }
+        NhanVien nhanVien = nhanVienDAO.selectById(maNV);
+        if (nhanVien == null) {
             MsgBox.alert(this, "Sai tên đăng nhập!");
-        }
-        else if(!matKhau.equals(nhanVien.getMatKhau())){
+        } else if (!matKhau.equals(nhanVien.getMatKhau())) {
             MsgBox.alert(this, "Sai mật khẩu!");
-        }
-        else{
+        } else {
             Auth.user = nhanVien;
             this.dispose();
         }
-      
+
     }
-    
+
     private void dangXuat() {
-        if(MsgBox.confirm(this, "Ban muon ket thuc ung dung")){
+        if (MsgBox.confirm(this, "Bạn có chắc muốn dừng ứng dụng!!!")) {
             System.exit(0);
         }
     }
-
-
 
 }

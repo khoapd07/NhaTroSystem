@@ -40,26 +40,27 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
         lblLogo.setBackground(new java.awt.Color(255, 255, 255));
         lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLogo.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\NhaTroLandSamll.png")); // NOI18N
+        lblLogo.setIcon(new javax.swing.ImageIcon("D:\\JAva_Du_An_Tot_Nghiep\\NhaTroSystem\\NhaTroSystem\\src\\main\\resources\\logo\\icon\\NhaTroLand.png")); // NOI18N
         lblLogo.setAutoscrolls(true);
         lblLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblLogo.setOpaque(true);
 
+        pgdLoading.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         pgdLoading.setStringPainted(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pgdLoading, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+            .addComponent(pgdLoading, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pgdLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pgdLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -119,7 +120,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         Random random = new Random();
 
-        new Timer(100, new ActionListener() { // Chỉnh khoảng thời gian phù hợp
+        new Timer(80, new ActionListener() { // Chỉnh khoảng thời gian phù hợp
             @Override
             public void actionPerformed(ActionEvent e) {
                 int value = pgdLoading.getValue();
