@@ -13,18 +13,32 @@ public class MucGia {
     private double tienDienBac1;
     private double tienDienBac2;
     private double tienDienBac3;
-    private double tienNuoc;
+    private double tienDienBac4;
+    private double tienDienBac5;
+    private double tienDienBac6;
+    private double tienNuocBac1;
+    private double tienNuocBac2;
+    private double tienNuocBac3;
+    private double tienNuocBac4;
     private double tienWifi;
     private double tienRac;
 
-    public MucGia(double tienDienBac1, double tienDienBac2, double tienDienBac3, double tienNuoc, double tienWifi, double tienRac) {
+    public MucGia(double tienDienBac1, double tienDienBac2, double tienDienBac3, double tienDienBac4, double tienDienBac5, double tienDienBac6, double tienNuocBac1, double tienNuocBac2, double tienNuocBac3, double tienNuocBac4, double tienWifi, double tienRac) {
         this.tienDienBac1 = tienDienBac1;
         this.tienDienBac2 = tienDienBac2;
         this.tienDienBac3 = tienDienBac3;
-        this.tienNuoc = tienNuoc;
+        this.tienDienBac4 = tienDienBac4;
+        this.tienDienBac5 = tienDienBac5;
+        this.tienDienBac6 = tienDienBac6;
+        this.tienNuocBac1 = tienNuocBac1;
+        this.tienNuocBac2 = tienNuocBac2;
+        this.tienNuocBac3 = tienNuocBac3;
+        this.tienNuocBac4 = tienNuocBac4;
         this.tienWifi = tienWifi;
         this.tienRac = tienRac;
     }
+
+    
 
     public MucGia() {
         
@@ -54,12 +68,60 @@ public class MucGia {
         this.tienDienBac3 = tienDienBac3;
     }
 
-    public double getTienNuoc() {
-        return tienNuoc;
+    public double getTienDienBac4() {
+        return tienDienBac4;
     }
 
-    public void setTienNuoc(double tienNuoc) {
-        this.tienNuoc = tienNuoc;
+    public void setTienDienBac4(double tienDienBac4) {
+        this.tienDienBac4 = tienDienBac4;
+    }
+
+    public double getTienDienBac5() {
+        return tienDienBac5;
+    }
+
+    public void setTienDienBac5(double tienDienBac5) {
+        this.tienDienBac5 = tienDienBac5;
+    }
+
+    public double getTienDienBac6() {
+        return tienDienBac6;
+    }
+
+    public void setTienDienBac6(double tienDienBac6) {
+        this.tienDienBac6 = tienDienBac6;
+    }
+
+    public double getTienNuocBac1() {
+        return tienNuocBac1;
+    }
+
+    public void setTienNuocBac1(double tienNuocBac1) {
+        this.tienNuocBac1 = tienNuocBac1;
+    }
+
+    public double getTienNuocBac2() {
+        return tienNuocBac2;
+    }
+
+    public void setTienNuocBac2(double tienNuocBac2) {
+        this.tienNuocBac2 = tienNuocBac2;
+    }
+
+    public double getTienNuocBac3() {
+        return tienNuocBac3;
+    }
+
+    public void setTienNuocBac3(double tienNuocBac3) {
+        this.tienNuocBac3 = tienNuocBac3;
+    }
+
+    public double getTienNuocBac4() {
+        return tienNuocBac4;
+    }
+
+    public void setTienNuocBac4(double tienNuocBac4) {
+        this.tienNuocBac4 = tienNuocBac4;
     }
 
     public double getTienWifi() {
@@ -77,4 +139,6 @@ public class MucGia {
     public void setTienRac(double tienRac) {
         this.tienRac = tienRac;
     }
+
+  
 }

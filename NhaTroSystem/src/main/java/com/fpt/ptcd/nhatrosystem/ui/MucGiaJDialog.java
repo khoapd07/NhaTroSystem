@@ -542,14 +542,20 @@ public class MucGiaJDialog extends javax.swing.JDialog {
     void fillForm() {
         List<MucGia> list = dao.selectAll();
         if (!list.isEmpty()) {
-            MucGia mucGia = list.get(0);// nhằm hiểu có 1 bảng 
+            MucGia mucGia = list.get(0);
 
-            spnTienDienBac1.setValue((double) mucGia.getTienDienBac1());
-            spnTienDienBac2.setValue((double) mucGia.getTienDienBac2());
-            spnTienDienBac3.setValue((double) mucGia.getTienDienBac3());
-            spnTienNuocBac1.setValue((double) mucGia.getTienNuoc());
-            spnTienWifi.setValue((double) mucGia.getTienWifi());
-            spnTienRac.setValue((double) mucGia.getTienRac());
+            spnTienDienBac1.setValue(mucGia.getTienDienBac1());
+            spnTienDienBac2.setValue(mucGia.getTienDienBac2());
+            spnTienDienBac3.setValue(mucGia.getTienDienBac3());
+            spnTienDienBac4.setValue(mucGia.getTienDienBac4());
+            spnTienDienBac5.setValue(mucGia.getTienDienBac5());
+            spnTienDienBac6.setValue(mucGia.getTienDienBac6());
+            spnTienNuocBac1.setValue(mucGia.getTienNuocBac1());
+            spnTienNuocBac2.setValue(mucGia.getTienNuocBac2());
+            spnTienNuocBac3.setValue(mucGia.getTienNuocBac3());
+            spnTienNuocBac4.setValue(mucGia.getTienNuocBac4());
+            spnTienWifi.setValue(mucGia.getTienWifi());
+            spnTienRac.setValue(mucGia.getTienRac());
         }
     }
 
@@ -570,11 +576,18 @@ public class MucGiaJDialog extends javax.swing.JDialog {
 
     MucGia getForm() {
         MucGia mucGia = new MucGia();
-
         mucGia.setTienDienBac1(((Number) spnTienDienBac1.getValue()).doubleValue());
         mucGia.setTienDienBac2(((Number) spnTienDienBac2.getValue()).doubleValue());
         mucGia.setTienDienBac3(((Number) spnTienDienBac3.getValue()).doubleValue());
-        mucGia.setTienNuoc(((Number) spnTienNuocBac1.getValue()).doubleValue());
+        mucGia.setTienDienBac4(((Number) spnTienDienBac4.getValue()).doubleValue());
+        mucGia.setTienDienBac5(((Number) spnTienDienBac5.getValue()).doubleValue());
+        mucGia.setTienDienBac6(((Number) spnTienDienBac6.getValue()).doubleValue());
+
+        mucGia.setTienNuocBac1(((Number) spnTienNuocBac1.getValue()).doubleValue());
+        mucGia.setTienNuocBac2(((Number) spnTienNuocBac2.getValue()).doubleValue());
+        mucGia.setTienNuocBac3(((Number) spnTienNuocBac3.getValue()).doubleValue());
+        mucGia.setTienNuocBac4(((Number) spnTienNuocBac4.getValue()).doubleValue());
+
         mucGia.setTienWifi(((Number) spnTienWifi.getValue()).doubleValue());
         mucGia.setTienRac(((Number) spnTienRac.getValue()).doubleValue());
 
@@ -583,21 +596,38 @@ public class MucGiaJDialog extends javax.swing.JDialog {
 
     boolean kiemTraDinhDang(MucGia mucGia) {
         try {
-            double bac1 = mucGia.getTienDienBac1();
-            double bac2 = mucGia.getTienDienBac2();
-            double bac3 = mucGia.getTienDienBac3();
-            double nuoc = mucGia.getTienNuoc();
-            double wifi = mucGia.getTienWifi();
-            double rac = mucGia.getTienRac();
+            double[] dien = {mucGia.getTienDienBac1(), mucGia.getTienDienBac2(), mucGia.getTienDienBac3(),
+                mucGia.getTienDienBac4(), mucGia.getTienDienBac5(), mucGia.getTienDienBac6()};
 
-            if (bac1 < 0 || bac2 < 0 || bac3 < 0 || nuoc < 0 || wifi < 0 || rac < 0) {
-                MsgBox.alert(this, "Giá trị không được âm.");
-                return false;
+            double[] nuoc = {mucGia.getTienNuocBac1(), mucGia.getTienNuocBac2(), mucGia.getTienNuocBac3(), mucGia.getTienNuocBac4()};
+
+            for (double gia : dien) {
+                if (gia < 0) {
+                    MsgBox.alert(this, "Giá điện không được âm");
+                    return false;
+                }
             }
 
-            if (bac1 > bac2 || bac2 > bac3) {
-                MsgBox.alert(this, "Giá tiền điện phải tăng dần theo bậc.");
-                return false;
+            for (double gia : nuoc) {
+                if (gia < 0) {
+                    MsgBox.alert(this, "Giá nước không được âm");
+                    return false;
+                }
+            }
+
+            for (int i = 0; i < dien.length - 1; i++) {
+                if (dien[i] > dien[i + 1]) {
+                    MsgBox.alert(this, "Giá điện phải tăng dần theo bậc");
+                    return false;
+                }
+            }
+
+            
+            for (int i = 0; i < nuoc.length - 1; i++) {
+                if (nuoc[i] > nuoc[i + 1]) {
+                    MsgBox.alert(this, "Giá nước phải tăng dần theo bậc");
+                    return false;
+                }
             }
 
             return true;
