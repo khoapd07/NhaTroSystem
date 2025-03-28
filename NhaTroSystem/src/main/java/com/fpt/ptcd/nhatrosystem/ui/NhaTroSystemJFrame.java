@@ -484,7 +484,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
 
     private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoaDonActionPerformed
         // TODO add your handling code here:
-        this.openTraPhong();
+        this.openHoaDon();
     }//GEN-LAST:event_btnHoaDonActionPerformed
 
     /**

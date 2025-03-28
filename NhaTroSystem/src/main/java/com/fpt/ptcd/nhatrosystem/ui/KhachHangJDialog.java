@@ -292,42 +292,42 @@ public class KhachHangJDialog extends javax.swing.JDialog {
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        //        this.last();
+                this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-        //        this.first();
+                this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        //        this.prev();
+                this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        //        this.next();
+                this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        //        this.insert();
+                this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        //        this.update();
+                this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        //        this.delete();
+                this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-        //        this.clearForm();
+                this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaKHActionPerformed
@@ -408,33 +408,137 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtSoDT;
     // End of variables declaration//GEN-END:variables
 
-    KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
+
+KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
     int row = -1; //hàng được chọn hiện tại trên bảng
     
     void init(){
         this.setLocationRelativeTo(null);
-        
         this.fillTable();
         this.row = -1;
-//        this.updateStatus();
+        updateStatus();
     }
     
 
 
-void fillTable(){
+ void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
-        model.setRowCount(0); //xáo tất cả các hàng trên JTable
-        try{
-            List<KhachHang> list = dao.selectAll(); // đọc dữ liệu từ CSDL
-            for(KhachHang kh : list){
-                Object[] row = {kh.getMaKhach(), kh.getTenKhach(), kh.getSoDT(),kh.getDiaChi(),kh.getCanCCD()
-                };
-                model.addRow(row); //thêm một hàng vào JTable
+        model.setRowCount(0);
+        try {
+            List<KhachHang> list = dao.selectAll();
+            for (KhachHang kh : list) {
+                Object[] row = {kh.getMaKhach(), kh.getTenKhach(), kh.getSoDT(), kh.getDiaChi(), kh.getCanCCD()};
+                model.addRow(row);
             }
-        }
-        catch(Exception e){
-            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-
+    
+    void edit() {
+        String maKhach = (String) tblKhachHang.getValueAt(this.row, 0);
+        KhachHang kh = dao.selectById(maKhach);
+        this.setForm(kh);
+        updateStatus();
+    }
+    
+    void setForm(KhachHang kh) {
+    txtMaKH.setText(kh.getMaKhach());
+    txtHoVaTen.setText(kh.getTenKhach());
+    txtSoDT.setText(String.valueOf(kh.getSoDT())); 
+    txtDiaChi.setText(kh.getDiaChi());
+    txtCCCD.setText(kh.getCanCCD());
 }
+
+    
+    KhachHang getForm() {
+    KhachHang kh = new KhachHang();
+    kh.setMaKhach(txtMaKH.getText());
+    kh.setTenKhach(txtHoVaTen.getText());
+    
+    try {
+        kh.setSoDT(Integer.parseInt(txtSoDT.getText())); 
+    } catch (NumberFormatException e) {
+        MsgBox.alert(this, "Số điện thoại phải là số nguyên!");
+        return null; // Trả về null nếu nhập sai
+    }
+    
+    kh.setDiaChi(txtDiaChi.getText());
+    kh.setCanCCD(txtCCCD.getText());
+    return kh;
+}
+    
+    void clearForm() {
+        this.setForm(new KhachHang());
+        this.row = -1;
+        updateStatus();
+    }
+    
+    void insert() {
+        KhachHang kh = getForm();
+        try {
+            dao.insert(kh);
+            this.fillTable();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+    
+    void update() {
+        KhachHang kh = getForm();
+        try {
+            dao.update(kh);
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+    
+    void delete() {
+        if (MsgBox.confirm(this, "Bạn có chắc chắn muốn xóa không?")) {
+            String maKhach = txtMaKH.getText();
+            try {
+                dao.delete(maKhach);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }
+        }
+    }
+    
+    void updateStatus() {
+        boolean edit = (this.row >= 0);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+    }
+    
+    void first() {
+        this.row = 0;
+        this.edit();
+    }
+    
+    void prev() {
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
+        }
+    }
+    
+    void next() {
+        if (this.row < tblKhachHang.getRowCount() - 1) {
+            this.row++;
+            this.edit();
+        }
+    }
+    
+    void last() {
+        this.row = tblKhachHang.getRowCount() - 1;
+        this.edit();
+    }
+}
+

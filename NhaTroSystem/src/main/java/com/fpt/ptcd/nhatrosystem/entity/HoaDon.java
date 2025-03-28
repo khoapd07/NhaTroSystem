@@ -10,17 +10,28 @@ import java.util.Date;
  */
 public class HoaDon {
     private String maHoaDon;
-    private String maThue;
-    private Date ngayTao;
-    private double tongTien;
-    private String trangThai;
+    private String maPhieuThue;
+    private int soDien;
+    private int soNuoc;
+    private int tienWifi;
+    private int tienRac;
+    private int chiPhiKhac;
+    private int tongTien;
+    private Date ngay;
 
-    public HoaDon(String maHoaDon, String maThue, Date ngayTao, double tongTien, String trangThai) {
+    public HoaDon() {
+    }
+
+    public HoaDon(String maHoaDon, String maPhieuThue, int soDien, int soNuoc, int tienWifi, int tienRac, int chiPhiKhac, int tongTien, Date ngay) {
         this.maHoaDon = maHoaDon;
-        this.maThue = maThue;
-        this.ngayTao = ngayTao;
+        this.maPhieuThue = maPhieuThue;
+        this.soDien = soDien;
+        this.soNuoc = soNuoc;
+        this.tienWifi = tienWifi;
+        this.tienRac = tienRac;
+        this.chiPhiKhac = chiPhiKhac;
         this.tongTien = tongTien;
-        this.trangThai = trangThai;
+        this.ngay = ngay;
     }
 
     public String getMaHoaDon() {
@@ -31,36 +42,70 @@ public class HoaDon {
         this.maHoaDon = maHoaDon;
     }
 
-    public String getMaThue() {
-        return maThue;
+    public String getMaPhieuThue() {
+        return maPhieuThue;
     }
 
-    public void setMaThue(String maThue) {
-        this.maThue = maThue;
+    public void setMaPhieuThue(String maPhieuThue) {
+        this.maPhieuThue = maPhieuThue;
     }
 
-    public Date getNgayTao() {
-        return ngayTao;
+    public int getSoDien() {
+        return soDien;
     }
 
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setSoDien(int soDien) {
+        this.soDien = soDien;
     }
 
-    public double getTongTien() {
+    public int getSoNuoc() {
+        return soNuoc;
+    }
+
+    public void setSoNuoc(int soNuoc) {
+        this.soNuoc = soNuoc;
+    }
+
+    public int getTienWifi() {
+        return tienWifi;
+    }
+
+    public void setTienWifi(int tienWifi) {
+        this.tienWifi = tienWifi;
+    }
+
+    public int getTienRac() {
+        return tienRac;
+    }
+
+    public void setTienRac(int tienRac) {
+        this.tienRac = tienRac;
+    }
+
+    public int getChiPhiKhac() {
+        return chiPhiKhac;
+    }
+
+    public void setChiPhiKhac(int chiPhiKhac) {
+        this.chiPhiKhac = chiPhiKhac;
+    }
+
+    public int getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(double tongTien) {
+    public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public Date getNgay() {
+        return ngay;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setNgay(Date ngay) {
+        this.ngay = ngay;
     }
+
+    
 }
 

@@ -4,6 +4,25 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.HoaDonDAO;
+import com.fpt.ptcd.nhatrosystem.dao.LoaiPhongDAO;
+import com.fpt.ptcd.nhatrosystem.dao.MucGiaDAO;
+import com.fpt.ptcd.nhatrosystem.dao.PhongDAO;
+import com.fpt.ptcd.nhatrosystem.dao.ThuePhongDAO;
+import com.fpt.ptcd.nhatrosystem.entity.HoaDon;
+import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
+import com.fpt.ptcd.nhatrosystem.entity.MucGia;
+import com.fpt.ptcd.nhatrosystem.entity.Phong;
+import com.fpt.ptcd.nhatrosystem.entity.ThuePhong;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import com.fpt.ptcd.nhatrosystem.utils.XDate;
+import java.awt.HeadlessException;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 24010
@@ -16,6 +35,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     public HoaDonJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -38,9 +58,9 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         btnFirst = new javax.swing.JButton();
         btnLast = new javax.swing.JButton();
         lblMaDT = new javax.swing.JLabel();
-        txtMaDT = new javax.swing.JTextField();
+        txtMaHoaDon = new javax.swing.JTextField();
         lblMaPT = new javax.swing.JLabel();
-        txtMaPT = new javax.swing.JTextField();
+        txtMaPhieuThue = new javax.swing.JTextField();
         txtSoDien = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -50,12 +70,13 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         txtTienRac = new javax.swing.JSpinner();
         txtSoNuoc = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
-        txtTongTien = new javax.swing.JSpinner();
+        txtChiPhiKhac = new javax.swing.JSpinner();
         lblNgayDT = new javax.swing.JLabel();
         txtNgayDT = new javax.swing.JTextField();
+        btnGetDate = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblNguoiHoc = new javax.swing.JTable();
+        tblHoaDon = new javax.swing.JTable();
         lblQL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -116,12 +137,11 @@ public class HoaDonJDialog extends javax.swing.JDialog {
             }
         });
 
-        lblMaDT.setText("Mã đóng tiền");
+        lblMaDT.setText("Mã hóa đơn");
 
-        lblMaPT.setText("Mã phòng trọ");
+        lblMaPT.setText("Mã phiếu thuê");
 
-        txtMaPT.setEditable(false);
-        txtMaPT.setAutoscrolls(false);
+        txtMaPhieuThue.setAutoscrolls(false);
 
         jLabel5.setText("Tiền Rác/phòng");
 
@@ -131,9 +151,16 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
         jLabel2.setText("Số kWh/Điện");
 
-        jLabel1.setText("Tống tiền đóng");
+        jLabel1.setText("Chi phí khác");
 
         lblNgayDT.setText("Ngày đóng tiền");
+
+        btnGetDate.setText("Get");
+        btnGetDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,29 +170,30 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79)
+                        .addGap(56, 56, 56)
                         .addComponent(btnFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 53, Short.MAX_VALUE))
+                        .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 54, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMaDT)
                             .addComponent(lblMaPT))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMaPT)
-                            .addComponent(txtMaDT)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMaHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(txtMaPhieuThue))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblNgayDT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -175,13 +203,16 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtSoNuoc)
-                            .addComponent(txtTienRac, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtChiPhiKhac, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                            .addComponent(txtTienRac, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTienWifi, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSoNuoc, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSoDien)
-                            .addComponent(txtTienWifi)
-                            .addComponent(txtTongTien)
-                            .addComponent(txtNgayDT, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))))
+                            .addComponent(txtNgayDT))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -190,11 +221,11 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaDT)
-                    .addComponent(txtMaDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaPT)
-                    .addComponent(txtMaPT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaPhieuThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -214,11 +245,12 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtChiPhiKhac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNgayDT)
-                    .addComponent(txtNgayDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNgayDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGetDate))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -236,7 +268,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
         tabs.addTab("CHỈNH SỬA", jPanel1);
 
-        tblNguoiHoc.setModel(new javax.swing.table.DefaultTableModel(
+        tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -244,15 +276,15 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Mã Hóa Đơn", "Mã Phiếu Thuê", "Số Kwh Điện", "Số m3 nước", "Tổng Tiền", "Ngày"
             }
         ));
-        tblNguoiHoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblNguoiHocMouseClicked(evt);
+                tblHoaDonMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblNguoiHoc);
+        jScrollPane1.setViewportView(tblHoaDon);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -267,7 +299,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
         );
 
         tabs.addTab("DANH SÁCH", jPanel2);
@@ -301,47 +333,54 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-        //        this.clearForm();
+                this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        //        this.delete();
+                this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-        //        this.update();
+                this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        //        this.insert();
+                this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        //        this.next();
+                this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        //        this.prev();
+                this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-        //        this.first();
+                this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        //        this.last();
+                this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
-    private void tblNguoiHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNguoiHocMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblNguoiHocMouseClicked
+    private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
+        if(evt.getClickCount() == 2){
+            this.row = tblHoaDon.getSelectedRow();
+            this.edit();
+        }
+    }//GEN-LAST:event_tblHoaDonMouseClicked
+
+    private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
+        txtNgayDT.setText(XDate.toString(new Date(), "yyyy-MM-dd"));
+    }//GEN-LAST:event_btnGetDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,6 +409,8 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -388,6 +429,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFirst;
+    private javax.swing.JButton btnGetDate;
     private javax.swing.JButton btnLast;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnNext;
@@ -408,14 +450,264 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblNgayDT;
     private javax.swing.JLabel lblQL;
     private javax.swing.JTabbedPane tabs;
-    private javax.swing.JTable tblNguoiHoc;
-    private javax.swing.JTextField txtMaDT;
-    private javax.swing.JTextField txtMaPT;
+    private javax.swing.JTable tblHoaDon;
+    private javax.swing.JSpinner txtChiPhiKhac;
+    private javax.swing.JTextField txtMaHoaDon;
+    private javax.swing.JTextField txtMaPhieuThue;
     private javax.swing.JTextField txtNgayDT;
     private javax.swing.JSpinner txtSoDien;
     private javax.swing.JSpinner txtSoNuoc;
     private javax.swing.JSpinner txtTienRac;
     private javax.swing.JSpinner txtTienWifi;
-    private javax.swing.JSpinner txtTongTien;
     // End of variables declaration//GEN-END:variables
+
+    ThuePhongDAO tpdao = new ThuePhongDAO();
+    MucGiaDAO mgdao = new MucGiaDAO();
+    HoaDonDAO hddao = new HoaDonDAO();
+    
+    int row = -1; //hàng được chọn hiện tại trên bảng
+    
+    void init(){
+        this.setLocationRelativeTo(null);
+        
+        this.fillTable();
+        this.row = -1;
+    }
+    
+        
+    void clearForm(){
+        boolean edit = (this.row >= 0);
+        HoaDon hd = new HoaDon();
+        hd.setNgay(new Date());
+        this.setForm(hd);
+        btnThem.setEnabled(edit);
+        txtMaPhieuThue.setEnabled(edit);
+    }
+    HoaDon getForm() {
+        HoaDon hd = new HoaDon();
+        hd.setMaHoaDon(txtMaHoaDon.getText());
+        hd.setMaPhieuThue(txtMaPhieuThue.getText());
+        hd.setSoDien((Integer) txtSoDien.getValue());
+        hd.setSoNuoc((Integer)txtSoNuoc.getValue());
+        hd.setTienWifi((Integer)txtTienWifi.getValue());
+        hd.setTienRac((Integer)txtTienRac.getValue());
+        hd.setChiPhiKhac((Integer)txtChiPhiKhac.getValue());
+        hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
+        return hd;
+    }
+    
+    void setForm(HoaDon hd){
+        txtMaHoaDon.setText(hd.getMaHoaDon());
+        txtMaPhieuThue.setText(hd.getMaPhieuThue());
+        txtSoDien.setValue(hd.getSoDien());
+        txtSoNuoc.setValue(hd.getSoNuoc());
+        txtTienWifi.setValue(hd.getTienWifi());
+        txtTienRac.setValue(hd.getTienRac());
+        txtChiPhiKhac.setValue(hd.getChiPhiKhac());
+        txtNgayDT.setText(XDate.toString(hd.getNgay(), "yyyy-MM-dd"));
+    }
+    
+    void insert() {
+        HoaDon model = getForm(); 
+
+        // Kiểm tra xem MaPhieuThue có tồn tại không
+        ThuePhong thuePhong = tpdao.selectById(model.getMaPhieuThue());
+        if (thuePhong == null) {
+            MsgBox.alert(this, "Mã phiếu thuê không tồn tại! Vui lòng kiểm tra lại.");
+            return; // Hủy thao tác nếu không tìm thấy mã phiếu thuê
+        }
+
+        try {
+            hddao.insert(model);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (HeadlessException e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+    
+    void update(){
+        HoaDon model = getForm();
+        try {
+            hddao.update(model);
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } 
+        catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete(){
+            String maHoaDon = txtMaHoaDon.getText();
+            try {
+                hddao.delete(maHoaDon);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }            
+        }
+    
+    void edit() {
+        String mapt = (String) tblHoaDon.getValueAt(this.row, 0);
+        HoaDon hd = hddao.selectById(mapt);
+        this.setForm(hd);
+        this.updateStatus();
+        tabs.setSelectedIndex(0);
+    }
+        
+        void first(){
+        this.row = 0;
+        this.edit();
+    }
+    void prev(){
+        if(this.row > 0){
+            this.row--;
+            this.edit();
+        }
+    }
+    void next(){
+        if(this.row < tblHoaDon.getRowCount() - 1){
+            this.row++;
+            this.edit();
+        }
+    }
+    void last(){
+         this.row = tblHoaDon.getRowCount() - 1;
+        this.edit();
+    }
+    
+    void updateStatus(){
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblHoaDon.getRowCount() - 1);
+        // Trạng thái form
+        txtMaPhieuThue.setEnabled(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+    
+    
+    
+    
+    
+    
+
+    public double tinhTienDien(int soDien, MucGia mucGia) {
+        double tienDien = 0;
+        if (soDien <= 50 && soDien >=0) {
+            tienDien = soDien * mucGia.getTienDienBac1();
+        } else if (soDien >50 && soDien <= 100) {
+            tienDien = (50 * mucGia.getTienDienBac1()) + ((soDien - 50) * mucGia.getTienDienBac2());
+        } else if (soDien >100 && soDien <=200) {
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + ((soDien - 100) * mucGia.getTienDienBac3());
+        } else if (soDien>200 && soDien<=300){
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + ((soDien -200) * mucGia.getTienDienBac4());
+        } else if (soDien>300 && soDien<= 400){
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + (100 * mucGia.getTienDienBac4()) + ((soDien - 300) * mucGia.getTienDienBac5());
+        } else{
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + (100 * mucGia.getTienDienBac4()) + (100 * mucGia.getTienDienBac5()) + ((soDien -400)* mucGia.getTienDienBac6());
+        }
+        return tienDien;
+    }
+
+    public double tinhTienNuoc(int soNuoc, MucGia mucGia) {
+        double tienNuoc = 0;
+        if (soNuoc < 0) {
+            throw new IllegalArgumentException("Số m³ nước không thể âm!");
+        }else if(soNuoc <=10){
+            tienNuoc = soNuoc * mucGia.getTienNuocBac1();
+        }else if (soNuoc>10 && soNuoc <=20){
+            tienNuoc = (10* mucGia.getTienNuocBac1()) + ((soNuoc-10)*mucGia.getTienNuocBac2());
+        }else if (soNuoc>20 && soNuoc<=30){
+            tienNuoc = (10* mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) + ((soNuoc -20) * mucGia.getTienNuocBac3());
+        } else{
+            tienNuoc = (10 * mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) +(10 * mucGia.getTienNuocBac3()) + ((soNuoc-30) *mucGia.getTienNuocBac4());
+        }
+        return tienNuoc;
+    }
+    
+void fillTable() {
+    DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+    model.setRowCount(0); // Xóa tất cả các hàng trên JTable
+    
+    try {
+        List<HoaDon> list = hddao.selectAll(); // Lấy danh sách hóa đơn từ CSDL
+        List<MucGia> mucGiaList = mgdao.selectAll(); // Lấy mức giá từ CSDL
+        
+        if (mucGiaList.isEmpty()) {
+            MsgBox.alert(this, "Không có dữ liệu mức giá! Hãy thêm mức giá trước.");
+            return;
+        }
+        
+        // Lấy mức giá đầu tiên (giả sử chỉ có một mức giá)
+        MucGia mucGia = mucGiaList.get(0);
+
+        for (HoaDon hd : list) {
+            ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
+            if (thuePhong == null) continue;
+            String maPhong = thuePhong.getMaPhong();
+            PhongDAO pdao = new PhongDAO();
+            Phong phong = pdao.selectById(maPhong);
+            if (phong == null) continue;
+            
+            String maLoai = phong.getMaLoai();
+
+            // Lấy giá phòng từ mã loại
+            LoaiPhongDAO lpdao = new LoaiPhongDAO();
+            LoaiPhong loaiPhong = lpdao.selectById(maLoai);
+            double giaPhong = (loaiPhong != null) ? loaiPhong.getGiaPhong() : 0;
+            Date ngayThue = thuePhong.getNgayThue();
+            Date ngayTra = thuePhong.getNgayTra();
+
+            int soThang = 1; // Mặc định tính 1 tháng nếu ngày trả là null
+
+            if (ngayTra != null) { // Nếu đã trả phòng, tính số tháng thực tế
+                long diffInMillies = ngayTra.getTime() - ngayThue.getTime();
+                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                soThang = (int) Math.ceil(diffInDays / 31.0); // Làm tròn lên số tháng
+            }
+
+            // Tính tổng tiền phòng theo số tháng
+            double tienPhong = giaPhong * soThang;
+            // Tính tiền điện theo số điện tiêu thụ
+            int soDien = hd.getSoDien();
+            double tienDien = tinhTienDien(soDien, mucGia);
+            
+            // Tính tiền nước
+            int soNuoc = hd.getSoNuoc();
+            double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
+            
+            // Tổng tiền: Tiền điện + Tiền nước + WiFi + Rác + Chi phí khác
+            double tongTien = tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac() + tienPhong;
+
+            // Thêm dòng vào bảng
+            Object[] row = { 
+                hd.getMaHoaDon(), 
+                hd.getMaPhieuThue(), 
+                hd.getSoDien(), 
+                hd.getSoNuoc(),
+                tongTien, // Tổng tiền sau khi tính toán
+                hd.getNgay()
+            };
+            model.addRow(row);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+    }
+}
+
+
 }

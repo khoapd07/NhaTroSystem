@@ -66,4 +66,52 @@ public class MucGiaDAO extends QLNhaTroDAO<MucGia, Integer> {
         return null;
 
     }
+    
+        public double tinhTienDien(double soKWh, double bac1, double bac2, double bac3, double bac4, double bac5, double bac6) {
+        double tienDien = 0;
+        if (soKWh <= 50 && soKWh >=0) {
+            tienDien = soKWh * bac1;
+        } else if (soKWh >50 && soKWh <= 100) {
+            tienDien = (50 * bac1) + ((soKWh - 50) * bac2);
+        } else if (soKWh >100 && soKWh <=200) {
+            tienDien = (50 * bac1) + (50 * bac2) + ((soKWh - 100) * bac3);
+        } else if (soKWh>200 && soKWh<=300){
+            tienDien = (50 * bac1) + (50 * bac2) + (100 * bac3) + ((soKWh -200) * bac4);
+        } else if (soKWh>300 && soKWh<= 400){
+            tienDien = (50 * bac1) + (50 * bac2) + (100 * bac3) + (100 * bac4) + ((soKWh - 300) * bac5);
+        } else{
+            tienDien = (50 * bac1) + (50 * bac2) + (100 * bac3) + (100 * bac4) + (100 * bac5) + ((soKWh -400)* bac6);
+        }
+        return tienDien;
+    }
+
+    public double tinhTienNuoc(double soM3, double bac1, double bac2, double bac3, double bac4) {
+        double tienNuoc = 0;
+        if (soM3 < 0) {
+            throw new IllegalArgumentException("Số m³ nước không thể âm!");
+        }else if(soM3 <=10){
+            tienNuoc = soM3 * bac1;
+        }else if (soM3>10 && soM3 <=20){
+            tienNuoc = (10* bac1) + ((soM3-10)*bac2);
+        }else if (soM3>20 && soM3<=30){
+            tienNuoc = (10* bac1) + (10 * bac2) + ((soM3 -20) * bac3);
+        } else{
+            tienNuoc = (10 * bac1) + (10 * bac2) +(10 * bac3) + ((soM3-30) *bac4);
+        }
+        return tienNuoc;
+    }
+
+    public double tinhTienWifi(double giaWifi) {
+        if (giaWifi < 0) {
+            throw new IllegalArgumentException("Tiền WiFi không thể âm!");
+        }
+        return giaWifi;
+    }
+
+    public double tinhTienRac(double giaRac) {
+        if (giaRac < 0) {
+            throw new IllegalArgumentException("Tiền rác không thể âm!");
+        }
+        return giaRac;
+    }
 }

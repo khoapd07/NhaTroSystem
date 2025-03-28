@@ -5,6 +5,7 @@
 package com.fpt.ptcd.nhatrosystem.dao;
 
 import com.fpt.ptcd.nhatrosystem.entity.HoaDon;
+import com.fpt.ptcd.nhatrosystem.entity.MucGia;
 import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,13 +20,13 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
     int bienNull = 0;
 
     public void insert(HoaDon model) {
-        String sql = "INSERT INTO HoaDon (MaHoaDon, MaThue, NgayTao, TongTien, TrangThai) VALUES (?, ?, ?, ?, ?)";
-        XJdbc.update(sql, model.getMaHoaDon(), model.getMaThue(), model.getNgayTao(), model.getTongTien(), model.getTrangThai());
+        String sql = "INSERT INTO HoaDon (MaHoaDon, MaPhieuThue, SoDien, SoNuoc, TienWifi, TienRac, ChiPhiKhac, TongTien, Ngay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        XJdbc.update(sql, model.getMaHoaDon(), model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay());
     }
 
     public void update(HoaDon model) {
-        String sql = "UPDATE HoaDon SET MaThue=?, NgayTao=?, TongTien=?, TrangThai=? WHERE MaHoaDon=?";
-        XJdbc.update(sql, model.getMaThue(), model.getNgayTao(), model.getTongTien(), model.getTrangThai(), model.getMaHoaDon());
+        String sql = "UPDATE HoaDon SET MaPhieuThue=?, SoDien=?, SoNuoc=?, TienWifi=?, TienRac=?, ChiPhiKhac=?, TongTien=?, Ngay=? WHERE MaHoaDon=?";
+        XJdbc.update(sql, model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay(), model.getMaHoaDon());
     }
 
     
@@ -39,12 +40,13 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
         return this.selectBySql(sql);
     }
 
-    public HoaDon selectById(String id) {
+    public HoaDon selectById(String mahd) {
         String sql = "SELECT * FROM HoaDon WHERE MaHoaDon=?";
-        List<HoaDon> list = this.selectBySql(sql, id);
+        List<HoaDon> list = this.selectBySql(sql, mahd);
         return list.size() > 0 ? list.get(0) : null;
     }
 
+    
     protected List<HoaDon> selectBySql(String sql, Object... args) {
         List<HoaDon> list = new ArrayList<>();
         try {
@@ -52,10 +54,14 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
             while (rs.next()) {
                 HoaDon entity = new HoaDon(
                         rs.getString("MaHoaDon"),
-                        rs.getString("MaThue"),
-                        rs.getDate("NgayTao"),
-                        rs.getDouble("TongTien"),
-                        rs.getString("TrangThai")
+                        rs.getString("MaPhieuThue"),
+                        rs.getInt("SoDien"),
+                        rs.getInt("SoNuoc"),
+                        rs.getInt("TienWifi"),
+                        rs.getInt("TienRac"),
+                        rs.getInt("ChiPhiKhac"),
+                        rs.getInt("TongTien"),
+                        rs.getDate("Ngay")
                 );
                 list.add(entity);
             }
@@ -64,5 +70,28 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
             throw new RuntimeException(ex);
         }
         return list;
+    }
+    
+    MucGiaDAO mgdao = new MucGiaDAO();
+    
+    public double tinhTongTien(int soDien, int soNuoc) {
+        // Lấy danh sách mức giá (giả sử có 1 mức giá duy nhất)
+        List<MucGia> mucGiaList = mgdao.selectAll();
+        if (mucGiaList.isEmpty()) {
+            throw new RuntimeException("Không tìm thấy bảng giá điện nước!");
+        }
+        MucGia mucGia = mucGiaList.get(0);
+
+        // Tính tiền điện
+        double tienDien = mgdao.tinhTienDien(soDien, mucGia.getTienDienBac1(), mucGia.getTienDienBac2(), mucGia.getTienDienBac3(),
+                 mucGia.getTienDienBac4(), mucGia.getTienDienBac5(), mucGia.getTienDienBac6());
+        // Tính tiền nước
+        double tienNuoc = mgdao.tinhTienNuoc(soNuoc, mucGia.getTienNuocBac1(),mucGia.getTienNuocBac2(),
+                mucGia.getTienNuocBac3(),mucGia.getTienNuocBac4());
+        // Tiền WiFi và Rác cố định
+        double tienWifi = mgdao.tinhTienWifi(mucGia.getTienWifi());
+        double tienRac = mgdao.tinhTienRac(mucGia.getTienRac());
+
+        return tienDien + tienNuoc + tienWifi + tienRac;
     }
 }

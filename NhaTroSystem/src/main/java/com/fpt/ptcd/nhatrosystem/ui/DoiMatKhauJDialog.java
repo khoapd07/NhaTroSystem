@@ -4,6 +4,13 @@
  */
 package com.fpt.ptcd.nhatrosystem.ui;
 
+import com.fpt.ptcd.nhatrosystem.dao.NhanVienDAO;
+import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
+import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+
 /**
  *
  * @author 24010
@@ -16,6 +23,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     public DoiMatKhauJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -139,11 +147,11 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
-        // TODO add your handling code here:
+        this.doiMatKhau();
     }//GEN-LAST:event_btnDongYActionPerformed
 
     private void btnHuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyBoActionPerformed
-        // TODO add your handling code here:
+        this.huyBo();
     }//GEN-LAST:event_btnHuyBoActionPerformed
 
     /**
@@ -204,4 +212,35 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtMatKhauMoi;
     private javax.swing.JPasswordField txtMatKhauMoi2;
     // End of variables declaration//GEN-END:variables
+
+
+    private void init() {
+        this.setLocationRelativeTo(null);
+    }
+    NhanVienDAO dao = new NhanVienDAO();
+    
+    private void doiMatKhau(){
+        String manv = txtMaNV.getText();
+        String matKhau = new String(txtMatKhau.getPassword());
+        String matKhauMoi = new String(txtMatKhauMoi.getPassword());
+        String matKhauMoi2 = new String(txtMatKhauMoi2.getPassword());
+        if(!manv.equalsIgnoreCase(Auth.user.getMaNV())){
+            MsgBox.alert(this, "Sai tên đăng nhập!");
+        }
+        else if(!matKhau.equals(Auth.user.getMatKhau())){
+            MsgBox.alert(this, "Sai mật khẩu!");
+        }
+        else if(!matKhauMoi.equals(matKhauMoi2)){
+            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
+        }
+        else{
+            Auth.user.setMatKhau(matKhauMoi);
+            dao.update(Auth.user);
+            MsgBox.alert(this, "Đổi mật khẩu thành công!");
+        }
+    }
+    
+    private void huyBo(){
+        this.dispose();
+    }
 }
