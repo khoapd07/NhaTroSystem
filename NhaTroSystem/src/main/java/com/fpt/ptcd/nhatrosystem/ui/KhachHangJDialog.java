@@ -54,6 +54,8 @@ public class KhachHangJDialog extends javax.swing.JDialog {
         txtSoDT = new javax.swing.JTextField();
         txtDiaChi = new javax.swing.JTextField();
         txtCCCD = new javax.swing.JTextField();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
@@ -140,6 +142,8 @@ public class KhachHangJDialog extends javax.swing.JDialog {
             }
         });
 
+        lblEmail.setText("Email");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,13 +177,15 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(lblDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblSoDT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblCCCD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(lblCCCD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSoDT)
                             .addComponent(txtHoVaTen)
                             .addComponent(txtDiaChi)
-                            .addComponent(txtCCCD))))
+                            .addComponent(txtCCCD)
+                            .addComponent(txtEmail))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -206,6 +212,10 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                     .addComponent(lblCCCD)
                     .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnFirst)
@@ -217,22 +227,30 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                         .addComponent(btnSua)
                         .addComponent(btnXoa)
                         .addComponent(btnMoi)))
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         tabs.addTab("CHỈNH SỬA", jPanel1);
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Khách Hàng", "Tên Khách Hàng", "Số Điện Thoại", "Địa Chỉ", "CCCD"
+                "Mã Khách Hàng", "Tên Khách Hàng", "Số Điện Thoại", "Địa Chỉ", "CCCD", "Email"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblKhachHangMouseClicked(evt);
@@ -253,7 +271,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -279,8 +297,8 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblQL)
                 .addGap(18, 18, 18)
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9))
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -288,6 +306,10 @@ public class KhachHangJDialog extends javax.swing.JDialog {
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            this.row = tblKhachHang.getSelectedRow();
+            this.edit();
+        }
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
@@ -395,6 +417,7 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCCCD;
     private javax.swing.JLabel lblDiaChi;
+    private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblHoTen;
     private javax.swing.JLabel lblMaKH;
     private javax.swing.JLabel lblQL;
@@ -403,80 +426,111 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblKhachHang;
     private javax.swing.JTextField txtCCCD;
     private javax.swing.JTextField txtDiaChi;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtHoVaTen;
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSoDT;
     // End of variables declaration//GEN-END:variables
 
 
-KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
-    int row = -1; //hàng được chọn hiện tại trên bảng
-    
-    void init(){
+    KhachHangDAO dao = new KhachHangDAO(); // Làm việc với bảng KhachHang
+    int row = -1; // Hàng được chọn hiện tại trên bảng
+
+    private void init() {
         this.setLocationRelativeTo(null);
         this.fillTable();
         this.row = -1;
         updateStatus();
     }
-    
 
-
- void fillTable() {
+    // Nạp dữ liệu vào bảng
+    private void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
         model.setRowCount(0);
         try {
             List<KhachHang> list = dao.selectAll();
             for (KhachHang kh : list) {
-                Object[] row = {kh.getMaKhach(), kh.getTenKhach(), kh.getSoDT(), kh.getDiaChi(), kh.getCanCCD()};
+                Object[] row = {kh.getMaKhach(), kh.getTenKhach(), kh.getSoDT(), kh.getDiaChi(), kh.getCanCCD(), kh.getEmail()};
                 model.addRow(row);
             }
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-    
-    void edit() {
-        String maKhach = (String) tblKhachHang.getValueAt(this.row, 0);
-        KhachHang kh = dao.selectById(maKhach);
-        this.setForm(kh);
-        updateStatus();
-    }
-    
-    void setForm(KhachHang kh) {
-    txtMaKH.setText(kh.getMaKhach());
-    txtHoVaTen.setText(kh.getTenKhach());
-    txtSoDT.setText(String.valueOf(kh.getSoDT())); 
-    txtDiaChi.setText(kh.getDiaChi());
-    txtCCCD.setText(kh.getCanCCD());
-}
 
-    
-    KhachHang getForm() {
-    KhachHang kh = new KhachHang();
-    kh.setMaKhach(txtMaKH.getText());
-    kh.setTenKhach(txtHoVaTen.getText());
-    
-    try {
-        kh.setSoDT(Integer.parseInt(txtSoDT.getText())); 
-    } catch (NumberFormatException e) {
-        MsgBox.alert(this, "Số điện thoại phải là số nguyên!");
-        return null; // Trả về null nếu nhập sai
+    // Lấy dữ liệu từ bảng lên form
+    private void edit() {
+        if (this.row >= 0) {
+            String maKhach = (String) tblKhachHang.getValueAt(this.row, 0);
+            KhachHang kh = dao.selectById(maKhach);
+            if (kh != null) {
+                this.setForm(kh);
+                updateStatus();
+            } else {
+                MsgBox.alert(this, "Không tìm thấy khách hàng!");
+            }
+        }
     }
-    
-    kh.setDiaChi(txtDiaChi.getText());
-    kh.setCanCCD(txtCCCD.getText());
-    return kh;
-}
-    
-    void clearForm() {
-        this.setForm(new KhachHang());
+
+    // Đổ dữ liệu vào form
+    private void setForm(KhachHang kh) {
+        if (kh != null) {
+            txtMaKH.setText(kh.getMaKhach());
+            txtHoVaTen.setText(kh.getTenKhach());
+            txtSoDT.setText(String.valueOf(kh.getSoDT()));
+            txtDiaChi.setText(kh.getDiaChi());
+            txtCCCD.setText(kh.getCanCCD());
+            txtEmail.setText(kh.getEmail());
+        }
+    }
+
+    private KhachHang getForm() {
+        if (txtMaKH.getText().trim().isEmpty() || txtHoVaTen.getText().trim().isEmpty()) {
+            MsgBox.alert(this, "Mã khách hàng và tên không được để trống!");
+            return null;
+        }
+
+        KhachHang kh = new KhachHang();
+        kh.setMaKhach(txtMaKH.getText().trim());
+        kh.setTenKhach(txtHoVaTen.getText().trim());
+
+        try {
+            kh.setSoDT(Integer.parseInt(txtSoDT.getText().trim()));
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Số điện thoại phải là số nguyên!");
+            return null;
+        }
+
+        kh.setDiaChi(txtDiaChi.getText().trim());
+        kh.setCanCCD(txtCCCD.getText().trim());
+        kh.setEmail(txtEmail.getText().trim());
+        return kh;
+    }
+
+    // Làm mới form
+    private void clearForm() {
+        txtMaKH.setText("");
+        txtHoVaTen.setText("");
+        txtSoDT.setText("");
+        txtDiaChi.setText("");
+        txtCCCD.setText("");
+        txtEmail.setText("");
+
         this.row = -1;
         updateStatus();
+        this.fillTable(); // Cập nhật lại danh sách
     }
-    
-    void insert() {
+
+    // Thêm khách hàng
+    private void insert() {
         KhachHang kh = getForm();
+        if (kh == null) return;
+
         try {
+            if (dao.selectById(kh.getMaKhach()) != null) {
+                MsgBox.alert(this, "Mã khách hàng đã tồn tại!");
+                return;
+            }
             dao.insert(kh);
             this.fillTable();
             MsgBox.alert(this, "Thêm mới thành công!");
@@ -484,22 +538,39 @@ KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
             MsgBox.alert(this, "Thêm mới thất bại!");
         }
     }
-    
-    void update() {
+
+    private void update() {
         KhachHang kh = getForm();
+        if (kh == null) return;
+
         try {
+            if (dao.selectById(kh.getMaKhach()) == null) {
+                MsgBox.alert(this, "Mã khách hàng không tồn tại!");
+                return;
+            }
             dao.update(kh);
-            this.fillTable();
+            this.fillTable();  // Cập nhật lại danh sách
+            this.edit();       // Hiển thị lại dữ liệu vừa sửa lên form
             MsgBox.alert(this, "Cập nhật thành công!");
+            this.clearForm();
         } catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại!");
         }
     }
-    
-    void delete() {
+
+    // Xóa khách hàng
+    private void delete() {
         if (MsgBox.confirm(this, "Bạn có chắc chắn muốn xóa không?")) {
             String maKhach = txtMaKH.getText();
+            if (maKhach.trim().isEmpty()) {
+                MsgBox.alert(this, "Vui lòng chọn khách hàng cần xóa!");
+                return;
+            }
             try {
+                if (dao.selectById(maKhach) == null) {
+                    MsgBox.alert(this, "Mã khách hàng không tồn tại!");
+                    return;
+                }
                 dao.delete(maKhach);
                 this.fillTable();
                 this.clearForm();
@@ -509,36 +580,39 @@ KhachHangDAO dao = new KhachHangDAO(); //làm việc với bảng nhanvien
             }
         }
     }
-    
-    void updateStatus() {
+
+    // Cập nhật trạng thái nút bấm
+    private void updateStatus() {
         boolean edit = (this.row >= 0);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
     }
-    
-    void first() {
+
+    // Điều hướng bảng
+    private void first() {
         this.row = 0;
         this.edit();
     }
-    
-    void prev() {
+
+    private void prev() {
         if (this.row > 0) {
             this.row--;
             this.edit();
         }
     }
-    
-    void next() {
+
+    private void next() {
         if (this.row < tblKhachHang.getRowCount() - 1) {
             this.row++;
             this.edit();
         }
     }
-    
-    void last() {
+
+    private void last() {
         this.row = tblKhachHang.getRowCount() - 1;
         this.edit();
     }
+
 }
 

@@ -14,16 +14,18 @@ public class KhachHang {
     private int soDT;
     private String diaChi;
     private String canCCD;
+    private String email;
 
     public KhachHang() {
     }
 
-    public KhachHang(String maKhach, String tenKhach, int soDT, String diaChi, String canCCD) {
+    public KhachHang(String maKhach, String tenKhach, int soDT, String diaChi, String canCCD, String email) {
         this.maKhach = maKhach;
         this.tenKhach = tenKhach;
         this.soDT = soDT;
         this.diaChi = diaChi;
         this.canCCD = canCCD;
+        this.email = email;
     }
 
     public String getMaKhach() {
@@ -64,5 +66,13 @@ public class KhachHang {
 
     public void setCanCCD(String canCCD) {
         this.canCCD = canCCD;
-    }  
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

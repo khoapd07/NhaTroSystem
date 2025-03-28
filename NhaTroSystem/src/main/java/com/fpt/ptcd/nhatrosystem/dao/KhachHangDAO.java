@@ -20,23 +20,26 @@ public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
    
                 public void insert(KhachHang model){
                     System.out.println("cac");
-        String sql="INSERT INTO KhachHang (MaKhach, TenKhach, SDT, DiaChi, CCCD) VALUES (?, ?, ?, ?, ?)";
+        String sql="INSERT INTO KhachHang (MaKhach, TenKhach, SDT, DiaChi, CCCD, Email) VALUES (?, ?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
                 model.getMaKhach(), 
                 model.getTenKhach(), 
                 model.getSoDT(),
                 model.getDiaChi(),
-                model.getCanCCD());
+                model.getCanCCD(),
+                model.getEmail());
     }
     
     public void update(KhachHang model){
-        String sql="UPDATE KhachHang SET TenKhach=?, SDT=?, DiaChi=?, CCCD=? WHERE MaKhach=?";
+        String sql = "UPDATE KhachHang SET TenKhach=?, SDT=?, DiaChi=?, CCCD=?, Email=? WHERE MaKhach=?";
         XJdbc.update(sql, 
-                model.getTenKhach(), 
-                model.getSoDT(), 
-                model.getDiaChi(),
-                model.getCanCCD(),
-                model.getMaKhach());
+            model.getTenKhach(), 
+            model.getSoDT(), 
+            model.getDiaChi(),
+            model.getCanCCD(),
+            model.getEmail(),  // Email phải đứng trước WHERE MaKhach=?
+            model.getMaKhach()
+        );
     }
     
     public void delete(String MaKhach){
@@ -68,6 +71,7 @@ public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
                     entity.setSoDT(rs.getInt("SDT"));
                     entity.setDiaChi(rs.getString("DiaChi"));
                     entity.setCanCCD(rs.getString("CCCD"));
+                    entity.setEmail(rs.getString("Email"));
                     list.add(entity);
                 }
             } 
