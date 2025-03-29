@@ -7,12 +7,15 @@ package com.fpt.ptcd.nhatrosystem.ui;
 import com.fpt.ptcd.nhatrosystem.dao.ThuePhongDAO;
 import com.fpt.ptcd.nhatrosystem.entity.ThuePhong;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -361,7 +364,10 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             this.row = tblTraPhong.getSelectedRow();
+            tabs.setSelectedIndex(0);
             this.edit();
+//            dungDieuHuong = false;
+//            voHieuHoaDieuHuong();
         }
     }//GEN-LAST:event_tblTraPhongMouseClicked
 
@@ -407,12 +413,14 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
     private void cboMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaKHActionPerformed
         // TODO add your handling code here:
-        this.setFormWithMaKH();
+        String maKH = (String) cboMaKH.getSelectedItem();
+        fillComboboxMaPhongTheoKH(maKH);
+//        this.setFormWithMaKH();
     }//GEN-LAST:event_cboMaKHActionPerformed
 
     private void cboMaPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaPhongActionPerformed
         // TODO add your handling code here:
-        this.setFormWithMaPhong();
+//        this.setFormWithMaPhong();
     }//GEN-LAST:event_cboMaPhongActionPerformed
 
     private void btnTimKiem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem1ActionPerformed
@@ -498,13 +506,17 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
     ThuePhongDAO dao = new ThuePhongDAO();
     int row = -1;
+    boolean isUpdating = false;
 
     void init() {
         setLocationRelativeTo(null); // đưa cửa sổ ra giữa màn hình
         this.fillTable(); // đổ dữ liệu nhân viên vào bảng
         this.fillComboboxMaKH();
-        this.fillComboboxMaPhong();
+//        this.fillComboboxMaPhong();
         this.updateStatus(); // cập nhật trạng thái form
+        if (tblTraPhong.getRowCount() > 0) {
+            first(); // Tự động chọn dòng đầu tiên nếu có dữ liệu
+        }
     }
 
     void fillTable() {
@@ -545,90 +557,141 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                     model.addElement(tp.getMaKhach());
                 }
             }
+            if (model.getSize() > 0) {
+                cboMaKH.setSelectedIndex(0);
+                String maKH = (String) cboMaKH.getSelectedItem();
+                fillComboboxMaPhongTheoKH(maKH);
+                
+            }
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu khách hàng!");
         }
     }
 
-    void fillComboboxMaPhong() {
+    void fillComboboxMaPhongTheoKH(String maKH) {
+        if (isUpdating) {
+            return;
+        }
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboMaPhong.getModel();
         model.removeAllElements();
 
-        try {
-            List<ThuePhong> list = dao.selectAll();
-            Set<String> uniqueMaPhong = new HashSet<>();
+        if (maKH == null || maKH.trim().isEmpty()) {
+            return;
+        }
 
-            for (ThuePhong tp : list) {
-                if (uniqueMaPhong.add(tp.getMaPhong())) {
-                    model.addElement(tp.getMaPhong());
-                }
+        try {
+            List<ThuePhong> danhSachThue = dao.selectByMaKhach(maKH);
+            String phongDangChon = (String) cboMaPhong.getSelectedItem(); // Lưu lại mã phòng đang chọn trước đó
+
+            for (ThuePhong tp : danhSachThue) {
+                model.addElement(tp.getMaPhong());
             }
+
+            // Kiểm tra xem mã phòng cũ có trong danh sách không
+            if (phongDangChon != null && danhSachThue.stream().anyMatch(tp -> tp.getMaPhong().equals(phongDangChon))) {
+                cboMaPhong.setSelectedItem(phongDangChon); // Giữ nguyên phòng cũ nếu hợp lệ
+            } else if (!danhSachThue.isEmpty()) {
+                cboMaPhong.setSelectedIndex(0); // Chọn phòng đầu tiên nếu không có phòng cũ hợp lệ
+            }
+            
+            
+            
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu phòng!");
         }
     }
 
-    void setFormWithMaKH() {
-        String maKH = (String) cboMaKH.getSelectedItem();
+//    void setFormWithMaKH() {
+//        if (isUpdating) {
+//            return; // Ngăn chặn vòng lặp vô hạn
+//        }
+//        isUpdating = true; // Bắt đầu quá trình cập nhật
+//
+//        try {
+//            String maKH = (String) cboMaKH.getSelectedItem();
+//            System.out.println("Chon ma khach: " + maKH);
+//
+//            if (maKH == null || maKH.trim().isEmpty()) {
+//                isUpdating = false;
+//                return;
+//            }
+//
+//            fillComboboxMaPhongTheoKH(maKH); // Cập nhật danh sách phòng
+//
+//            SwingUtilities.invokeLater(() -> {
+//                String maPhong = (String) cboMaPhong.getSelectedItem();
+//                if (maPhong != null && !maPhong.trim().isEmpty()) {
+//                    System.out.println("Ma phong sau khi cap nhat: " + maPhong);
+////                    setFormWithMaPhong();
+//                } else {
+//                    System.out.println("Không tìm thấy phòng hợp lệ sau khi cập nhật.");
+//                }
+//            });
+//            
+////            this.row = 0;
+////            updateStatus();
+//
+////            dungDieuHuong = true;
+////            voHieuHoaDieuHuong();
+//            
+//        } finally {
+//            isUpdating = false; // Kết thúc quá trình cập nhật
+//        }
+//    }
 
-        if (maKH == null || maKH.trim().isEmpty()) {
-            return; // Không làm gì nếu chưa chọn mã khách hàng
-        }
-
-        List<ThuePhong> danhSachThue = dao.selectByMaKhach(maKH);
-
-        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboMaPhong.getModel();
-        model.removeAllElements();
-
-        for (ThuePhong tp : danhSachThue) {
-            model.addElement(tp.getMaPhong()); // Thêm tất cả phòng khách đã thuê
-        }
-
-        // Mặc định chọn phòng đầu tiên
-        cboMaPhong.setSelectedIndex(0);
-        ThuePhong tp = danhSachThue.get(0);
-
-        txtMaPhieuThue.setText(tp.getMaPhieuThue());
-        txtNgayThue.setText(tp.getNgayThue().toString());
-        txtTienCT.setText(String.valueOf(tp.getTienCoc()));
-        txtNgayTP.setText(tp.getNgayTra() != null ? tp.getNgayTra().toString() : "");
-    }
-
-    void setFormWithMaPhong() {
-        String maPhong = (String) cboMaPhong.getSelectedItem();
-        String maKH = (String) cboMaKH.getSelectedItem();
-
-        if (maPhong == null || maPhong.trim().isEmpty() || maKH == null || maKH.trim().isEmpty()) {
-            return; // Không làm gì nếu chưa chọn mã phòng hoặc mã khách hàng
-        }
-
-        List<ThuePhong> danhSachThue = dao.selectByMaKhach(maKH);
-
-        for (ThuePhong tp : danhSachThue) {
-            if (tp.getMaPhong().equals(maPhong)) { // Tìm đúng mã phòng trong danh sách của khách
-                txtMaPhieuThue.setText(tp.getMaPhieuThue());
-                txtNgayThue.setText(tp.getNgayThue().toString());
-                txtTienCT.setText(String.valueOf(tp.getTienCoc()));
-                txtNgayTP.setText(tp.getNgayTra() != null ? tp.getNgayTra().toString() : "");
-                break; // Dừng vòng lặp khi đã tìm thấy dữ liệu
-            }
-        }
-    }
+//    void setFormWithMaPhong() {
+//        if (isUpdating) {
+//            return; // Ngăn chặn vòng lặp vô hạn
+//        }
+//        isUpdating = true; // Bắt đầu quá trình cập nhật
+//
+//        try {
+//            String maPhong = (String) cboMaPhong.getSelectedItem();
+//            String maKH = (String) cboMaKH.getSelectedItem();
+//
+//            if (maPhong == null || maPhong.trim().isEmpty() || maKH == null || maKH.trim().isEmpty()) {
+//                System.out.println("Lỗi: Mã phòng hoặc mã khách rỗng.");
+//                return;
+//            }
+//
+//            System.out.println("Dang set form voi MaPhong: " + maPhong + " va MaKH: " + maKH);
+//
+//            ThuePhong tp = dao.selectByMaPhongVaMaKhach(maPhong, maKH);
+//
+//            if (tp != null) {
+//                System.out.println("Du lieu tu DB: " + tp.getMaPhieuThue() + ", "
+//                        + tp.getMaPhong() + ", " + tp.getMaKhach() + ", "
+//                        + tp.getNgayThue() + ", " + tp.getTienCoc() + ", "
+//                        + tp.getNgayTra());
+//
+//                this.setForm(tp);
+//            } else {
+//                System.out.println("Không tìm thấy phiếu thuê!");
+//            }
+////            row = 0;
+////            edit();
+////            dungDieuHuong = true;
+////            voHieuHoaDieuHuong();
+//        } finally {
+//            isUpdating = false; // Kết thúc quá trình cập nhật
+//        }
+//    }
 
     void insert() {
-        ThuePhong thuePhong = this.getForm();
-        boolean kqkt = kiemTraDinhDang(thuePhong);
-
-        if (kqkt) {
-            try {
-                dao.insert(thuePhong);
-                fillTable();
-                clearForm();
-                MsgBox.alert(this, "Thêm mới thành công!");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Thêm mới thất bại!");
-            }
-        }
+            MsgBox.alert(this, "Nếu bạn muốn thêm dữ liệu thuê phòng hãy chuyển sang tab thuê phòng nhé!");
+//        ThuePhong thuePhong = this.getForm();
+//        boolean kqkt = kiemTraDinhDang(thuePhong);
+//
+//        if (kqkt) {
+//            try {
+//                dao.insert(thuePhong);
+//                fillTable();
+//                clearForm();
+//                MsgBox.alert(this, "Thêm mới thành công!");
+//            } catch (Exception e) {
+//                MsgBox.alert(this, "Thêm mới thất bại!");
+//            }
+//        }
     }
 
     void update() {
@@ -642,7 +705,16 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                     MsgBox.alert(this, "Mã phiếu thuê không tồn tại! Không thể sửa.");
                     return;
                 }
-                dao.update(thuePhong);
+                // Chỉ cập nhật ngày trả
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date ngayTra = sdf.parse(txtNgayTP.getText());
+                    existingTP.setNgayTra(ngayTra);
+                } catch (ParseException e) {
+                    MsgBox.alert(this, "Định dạng ngày không hợp lệ!");
+                    return;
+                }
+                dao.update(existingTP);
                 fillTable();
                 MsgBox.alert(this, "Sửa thành công!");
             } catch (Exception e) {
@@ -702,11 +774,16 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     void clearForm() {
         ThuePhong thuePhong = new ThuePhong();
         this.setForm(thuePhong);
+
         this.row = -1;
         updateStatus();
     }
 
     void setForm(ThuePhong thuePhong) {
+
+        System.out.println("Cap nhat form: " + thuePhong.getMaPhieuThue() + ", "
+                + thuePhong.getMaPhong() + ", " + thuePhong.getMaKhach());
+
         txtMaPhieuThue.setText(thuePhong.getMaPhieuThue());
         cboMaPhong.setSelectedItem(thuePhong.getMaPhong());
         cboMaKH.setSelectedItem(thuePhong.getMaKhach());
@@ -750,6 +827,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         boolean edit = (this.row >= 0);
         boolean first = (this.row == 0);
         boolean last = (this.row == tblTraPhong.getRowCount() - 1);
+        boolean hasData = (tblTraPhong.getRowCount() > 0);
 
         // Trạng thái form
         txtMaPhieuThue.setEditable(!edit);
@@ -757,11 +835,11 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
 
-        // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
+        // Trạng thái điều hướng (Vô hiệu hóa nếu không có dữ liệu)
+        btnFirst.setEnabled(hasData && edit && !first);
+        btnPrev.setEnabled(hasData && edit && !first);
+        btnNext.setEnabled(hasData && edit && !last);
+        btnLast.setEnabled(hasData && edit && !last);
     }
 
     void first() {
@@ -787,18 +865,33 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         this.row = tblTraPhong.getRowCount() - 1;
         this.edit();
     }
+    
+//    boolean dungDieuHuong = false;
 
     void edit() {
-        String maPhieuThue = (String) tblTraPhong.getValueAt(this.row, 0);
-        ThuePhong thuePhong = dao.selectById(maPhieuThue);
+        if (this.row < 0 || this.row >= tblTraPhong.getRowCount()) {
+            return;
+        }
 
-        if (thuePhong != null) {
-            this.setForm(thuePhong);
-            tabs.setSelectedIndex(0);
-            this.updateStatus();
-        } else {
-            MsgBox.alert(this, "Không tìm thấy thông tin phiếu thuê!");
+        String maPhieuThue = (String) tblTraPhong.getValueAt(this.row, 0);
+        ThuePhong tp = dao.selectById(maPhieuThue);
+
+        if (tp != null) {
+            setForm(tp);
+            updateStatus();
+//            dungDieuHuong = true;
+            
         }
     }
+    
+//    void voHieuHoaDieuHuong(){
+//        if (!dungDieuHuong) return;
+//        
+//        btnFirst.setEnabled(false);
+//        btnPrev.setEnabled(false);
+//        btnNext.setEnabled(false);
+//        btnLast.setEnabled(false);
+//        
+//    }
 
 }

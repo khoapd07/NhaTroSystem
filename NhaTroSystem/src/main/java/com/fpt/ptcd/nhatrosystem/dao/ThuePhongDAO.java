@@ -93,42 +93,47 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
         String sql = "SELECT * FROM ThuePhong WHERE MaPhong = ?";
         return this.selectBySql(sql, maPhong);
     }
-    
-    
-    public List<ThuePhong> selectByKeyword(String keyword){
-        String sql="SELECT * FROM ThuePhong WHERE MaPhong LIKE ?";
-        return this.selectBySql(sql, "%"+keyword+"%");
+
+    public List<ThuePhong> selectByKeyword(String keyword) {
+        String sql = "SELECT * FROM ThuePhong WHERE MaPhong LIKE ?";
+        return this.selectBySql(sql, "%" + keyword + "%");
     }
+
+    public ThuePhong selectByMaPhongVaMaKhach(String maPhong, String maKhach) {
+        String sql = "SELECT * FROM ThuePhong WHERE MaPhong = ? AND MaKhach = ?";
+        List<ThuePhong> list = this.selectBySql(sql, maPhong, maKhach);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
     public List<Integer> selectYears() {
-        String sql="SELECT DISTINCT year(Ngay) Year FROM HoaDon ORDER BY Year DESC";
-        List<Integer> list=new ArrayList<>();
+        String sql = "SELECT DISTINCT year(Ngay) Year FROM HoaDon ORDER BY Year DESC";
+        List<Integer> list = new ArrayList<>();
         try {
-           ResultSet rs = XJdbc.query(sql);
-           while(rs.next()){
-                 list.add(rs.getInt(1));
+            ResultSet rs = XJdbc.query(sql);
+            while (rs.next()) {
+                list.add(rs.getInt(1));
             }
             rs.getStatement().getConnection().close();
             return list;
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public List<String> getPhieuThueDaTra() {
-    List<String> list = new ArrayList<>();
-    String sql = "SELECT MaPhieuThue FROM ThuePhong WHERE NgayTra IS NOT NULL";
-    
-    try {
-        ResultSet rs = XJdbc.query(sql);
-        while (rs.next()) {
-            list.add(rs.getString("MaPhieuThue"));
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT MaPhieuThue FROM ThuePhong WHERE NgayTra IS NOT NULL";
+
+        try {
+            ResultSet rs = XJdbc.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("MaPhieuThue"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi truy vấn danh sách phiếu thuê đã trả!", e);
         }
-        rs.getStatement().getConnection().close();
-    } catch (SQLException e) {
-        throw new RuntimeException("Lỗi truy vấn danh sách phiếu thuê đã trả!", e);
+
+        return list;
     }
-    
-    return list;
-}
 }
