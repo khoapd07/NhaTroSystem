@@ -5,24 +5,35 @@
 package com.fpt.ptcd.nhatrosystem.ui;
 
 import com.fpt.ptcd.nhatrosystem.dao.HoaDonDAO;
+import com.fpt.ptcd.nhatrosystem.dao.KhachHangDAO;
 import com.fpt.ptcd.nhatrosystem.dao.LoaiPhongDAO;
 import com.fpt.ptcd.nhatrosystem.dao.MucGiaDAO;
+import com.fpt.ptcd.nhatrosystem.dao.NhanVienDAO;
 import com.fpt.ptcd.nhatrosystem.dao.PhongDAO;
 import com.fpt.ptcd.nhatrosystem.dao.ThuePhongDAO;
 import com.fpt.ptcd.nhatrosystem.entity.HoaDon;
+import com.fpt.ptcd.nhatrosystem.entity.HoaDonService;
+import com.fpt.ptcd.nhatrosystem.entity.KhachHang;
 import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
 import com.fpt.ptcd.nhatrosystem.entity.MucGia;
+import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
 import com.fpt.ptcd.nhatrosystem.entity.Phong;
 import com.fpt.ptcd.nhatrosystem.entity.ThuePhong;
 import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import com.fpt.ptcd.nhatrosystem.utils.XDate;
+import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
 import java.awt.HeadlessException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 /**
  *
@@ -75,6 +86,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         txtNgayDT = new javax.swing.JTextField();
         btnGetDate = new javax.swing.JButton();
         cboMaPhieuThue = new javax.swing.JComboBox<>();
+        btnSendEmail = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
@@ -165,6 +177,13 @@ public class HoaDonJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnSendEmail.setText("Send mail");
+        btnSendEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendEmailActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -214,8 +233,10 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                             .addComponent(txtSoDien)
                             .addComponent(txtNgayDT))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGetDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGetDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSendEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(25, 25, 25)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -248,7 +269,8 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtChiPhiKhac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtChiPhiKhac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSendEmail))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNgayDT)
@@ -302,7 +324,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
         );
 
         tabs.addTab("DANH SÁCH", jPanel2);
@@ -351,7 +373,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-                this.insert();
+            this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
@@ -384,6 +406,10 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
         txtNgayDT.setText(XDate.toString(new Date(), "yyyy-MM-dd"));
     }//GEN-LAST:event_btnGetDateActionPerformed
+
+    private void btnSendEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendEmailActionPerformed
+        sendHoaDonEmail();
+    }//GEN-LAST:event_btnSendEmailActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,6 +463,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPrev;
+    private javax.swing.JButton btnSendEmail;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
@@ -764,9 +791,44 @@ void fillTable() {
         btnLast.setEnabled(edit && !last);
     }
     
+    public String getEmailByMaPhieuThue(String maPhieuThue) {
+        String sql = "SELECT Email FROM KhachHang WHERE MaKhach = "
+                   + "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
+        try {
+            ResultSet rs = XJdbc.query(sql, maPhieuThue);
+            if (rs.next()) {
+                return rs.getString("Email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
-    
-    
+ void sendHoaDonEmail() {
+    String maHoaDon = txtMaHoaDon.getText();
+    HoaDon hd = hddao.selectById(maHoaDon);
+    if (hd == null) {
+        MsgBox.alert(this, "Không tìm thấy hóa đơn!");
+        return;
+    }
+
+    // Giả sử bạn có phương thức lấy email khách hàng từ mã phiếu thuê
+    String emailKhachHang = getEmailByMaPhieuThue(hd.getMaPhieuThue());
+
+    if (emailKhachHang == null || emailKhachHang.isEmpty()) {
+        MsgBox.alert(this, "Không tìm thấy email khách hàng!");
+        return;
+    }
+
+    try {
+        HoaDonService.guiHoaDon(hd, emailKhachHang);
+        MsgBox.alert(this, "Hóa đơn đã được gửi đến " + emailKhachHang);
+    } catch (Exception e) {
+        MsgBox.alert(this, "Gửi email thất bại!");
+        e.printStackTrace();
+    }
+}
     
     
 }
