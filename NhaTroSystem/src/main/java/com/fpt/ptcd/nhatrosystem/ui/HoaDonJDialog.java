@@ -474,135 +474,6 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         this.row = -1;
     }
     
-        
-    void clearForm(){
-        boolean edit = (this.row >= 0);
-        HoaDon hd = new HoaDon();
-        hd.setNgay(new Date());
-        this.setForm(hd);
-        btnThem.setEnabled(edit);
-        txtMaPhieuThue.setEnabled(edit);
-    }
-    HoaDon getForm() {
-        HoaDon hd = new HoaDon();
-        hd.setMaHoaDon(txtMaHoaDon.getText());
-        hd.setMaPhieuThue(txtMaPhieuThue.getText());
-        hd.setSoDien((Integer) txtSoDien.getValue());
-        hd.setSoNuoc((Integer)txtSoNuoc.getValue());
-        hd.setTienWifi((Integer)txtTienWifi.getValue());
-        hd.setTienRac((Integer)txtTienRac.getValue());
-        hd.setChiPhiKhac((Integer)txtChiPhiKhac.getValue());
-        hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
-        return hd;
-    }
-    
-    void setForm(HoaDon hd){
-        txtMaHoaDon.setText(hd.getMaHoaDon());
-        txtMaPhieuThue.setText(hd.getMaPhieuThue());
-        txtSoDien.setValue(hd.getSoDien());
-        txtSoNuoc.setValue(hd.getSoNuoc());
-        txtTienWifi.setValue(hd.getTienWifi());
-        txtTienRac.setValue(hd.getTienRac());
-        txtChiPhiKhac.setValue(hd.getChiPhiKhac());
-        txtNgayDT.setText(XDate.toString(hd.getNgay(), "yyyy-MM-dd"));
-    }
-    
-    void insert() {
-        HoaDon model = getForm(); 
-
-        // Kiểm tra xem MaPhieuThue có tồn tại không
-        ThuePhong thuePhong = tpdao.selectById(model.getMaPhieuThue());
-        if (thuePhong == null) {
-            MsgBox.alert(this, "Mã phiếu thuê không tồn tại! Vui lòng kiểm tra lại.");
-            return; // Hủy thao tác nếu không tìm thấy mã phiếu thuê
-        }
-
-        try {
-            hddao.insert(model);
-            this.fillTable();
-            this.clearForm();
-            MsgBox.alert(this, "Thêm mới thành công!");
-        } catch (HeadlessException e) {
-            MsgBox.alert(this, "Thêm mới thất bại!");
-        }
-    }
-    
-    void update(){
-        HoaDon model = getForm();
-        try {
-            hddao.update(model);
-            this.fillTable();
-            MsgBox.alert(this, "Cập nhật thành công!");
-        } 
-        catch (Exception e) {
-            MsgBox.alert(this, "Cập nhật thất bại!");
-        }
-    }
-
-    void delete(){
-            String maHoaDon = txtMaHoaDon.getText();
-            try {
-                hddao.delete(maHoaDon);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xóa thành công!");
-            } 
-            catch (Exception e) {
-                MsgBox.alert(this, "Xóa thất bại!");
-            }            
-        }
-    
-    void edit() {
-        String mapt = (String) tblHoaDon.getValueAt(this.row, 0);
-        HoaDon hd = hddao.selectById(mapt);
-        this.setForm(hd);
-        this.updateStatus();
-        tabs.setSelectedIndex(0);
-    }
-        
-        void first(){
-        this.row = 0;
-        this.edit();
-    }
-    void prev(){
-        if(this.row > 0){
-            this.row--;
-            this.edit();
-        }
-    }
-    void next(){
-        if(this.row < tblHoaDon.getRowCount() - 1){
-            this.row++;
-            this.edit();
-        }
-    }
-    void last(){
-         this.row = tblHoaDon.getRowCount() - 1;
-        this.edit();
-    }
-    
-    void updateStatus(){
-        boolean edit = (this.row >= 0);
-        boolean first = (this.row == 0);
-        boolean last = (this.row == tblHoaDon.getRowCount() - 1);
-        // Trạng thái form
-        txtMaPhieuThue.setEnabled(!edit);
-        btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
-        // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
-    }
-    
-    
-    
-    
-    
-    
 
     public double tinhTienDien(int soDien, MucGia mucGia) {
         double tienDien = 0;
@@ -710,4 +581,174 @@ void fillTable() {
 }
 
 
+        
+    void clearForm(){
+        boolean edit = (this.row >= 0);
+        HoaDon hd = new HoaDon();
+        hd.setNgay(new Date());
+        this.setForm(hd);
+        btnThem.setEnabled(edit);
+        txtMaPhieuThue.setEnabled(edit);
+    }
+    HoaDon getForm() {
+    HoaDon hd = new HoaDon();
+    hd.setMaHoaDon(txtMaHoaDon.getText());
+    hd.setMaPhieuThue(txtMaPhieuThue.getText());
+    hd.setSoDien((Integer) txtSoDien.getValue());
+    hd.setSoNuoc((Integer) txtSoNuoc.getValue());
+    hd.setTienWifi((Integer) txtTienWifi.getValue());
+    hd.setTienRac((Integer) txtTienRac.getValue());
+    hd.setChiPhiKhac((Integer) txtChiPhiKhac.getValue());
+    hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
+
+    // Tính tổng tiền trước khi lưu vào database
+    int soDien = hd.getSoDien();
+    int soNuoc = hd.getSoNuoc();
+
+    // Lấy thông tin mức giá từ database
+    List<MucGia> mucGiaList = mgdao.selectAll();
+    if (mucGiaList.isEmpty()) {
+        MsgBox.alert(this, "Không có dữ liệu mức giá!");
+        return null;
+    }
+    MucGia mucGia = mucGiaList.get(0);
+
+    // Tính tiền điện, nước
+    double tienDien = tinhTienDien(soDien, mucGia);
+    double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
+
+    // Lấy giá phòng từ mã phiếu thuê
+    ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
+    if (thuePhong != null) {
+        Phong phong = new PhongDAO().selectById(thuePhong.getMaPhong());
+        if (phong != null) {
+            LoaiPhong loaiPhong = new LoaiPhongDAO().selectById(phong.getMaLoai());
+            if (loaiPhong != null) {
+                // Tính số tháng thuê
+                int soThang = 1;
+                if (thuePhong.getNgayTra() != null) {
+                    long diffInMillies = thuePhong.getNgayTra().getTime() - thuePhong.getNgayThue().getTime();
+                    long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                    soThang = (int) Math.ceil(diffInDays / 31.0);
+                }
+                double tienPhong = loaiPhong.getGiaPhong() * soThang;
+                
+                // Tổng tiền = tiền phòng + điện + nước + wifi + rác + chi phí khác
+                double tongTien = tienPhong + tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac();
+                hd.setTongTien((int) tongTien); // Cập nhật tổng tiền vào đối tượng
+            }
+        }
+    }
+    return hd;
+}
+    
+    void setForm(HoaDon hd){
+        txtMaHoaDon.setText(hd.getMaHoaDon());
+        txtMaPhieuThue.setText(hd.getMaPhieuThue());
+        txtSoDien.setValue(hd.getSoDien());
+        txtSoNuoc.setValue(hd.getSoNuoc());
+        txtTienWifi.setValue(hd.getTienWifi());
+        txtTienRac.setValue(hd.getTienRac());
+        txtChiPhiKhac.setValue(hd.getChiPhiKhac());
+        txtNgayDT.setText(XDate.toString(hd.getNgay(), "yyyy-MM-dd"));
+    }
+    
+    void insert() {
+        HoaDon model = getForm();
+        if (model == null) return; // Nếu có lỗi khi lấy dữ liệu, dừng lại
+
+        // Kiểm tra mã phiếu thuê có tồn tại không
+        ThuePhong thuePhong = tpdao.selectById(model.getMaPhieuThue());
+        if (thuePhong == null) {
+            MsgBox.alert(this, "Mã phiếu thuê không tồn tại!");
+            return;
+        }
+
+        try {
+            hddao.insert(model); // Gọi DAO để thêm vào SQL
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (HeadlessException e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }   
+    
+    void update(){
+        HoaDon model = getForm();
+        if (model == null) return;
+
+        try {
+            hddao.update(model); // Cập nhật database
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete(){
+            String maHoaDon = txtMaHoaDon.getText();
+            try {
+                hddao.delete(maHoaDon);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xóa thành công!");
+            } 
+            catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }            
+        }
+    
+    void edit() {
+        String mapt = (String) tblHoaDon.getValueAt(this.row, 0);
+        HoaDon hd = hddao.selectById(mapt);
+        this.setForm(hd);
+        this.updateStatus();
+        tabs.setSelectedIndex(0);
+    }
+        
+        void first(){
+        this.row = 0;
+        this.edit();
+    }
+    void prev(){
+        if(this.row > 0){
+            this.row--;
+            this.edit();
+        }
+    }
+    void next(){
+        if(this.row < tblHoaDon.getRowCount() - 1){
+            this.row++;
+            this.edit();
+        }
+    }
+    void last(){
+         this.row = tblHoaDon.getRowCount() - 1;
+        this.edit();
+    }
+    
+    void updateStatus(){
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblHoaDon.getRowCount() - 1);
+        // Trạng thái form
+        txtMaPhieuThue.setEnabled(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        
+        // Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+    
+    
+    
+    
+    
+    
 }

@@ -95,7 +95,7 @@ public class ThongKeJDialog extends javax.swing.JDialog {
                 {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Tên loại", "Số khách hàng", "Tổng Tiền"
             }
         ));
         jScrollPane4.setViewportView(tblDoanhThu);
@@ -168,7 +168,7 @@ public class ThongKeJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNamActionPerformed
-        // TODO add your handling code here:
+        fillTableDoanhThu();
     }//GEN-LAST:event_cboNamActionPerformed
 
     /**
@@ -237,8 +237,7 @@ public class ThongKeJDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         fillTableKhachHang();
         
-//        fillComboBoxNam();
-        fillTableDoanhThu();
+        fillComboBoxNam();
         
         this.selectTab(0);
         if(!Auth.isManager()){
@@ -261,14 +260,14 @@ public class ThongKeJDialog extends javax.swing.JDialog {
         }
     }
             
-//    void fillComboBoxNam(){
-//        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
-//        model.removeAllElements();
-//        List<Integer> list = tpdao.selectYears();
-//        for(Integer year : list){
-//            model.addElement(year);
-//        }
-//    }
+    void fillComboBoxNam(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
+        model.removeAllElements();
+        List<Integer> list = tpdao.selectYears();
+        for(Integer year : list){
+            model.addElement(year);
+        }
+    }
     void fillTableDoanhThu() {
         DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
         model.setRowCount(0);

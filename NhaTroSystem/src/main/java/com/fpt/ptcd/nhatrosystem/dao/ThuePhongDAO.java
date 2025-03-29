@@ -99,4 +99,19 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
         String sql="SELECT * FROM ThuePhong WHERE MaPhong LIKE ?";
         return this.selectBySql(sql, "%"+keyword+"%");
     }
+    public List<Integer> selectYears() {
+        String sql="SELECT DISTINCT year(Ngay) Year FROM HoaDon ORDER BY Year DESC";
+        List<Integer> list=new ArrayList<>();
+        try {
+           ResultSet rs = XJdbc.query(sql);
+           while(rs.next()){
+                 list.add(rs.getInt(1));
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } 
+        catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
