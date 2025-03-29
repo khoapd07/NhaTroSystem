@@ -21,6 +21,7 @@ import java.awt.HeadlessException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -60,7 +61,6 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         lblMaDT = new javax.swing.JLabel();
         txtMaHoaDon = new javax.swing.JTextField();
         lblMaPT = new javax.swing.JLabel();
-        txtMaPhieuThue = new javax.swing.JTextField();
         txtSoDien = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -74,6 +74,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         lblNgayDT = new javax.swing.JLabel();
         txtNgayDT = new javax.swing.JTextField();
         btnGetDate = new javax.swing.JButton();
+        cboMaPhieuThue = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
@@ -141,8 +142,6 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
         lblMaPT.setText("Mã phiếu thuê");
 
-        txtMaPhieuThue.setAutoscrolls(false);
-
         jLabel5.setText("Tiền Rác/phòng");
 
         jLabel4.setText("Tiền Wifi/phòng");
@@ -189,10 +188,10 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMaDT)
                             .addComponent(lblMaPT))
-                        .addGap(18, 18, 18)
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMaHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-                            .addComponent(txtMaPhieuThue))
+                            .addComponent(cboMaPhieuThue, 0, 330, Short.MAX_VALUE)
+                            .addComponent(txtMaHoaDon))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -225,7 +224,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaPT)
-                    .addComponent(txtMaPhieuThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboMaPhieuThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -437,6 +436,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cboMaPhieuThue;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -453,7 +453,6 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JSpinner txtChiPhiKhac;
     private javax.swing.JTextField txtMaHoaDon;
-    private javax.swing.JTextField txtMaPhieuThue;
     private javax.swing.JTextField txtNgayDT;
     private javax.swing.JSpinner txtSoDien;
     private javax.swing.JSpinner txtSoNuoc;
@@ -472,11 +471,15 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         
         this.fillTable();
         this.row = -1;
+        fillComboBoxPhieuThue();
     }
     
 
     public double tinhTienDien(int soDien, MucGia mucGia) {
         double tienDien = 0;
+        if (soDien <0 ){
+            MsgBox.alert(this, "Số KWh diện không thể âm!");
+        }
         if (soDien <= 50 && soDien >=0) {
             tienDien = soDien * mucGia.getTienDienBac1();
         } else if (soDien >50 && soDien <= 100) {
@@ -496,7 +499,7 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     public double tinhTienNuoc(int soNuoc, MucGia mucGia) {
         double tienNuoc = 0;
         if (soNuoc < 0) {
-            throw new IllegalArgumentException("Số m³ nước không thể âm!");
+            MsgBox.alert(this, "Số m3 nước không thể âm!");
         }else if(soNuoc <=10){
             tienNuoc = soNuoc * mucGia.getTienNuocBac1();
         }else if (soNuoc>10 && soNuoc <=20){
@@ -508,6 +511,17 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         }
         return tienNuoc;
     }
+    
+    void fillComboBoxPhieuThue() {
+    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboMaPhieuThue.getModel();
+    model.removeAllElements(); // Xóa dữ liệu cũ
+    
+    List<String> list = tpdao.getPhieuThueDaTra(); // Gọi phương thức từ ThuePhongDAO
+    
+    for (String maPT : list) {
+        model.addElement(maPT); // Thêm vào ComboBox
+    }
+}
     
 void fillTable() {
     DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
@@ -588,12 +602,12 @@ void fillTable() {
         hd.setNgay(new Date());
         this.setForm(hd);
         btnThem.setEnabled(edit);
-        txtMaPhieuThue.setEnabled(edit);
+        cboMaPhieuThue.setEnabled(edit);
     }
     HoaDon getForm() {
     HoaDon hd = new HoaDon();
     hd.setMaHoaDon(txtMaHoaDon.getText());
-    hd.setMaPhieuThue(txtMaPhieuThue.getText());
+    hd.setMaPhieuThue((String) cboMaPhieuThue.getSelectedItem());
     hd.setSoDien((Integer) txtSoDien.getValue());
     hd.setSoNuoc((Integer) txtSoNuoc.getValue());
     hd.setTienWifi((Integer) txtTienWifi.getValue());
@@ -644,7 +658,7 @@ void fillTable() {
     
     void setForm(HoaDon hd){
         txtMaHoaDon.setText(hd.getMaHoaDon());
-        txtMaPhieuThue.setText(hd.getMaPhieuThue());
+        cboMaPhieuThue.setSelectedItem(hd.getMaPhieuThue());
         txtSoDien.setValue(hd.getSoDien());
         txtSoNuoc.setValue(hd.getSoNuoc());
         txtTienWifi.setValue(hd.getTienWifi());
@@ -734,7 +748,7 @@ void fillTable() {
         boolean first = (this.row == 0);
         boolean last = (this.row == tblHoaDon.getRowCount() - 1);
         // Trạng thái form
-        txtMaPhieuThue.setEnabled(!edit);
+        cboMaPhieuThue.setEnabled(!edit);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);

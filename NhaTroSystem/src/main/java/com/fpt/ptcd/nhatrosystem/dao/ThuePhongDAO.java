@@ -114,4 +114,21 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
             throw new RuntimeException(ex);
         }
     }
+    
+    public List<String> getPhieuThueDaTra() {
+    List<String> list = new ArrayList<>();
+    String sql = "SELECT MaPhieuThue FROM ThuePhong WHERE NgayTra IS NOT NULL";
+    
+    try {
+        ResultSet rs = XJdbc.query(sql);
+        while (rs.next()) {
+            list.add(rs.getString("MaPhieuThue"));
+        }
+        rs.getStatement().getConnection().close();
+    } catch (SQLException e) {
+        throw new RuntimeException("Lỗi truy vấn danh sách phiếu thuê đã trả!", e);
+    }
+    
+    return list;
+}
 }

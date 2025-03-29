@@ -85,10 +85,10 @@
                                   <Component id="lblMaDT" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblMaPT" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtMaHoaDon" pref="340" max="32767" attributes="0"/>
-                                  <Component id="txtMaPhieuThue" max="32767" attributes="0"/>
+                                  <Component id="cboMaPhieuThue" pref="330" max="32767" attributes="0"/>
+                                  <Component id="txtMaHoaDon" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -130,7 +130,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblMaPT" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtMaPhieuThue" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboMaPhieuThue" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -260,11 +260,6 @@
                 <Property name="text" type="java.lang.String" value="M&#xe3; phi&#x1ebf;u thu&#xea;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtMaPhieuThue">
-              <Properties>
-                <Property name="autoscrolls" type="boolean" value="false"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JSpinner" name="txtSoDien">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
@@ -314,6 +309,16 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGetDateActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cboMaPhieuThue">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
