@@ -140,6 +140,8 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
         lblMaDT.setText("Mã hóa đơn");
 
+        txtMaHoaDon.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
         lblMaPT.setText("Mã phiếu thuê");
 
         jLabel5.setText("Tiền Rác/phòng");
@@ -153,6 +155,8 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         jLabel1.setText("Chi phí khác");
 
         lblNgayDT.setText("Ngày đóng tiền");
+
+        txtNgayDT.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         btnGetDate.setText("Get");
         btnGetDate.addActionListener(new java.awt.event.ActionListener() {
