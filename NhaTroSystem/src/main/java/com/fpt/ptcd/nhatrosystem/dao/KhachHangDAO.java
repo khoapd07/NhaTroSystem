@@ -85,4 +85,18 @@ public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
         }
         return list;
     }
+    
+    public String getTenKhachByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT TenKhach FROM KhachHang WHERE MaKhach = " +
+                 "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
+    try {
+        ResultSet rs = XJdbc.query(sql, maPhieuThue);
+        if (rs.next()) {
+            return rs.getString("TenKhach");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return "Không xác định";
+}
 }

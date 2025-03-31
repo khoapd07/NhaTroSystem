@@ -80,4 +80,19 @@ public class NhanVienDAO extends QLNhaTroDAO<NhanVien,String> {
         String sql = "SELECT * FROM NhanVien WHERE MaNV LIKE ?";
         return this.selectBySql(sql, "%" + keyword + "%");
     }
+    
+    
+    public String getTenNhanVienByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT HoTen FROM NhanVien WHERE MaNV = " +
+                 "(SELECT MaNV FROM ThuePhong WHERE MaPhieuThue = ?)";
+    try {
+        ResultSet rs = XJdbc.query(sql, maPhieuThue);
+        if (rs.next()) {
+            return rs.getString("HoTen");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return "Không xác định";
+}
 }
