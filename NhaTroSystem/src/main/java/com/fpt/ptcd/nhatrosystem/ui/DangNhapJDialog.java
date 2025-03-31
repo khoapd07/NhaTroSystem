@@ -9,6 +9,8 @@ import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
 import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 
 /**
@@ -25,6 +27,14 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         initComponents();
         init();
         setLocationRelativeTo(null);
+        txtMatKhau.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Nếu nhấn Enter
+                    dangNhap(); // Gọi hàm đăng nhập
+                }
+            }
+        });
     }
 
     /**
@@ -282,10 +292,10 @@ public class DangNhapJDialog extends javax.swing.JDialog {
     private void dangNhap() {
         String maNV = txtMaNV.getText().trim();
         String matKhau = new String(txtMatKhau.getPassword()).trim();
-        
+
         txtMaNV.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         txtMatKhau.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        
+
         if (maNV.isEmpty() || matKhau.isEmpty()) {
             MsgBox.alert(this, "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
 
