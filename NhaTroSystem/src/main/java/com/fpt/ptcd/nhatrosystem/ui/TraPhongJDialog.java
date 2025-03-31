@@ -365,7 +365,9 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         if (evt.getClickCount() == 2) {
             this.row = tblTraPhong.getSelectedRow();
             tabs.setSelectedIndex(0);
+            isClickFromTable = true;
             this.edit();
+            isClickFromTable = false;
 //            dungDieuHuong = false;
 //            voHieuHoaDieuHuong();
         }
@@ -373,22 +375,31 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
+        isClickFromTable = true;
         this.last();
+        isClickFromTable = false;
+
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
+        isClickFromTable = true;
         this.first();
+        isClickFromTable = false;
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
+        isClickFromTable = true;
         this.prev();
+        isClickFromTable = false;
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
+        isClickFromTable = true;
         this.next();
+        isClickFromTable = false;
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -413,14 +424,20 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
     private void cboMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaKHActionPerformed
         // TODO add your handling code here:
+        if (isClickFromTable) {
+            return;
+        }
         String maKH = (String) cboMaKH.getSelectedItem();
         fillComboboxMaPhongTheoKH(maKH);
-//        this.setFormWithMaKH();
+        this.setFormWithMaKH();
     }//GEN-LAST:event_cboMaKHActionPerformed
 
     private void cboMaPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaPhongActionPerformed
         // TODO add your handling code here:
-//        this.setFormWithMaPhong();
+        if (isClickFromTable) {
+            return;
+        }
+        this.setFormWithMaPhong();
     }//GEN-LAST:event_cboMaPhongActionPerformed
 
     private void btnTimKiem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem1ActionPerformed
@@ -504,6 +521,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTimKiem1;
     // End of variables declaration//GEN-END:variables
 
+    boolean isClickFromTable = false;
     ThuePhongDAO dao = new ThuePhongDAO();
     int row = -1;
     boolean isUpdating = false;
@@ -536,7 +554,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                     tp.getTienCoc(),
                     tp.getNgayTra()
                 };
-                System.out.println(tp.getMaKhach());
+//                System.out.println(tp.getMaKhach());
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -561,7 +579,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                 cboMaKH.setSelectedIndex(0);
                 String maKH = (String) cboMaKH.getSelectedItem();
                 fillComboboxMaPhongTheoKH(maKH);
-                
+
             }
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu khách hàng!");
@@ -593,31 +611,32 @@ public class TraPhongJDialog extends javax.swing.JDialog {
             } else if (!danhSachThue.isEmpty()) {
                 cboMaPhong.setSelectedIndex(0); // Chọn phòng đầu tiên nếu không có phòng cũ hợp lệ
             }
-            
-            
-            
+
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu phòng!");
         }
     }
 
-//    void setFormWithMaKH() {
-//        if (isUpdating) {
-//            return; // Ngăn chặn vòng lặp vô hạn
-//        }
-//        isUpdating = true; // Bắt đầu quá trình cập nhật
-//
-//        try {
-//            String maKH = (String) cboMaKH.getSelectedItem();
+    void setFormWithMaKH() {
+        if (isUpdating) {
+            return; // Ngăn chặn vòng lặp vô hạn
+        }
+        isUpdating = true; // Bắt đầu quá trình cập nhật
+
+        btnSua.setEnabled(true);
+        btnXoa.setEnabled(true);
+
+        try {
+            String maKH = (String) cboMaKH.getSelectedItem();
 //            System.out.println("Chon ma khach: " + maKH);
-//
-//            if (maKH == null || maKH.trim().isEmpty()) {
-//                isUpdating = false;
-//                return;
-//            }
-//
-//            fillComboboxMaPhongTheoKH(maKH); // Cập nhật danh sách phòng
-//
+
+            if (maKH == null || maKH.trim().isEmpty()) {
+                isUpdating = false;
+                return;
+            }
+
+            fillComboboxMaPhongTheoKH(maKH); // Cập nhật danh sách phòng
+
 //            SwingUtilities.invokeLater(() -> {
 //                String maPhong = (String) cboMaPhong.getSelectedItem();
 //                if (maPhong != null && !maPhong.trim().isEmpty()) {
@@ -627,71 +646,55 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 //                    System.out.println("Không tìm thấy phòng hợp lệ sau khi cập nhật.");
 //                }
 //            });
-//            
-////            this.row = 0;
-////            updateStatus();
-//
-////            dungDieuHuong = true;
-////            voHieuHoaDieuHuong();
-//            
-//        } finally {
-//            isUpdating = false; // Kết thúc quá trình cập nhật
-//        }
-//    }
 
-//    void setFormWithMaPhong() {
-//        if (isUpdating) {
-//            return; // Ngăn chặn vòng lặp vô hạn
-//        }
-//        isUpdating = true; // Bắt đầu quá trình cập nhật
-//
-//        try {
-//            String maPhong = (String) cboMaPhong.getSelectedItem();
-//            String maKH = (String) cboMaKH.getSelectedItem();
-//
+        } finally {
+            isUpdating = false; // Kết thúc quá trình cập nhật
+        }
+    }
+
+    void setFormWithMaPhong() {
+        if (isUpdating) {
+            return; // Ngăn chặn vòng lặp vô hạn
+        }
+        isUpdating = true; // Bắt đầu quá trình cập nhật
+
+        btnSua.setEnabled(true);
+        btnXoa.setEnabled(true);
+
+        try {
+            String maPhong = (String) cboMaPhong.getSelectedItem();
+            String maKH = (String) cboMaKH.getSelectedItem();
+
+            
+//            debug
 //            if (maPhong == null || maPhong.trim().isEmpty() || maKH == null || maKH.trim().isEmpty()) {
 //                System.out.println("Lỗi: Mã phòng hoặc mã khách rỗng.");
 //                return;
 //            }
-//
+
 //            System.out.println("Dang set form voi MaPhong: " + maPhong + " va MaKH: " + maKH);
-//
-//            ThuePhong tp = dao.selectByMaPhongVaMaKhach(maPhong, maKH);
-//
-//            if (tp != null) {
+            ThuePhong tp = dao.selectByMaPhongVaMaKhach(maPhong, maKH);
+
+            if (tp != null) {
 //                System.out.println("Du lieu tu DB: " + tp.getMaPhieuThue() + ", "
 //                        + tp.getMaPhong() + ", " + tp.getMaKhach() + ", "
 //                        + tp.getNgayThue() + ", " + tp.getTienCoc() + ", "
 //                        + tp.getNgayTra());
-//
-//                this.setForm(tp);
-//            } else {
+                this.setForm(tp);
+            } else {
 //                System.out.println("Không tìm thấy phiếu thuê!");
-//            }
-////            row = 0;
-////            edit();
-////            dungDieuHuong = true;
-////            voHieuHoaDieuHuong();
-//        } finally {
-//            isUpdating = false; // Kết thúc quá trình cập nhật
-//        }
-//    }
+            }
+//            row = 0;
+//            edit();
+//            dungDieuHuong = true;
+//            voHieuHoaDieuHuong();
+        } finally {
+            isUpdating = false; // Kết thúc quá trình cập nhật
+        }
+    }
 
     void insert() {
-            MsgBox.alert(this, "Nếu bạn muốn thêm dữ liệu thuê phòng hãy chuyển sang tab thuê phòng nhé!");
-//        ThuePhong thuePhong = this.getForm();
-//        boolean kqkt = kiemTraDinhDang(thuePhong);
-//
-//        if (kqkt) {
-//            try {
-//                dao.insert(thuePhong);
-//                fillTable();
-//                clearForm();
-//                MsgBox.alert(this, "Thêm mới thành công!");
-//            } catch (Exception e) {
-//                MsgBox.alert(this, "Thêm mới thất bại!");
-//            }
-//        }
+        MsgBox.alert(this, "Nếu bạn muốn thêm dữ liệu thuê phòng hãy chuyển sang tab thuê phòng nhé!");
     }
 
     void update() {
@@ -724,19 +727,22 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     }
 
     void delete() {
-        if (txtMaPhieuThue.getText().trim().isEmpty()) {
-            MsgBox.alert(this, "Vui lòng nhập mã phiếu thuê!");
+        if (txtMaPhieuThue.getText().trim().isEmpty() || cboMaPhong.getSelectedItem() == null) {
+            MsgBox.alert(this, "Vui lòng kiểm tra lại mã phiếu thuê và chọn mã phòng!");
             return;
         } else {
             String maPhieuThue = txtMaPhieuThue.getText();
-            MsgBox.confirm(this, "Bạn thực sự muốn xóa phiếu thuê này?");
-            try {
-                dao.delete(maPhieuThue);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xóa thành công!");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Xóa thất bại!");
+            String maPhong = cboMaPhong.getSelectedItem().toString();
+
+            if (MsgBox.confirm(this, "Bạn thực sự muốn xóa ngày trả của phiếu thuê này?")) {
+                try {
+                    dao.xoaNgayTra(maPhieuThue, maPhong);
+                    this.fillTable();
+                    this.clearForm();
+                    MsgBox.alert(this, "Xóa ngày trả thành công!");
+                } catch (Exception e) {
+                    MsgBox.alert(this, "Xóa ngày trả thất bại!");
+                }
             }
         }
     }
@@ -754,18 +760,19 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         thuePhong.setMaPhong((String) cboMaPhong.getSelectedItem());
         thuePhong.setMaKhach((String) cboMaKH.getSelectedItem());
 
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            thuePhong.setNgayThue(sdf.parse(txtNgayThue.getText()));
-            thuePhong.setNgayTra(sdf.parse(txtNgayTP.getText()));
-        } catch (Exception e) {
-            MsgBox.alert(this, "Định dạng ngày không hợp lệ!");
-        }
+        String ngayThueStr = txtNgayThue.getText().trim();
+        String ngayTraStr = txtNgayTP.getText().trim();
 
-        try {
-            thuePhong.setTienCoc(Double.parseDouble(txtTienCT.getText()));
-        } catch (NumberFormatException e) {
-            MsgBox.alert(this, "Tiền cọc phải là số hợp lệ!");
+        // Nếu không có dữ liệu, gán null, nếu có thì chuyển thành Date
+        thuePhong.setNgayThue(ngayThueStr.isEmpty() ? null : parseDateOrDefault(ngayThueStr));
+        thuePhong.setNgayTra(ngayTraStr.isEmpty() ? null : parseDateOrDefault(ngayTraStr));
+
+        // Lấy tiền cọc
+        String tienCocString = txtTienCT.getText().trim();
+        if (!tienCocString.isEmpty()) {
+            thuePhong.setTienCoc(Double.parseDouble(tienCocString));
+        } else {
+            thuePhong.setTienCoc(0);
         }
 
         return thuePhong;
@@ -781,8 +788,8 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
     void setForm(ThuePhong thuePhong) {
 
-        System.out.println("Cap nhat form: " + thuePhong.getMaPhieuThue() + ", "
-                + thuePhong.getMaPhong() + ", " + thuePhong.getMaKhach());
+//        System.out.println("Cap nhat form: " + thuePhong.getMaPhieuThue() + ", "
+//                + thuePhong.getMaPhong() + ", " + thuePhong.getMaKhach());
 
         txtMaPhieuThue.setText(thuePhong.getMaPhieuThue());
         cboMaPhong.setSelectedItem(thuePhong.getMaPhong());
@@ -812,8 +819,12 @@ public class TraPhongJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Ngày thuê không hợp lệ");
             return false;
         }
+
         if (thuePhong.getNgayTra() == null) {
             MsgBox.alert(this, "Ngày trả không hợp lệ");
+            return false;
+        } else if (isFakeDate(thuePhong.getNgayTra())) {
+            MsgBox.alert(this, "Định dạng ngày trả không hợp lệ!");
             return false;
         }
         if (thuePhong.getTienCoc() < 0) {
@@ -865,9 +876,8 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         this.row = tblTraPhong.getRowCount() - 1;
         this.edit();
     }
-    
-//    boolean dungDieuHuong = false;
 
+//    boolean dungDieuHuong = false;
     void edit() {
         if (this.row < 0 || this.row >= tblTraPhong.getRowCount()) {
             return;
@@ -880,10 +890,10 @@ public class TraPhongJDialog extends javax.swing.JDialog {
             setForm(tp);
             updateStatus();
 //            dungDieuHuong = true;
-            
+
         }
     }
-    
+
 //    void voHieuHoaDieuHuong(){
 //        if (!dungDieuHuong) return;
 //        
@@ -893,5 +903,29 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 //        btnLast.setEnabled(false);
 //        
 //    }
+    
+    
+    //hàm gán định dạng ngày mặc địng sẽ là 0001/01/01
+    Date parseDateOrDefault(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false); // Không chấp nhận ngày không hợp lệ
+
+        try {
+            return sdf.parse(dateStr);
+        } catch (ParseException e) {
+            try {
+                return sdf.parse("0001-01-01"); // Ngày mặc định
+            } catch (ParseException ex) {
+                throw new RuntimeException("Lỗi không mong muốn", ex);
+            }
+
+        }
+    }
+
+    //hàm sẽ kiểm tra giá trị ảo của date
+    boolean isFakeDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date).equals("0001-01-01");
+    }
 
 }

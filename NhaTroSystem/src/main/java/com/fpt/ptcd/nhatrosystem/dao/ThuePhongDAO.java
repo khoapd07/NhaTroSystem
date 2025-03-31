@@ -136,4 +136,10 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
 
         return list;
     }
+
+    public void xoaNgayTra(String maPhieuThue, String maPhong) {
+        String sql = "UPDATE ThuePhong SET NgayTra = NULL WHERE MaPhieuThue = ? AND MaPhong = ?";
+        XJdbc.update(sql, maPhieuThue, maPhong);
+    }
+
 }
