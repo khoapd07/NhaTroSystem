@@ -24,6 +24,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -38,8 +39,8 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         btnDongY = new javax.swing.JButton();
         btnHuyBo = new javax.swing.JButton();
         lblDoiMatKhau = new javax.swing.JLabel();
-        txtMatKhau = new javax.swing.JPasswordField();
         txtMatKhauMoi = new javax.swing.JPasswordField();
+        txtMatKhau = new javax.swing.JPasswordField();
         txtMatKhauMoi2 = new javax.swing.JPasswordField();
         lblMaNV = new javax.swing.JLabel();
         txtMaNV = new javax.swing.JTextField();
@@ -49,7 +50,6 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        btnDongY.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\Accept.png")); // NOI18N
         btnDongY.setText("Đồng ý");
         btnDongY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,7 +57,6 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
             }
         });
 
-        btnHuyBo.setIcon(new javax.swing.ImageIcon("D:\\PRO230-UDPM-Java\\NhaTroLand\\src\\main\\resources\\logo\\icon\\No.png")); // NOI18N
         btnHuyBo.setText("Hủy bỏ");
         btnHuyBo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,9 +70,9 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
 
         lblMaNV.setText("Tên đăng nhập");
 
-        lblMatKhau.setText("Mật khẩu hiện tại");
+        lblMatKhau.setText("Mật khẩu mới");
 
-        lblMatKhauMoi.setText("Mật khẩu mới");
+        lblMatKhauMoi.setText("Mật khẩu");
 
         lblXacMinhMatKM.setText("Xác minh mật khẩu mới");
 
@@ -86,7 +85,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtMatKhauMoi, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMatKhau, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDoiMatKhau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblMaNV, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtMaNV, javax.swing.GroupLayout.Alignment.LEADING))
@@ -101,7 +100,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
                                         .addComponent(lblXacMinhMatKM))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtMatKhauMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -127,14 +126,14 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMatKhauMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMatKhauMoi)
                     .addComponent(lblXacMinhMatKM))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMatKhauMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtMatKhauMoi2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -221,8 +220,8 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     
     private void doiMatKhau(){
         String manv = txtMaNV.getText();
-        String matKhau = new String(txtMatKhau.getPassword());
-        String matKhauMoi = new String(txtMatKhauMoi.getPassword());
+        String matKhau = new String(txtMatKhauMoi.getPassword());
+        String matKhauMoi = new String(txtMatKhau.getPassword());
         String matKhauMoi2 = new String(txtMatKhauMoi2.getPassword());
         if(!manv.equalsIgnoreCase(Auth.user.getMaNV())){
             MsgBox.alert(this, "Sai tên đăng nhập!");

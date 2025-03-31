@@ -24,6 +24,7 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -64,13 +65,15 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         RightLayout.setHorizontalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RightLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(RightLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5))
-                    .addComponent(jLabel7))
+                    .addGroup(RightLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel7)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         RightLayout.setVerticalGroup(
@@ -80,10 +83,10 @@ public class DangNhapJDialog extends javax.swing.JDialog {
                     .addGroup(RightLayout.createSequentialGroup()
                         .addGap(371, 371, 371)
                         .addComponent(jLabel5))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addGap(24, 24, 24))
+                .addGap(47, 47, 47))
         );
 
         Left.setBackground(new java.awt.Color(0, 153, 153));
@@ -99,6 +102,11 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 
         txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtMaNV.setForeground(new java.awt.Color(102, 102, 102));
+        txtMaNV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaNVActionPerformed(evt);
+            }
+        });
 
         jLabel3.setBackground(new java.awt.Color(102, 102, 102));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -197,6 +205,10 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         dangXuat();
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
+    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaNVActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -268,11 +280,12 @@ public class DangNhapJDialog extends javax.swing.JDialog {
     }
 
     private void dangNhap() {
-        String maNV = txtMaNV.getText();
-        String matKhau = new String(txtMatKhau.getPassword());
+        String maNV = txtMaNV.getText().trim();
+        String matKhau = new String(txtMatKhau.getPassword()).trim();
+        
         txtMaNV.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         txtMatKhau.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
+        
         if (maNV.isEmpty() || matKhau.isEmpty()) {
             MsgBox.alert(this, "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
 
