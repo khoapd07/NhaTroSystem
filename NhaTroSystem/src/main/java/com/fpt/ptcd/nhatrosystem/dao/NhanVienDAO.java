@@ -17,9 +17,8 @@ import java.util.List;
  */
 public class NhanVienDAO extends QLNhaTroDAO<NhanVien,String> {
             public void insert(NhanVien model){
-        String sql="INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)";
+        String sql="INSERT INTO NhanVien (MatKhau, HoTen, VaiTro) VALUES (?, ?, ?)";
         XJdbc.update(sql, 
-                model.getMaNV(), 
                 model.getMatKhau(), 
                 model.getHoTen(), 
                 model.isVaiTro());
@@ -83,16 +82,16 @@ public class NhanVienDAO extends QLNhaTroDAO<NhanVien,String> {
     
     
     public String getTenNhanVienByMaPhieuThue(String maPhieuThue) {
-    String sql = "SELECT HoTen FROM NhanVien WHERE MaNV = " +
-                 "(SELECT MaNV FROM ThuePhong WHERE MaPhieuThue = ?)";
-    try {
-        ResultSet rs = XJdbc.query(sql, maPhieuThue);
-        if (rs.next()) {
-            return rs.getString("HoTen");
+        String sql = "SELECT HoTen FROM NhanVien WHERE MaNV = " +
+                     "(SELECT MaNV FROM ThuePhong WHERE MaPhieuThue = ?)";
+        try {
+            ResultSet rs = XJdbc.query(sql, maPhieuThue);
+            if (rs.next()) {
+                return rs.getString("HoTen");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return "Không xác định";
     }
-    return "Không xác định";
-}
 }

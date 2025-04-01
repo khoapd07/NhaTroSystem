@@ -65,6 +65,8 @@ public class KhachHangJDialog extends javax.swing.JDialog {
 
         lblMaKH.setText("Mã khách hàng");
 
+        txtMaKH.setEditable(false);
+        txtMaKH.setBackground(new java.awt.Color(204, 204, 204));
         txtMaKH.setAutoscrolls(false);
         txtMaKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,11 +168,11 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 47, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnLast, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblMaKH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMaKH))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblHoTen)
@@ -179,12 +181,12 @@ public class KhachHangJDialog extends javax.swing.JDialog {
                                 .addComponent(lblSoDT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblCCCD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)
+                        .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSoDT)
+                            .addComponent(txtCCCD, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtDiaChi, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtSoDT, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtHoVaTen)
-                            .addComponent(txtDiaChi)
-                            .addComponent(txtCCCD)
                             .addComponent(txtEmail))))
                 .addContainerGap())
         );
@@ -287,18 +289,20 @@ public class KhachHangJDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblQL)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(tabs)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblQL)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(tabs))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblQL)
-                .addGap(18, 18, 18)
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(24, 24, 24)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -432,7 +436,6 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtSoDT;
     // End of variables declaration//GEN-END:variables
 
-
     KhachHangDAO dao = new KhachHangDAO(); // Làm việc với bảng KhachHang
     int row = -1; // Hàng được chọn hiện tại trên bảng
 
@@ -460,16 +463,11 @@ public class KhachHangJDialog extends javax.swing.JDialog {
 
     // Lấy dữ liệu từ bảng lên form
     private void edit() {
-        if (this.row >= 0) {
-            String maKhach = (String) tblKhachHang.getValueAt(this.row, 0);
-            KhachHang kh = dao.selectById(maKhach);
-            if (kh != null) {
-                this.setForm(kh);
-                updateStatus();
-            } else {
-                MsgBox.alert(this, "Không tìm thấy khách hàng!");
-            }
-        }
+        String mapt = (String) tblKhachHang.getValueAt(this.row, 0);
+        KhachHang kh = dao.selectById(mapt);
+        this.setForm(kh);
+        this.updateStatus();
+        tabs.setSelectedIndex(0);
     }
 
     // Đổ dữ liệu vào form
@@ -485,11 +483,6 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     }
 
     private KhachHang getForm() {
-        if (txtMaKH.getText().trim().isEmpty() || txtHoVaTen.getText().trim().isEmpty()) {
-            MsgBox.alert(this, "Mã khách hàng và tên không được để trống!");
-            return null;
-        }
-
         KhachHang kh = new KhachHang();
         kh.setMaKhach(txtMaKH.getText().trim());
         kh.setTenKhach(txtHoVaTen.getText().trim());
@@ -522,24 +515,29 @@ public class KhachHangJDialog extends javax.swing.JDialog {
     }
 
     // Thêm khách hàng
-    private void insert() {
-        KhachHang kh = getForm();
-        if (kh == null) return;
+    private void insert(){
+        if (!validateForm()) {
+            return;
+        }
+
+        KhachHang model = getForm();
+        if (model == null) return; // Tránh lỗi khi getForm() trả về null
 
         try {
-            if (dao.selectById(kh.getMaKhach()) != null) {
-                MsgBox.alert(this, "Mã khách hàng đã tồn tại!");
-                return;
-            }
-            dao.insert(kh);
+            dao.insert(model);
             this.fillTable();
+            this.clearForm();
             MsgBox.alert(this, "Thêm mới thành công!");
         } catch (Exception e) {
-            MsgBox.alert(this, "Thêm mới thất bại!");
+            MsgBox.alert(this, "Thêm mới thất bại! Lỗi: " + e.getMessage());
         }
     }
 
     private void update() {
+        if (!validateForm()) {
+            return;
+        }
+        
         KhachHang kh = getForm();
         if (kh == null) return;
 
@@ -613,6 +611,45 @@ public class KhachHangJDialog extends javax.swing.JDialog {
         this.row = tblKhachHang.getRowCount() - 1;
         this.edit();
     }
+    
+    // Hàm kiểm tra dữ liệu nhập vào
+    private boolean validateForm() {
+        String tenKH = txtHoVaTen.getText().trim();
+        String soDT = txtSoDT.getText().trim();
+        String diaChi = txtDiaChi.getText().trim();
+        String cccd = txtCCCD.getText().trim();
+        String email = txtEmail.getText().trim();
 
+        if (tenKH.isEmpty()) {
+            MsgBox.alert(this, "Họ và tên không được để trống!");
+            txtHoVaTen.requestFocus();
+            return false;
+        }
+
+        if (!soDT.matches("\\d{10,11}")) {
+            MsgBox.alert(this, "Số điện thoại phải có 10 hoặc 11 chữ số!");
+            txtSoDT.requestFocus();
+            return false;
+        }
+
+        if (diaChi.isEmpty()) {
+            MsgBox.alert(this, "Địa chỉ không được để trống!");
+            txtDiaChi.requestFocus();
+            return false;
+        }
+
+        if (!cccd.matches("\\d{12}")) {
+            MsgBox.alert(this, "CCCD phải có đúng 12 chữ số!");
+            txtCCCD.requestFocus();
+            return false;
+        }
+
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            MsgBox.alert(this, "Email không hợp lệ!");
+            txtEmail.requestFocus();
+            return false;
+        }
+        return true;
+    }
 }
 

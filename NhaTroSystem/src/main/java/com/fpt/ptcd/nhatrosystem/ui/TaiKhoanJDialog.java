@@ -101,6 +101,9 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
 
         lblVaiTro.setText("Vai trò");
 
+        txtMaNV.setEditable(false);
+        txtMaNV.setBackground(new java.awt.Color(204, 204, 204));
+
         buttonGroup1.add(rdoNhanVien);
         rdoNhanVien.setText("Nhân viên");
 
@@ -445,7 +448,6 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
                 Object[] row = {
                     nv.getMaNV(),
                     nv.getHoTen(),
-//                    nv.getMatKhau(),
                     nv.isVaiTro()?"Chủ trọ":"Nhân viên"
                 };
                 model.addRow(row);
@@ -462,11 +464,7 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
         }
 
         NhanVien model = getForm();
-        if (dao.selectById(model.getMaNV()) != null) {
-            MsgBox.alert(this, "Mã nhân viên đã tồn tại!");
-            return;
-        }
-
+        
         try {
             dao.insert(model);
             this.fillTable();
@@ -477,19 +475,19 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
         }
     }
 
-    private void update(){
+    private void update() {
         if (!validateForm()) {
             return;
         }
 
-        NhanVien model = getForm();
+        NhanVien model = getForm(); // Lấy thông tin từ form
         if (dao.selectById(model.getMaNV()) == null) {
             MsgBox.alert(this, "Mã nhân viên không tồn tại!");
             return;
         }
 
         try {
-            dao.update(model);
+            dao.update(model); // Cập nhật thông tin nhân viên
             this.fillTable();
             this.clearForm();
             MsgBox.alert(this, "Cập nhật thành công!");
@@ -498,11 +496,11 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
         }
     }
 
-    private void delete(){
-        String manv = txtMaNV.getText().trim();
-        
+    private void delete() {
+        String manv = txtMaNV.getText().trim(); // Lấy mã nhân viên từ form
+
         if (manv.isEmpty()) {
-            MsgBox.alert(this, "Vui lòng nhập mã nhân viên cần xóa!");
+            MsgBox.alert(this, "Vui lòng chọn nhân viên cần xóa!");
             return;
         }
 
@@ -510,9 +508,10 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Nhân viên không tồn tại!");
             return;
         }
+
         if (MsgBox.confirm(this, "Bạn có muốn xóa nhân viên này không?")) {
             try {
-                dao.delete(manv);
+                dao.delete(manv); // Xóa nhân viên
                 this.fillTable();
                 this.clearForm();
                 MsgBox.alert(this, "Xóa thành công!");
@@ -529,7 +528,8 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     }
 
     private void setForm(NhanVien nv){
-        txtMaNV.setText(nv.getMaNV());
+        // Không cần set MaNV nếu mã được tự động tạo
+        txtMaNV.setText(nv.getMaNV());  // Chắc chắn mã nhân viên sẽ được lấy từ cơ sở dữ liệu
         txtHoVaTen.setText(nv.getHoTen());
         txtMatKhau.setText(nv.getMatKhau());
         if (nv.isVaiTro()) {
@@ -539,9 +539,11 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
         }
     }
     
-    private NhanVien getForm(){
+    private NhanVien getForm() {
         NhanVien nv = new NhanVien();
-        nv.setMaNV(txtMaNV.getText());
+        if (!txtMaNV.getText().trim().isEmpty()) { 
+            nv.setMaNV(txtMaNV.getText()); // Chỉ lấy nếu đang sửa
+        }
         nv.setHoTen(txtHoVaTen.getText());
         nv.setMatKhau(txtMatKhau.getText());
         nv.setVaiTro(rdoChuTro.isSelected());
@@ -615,15 +617,9 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     }
     
     private boolean validateForm() {
-        String maNV = txtMaNV.getText().trim();
         String hoTen = txtHoVaTen.getText().trim();
         String matKhau = txtMatKhau.getText().trim();
 
-        if (maNV.isEmpty()) {
-            MsgBox.alert(this, "Mã nhân viên không được để trống!");
-            txtMaNV.requestFocus();
-            return false;
-        }
         if (hoTen.isEmpty()) {
             MsgBox.alert(this, "Họ và tên không được để trống!");
             txtHoVaTen.requestFocus();
@@ -639,19 +635,13 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
             txtMatKhau.requestFocus();
             return false;
         }
-        
-        if (!maNV.matches("^[a-zA-Z0-9]+$")) {
-            MsgBox.alert(this, "Mã nhân viên không được chứa ký tự đặc biệt!");
-            txtMaNV.requestFocus();
-            return false;
-        }
 
         if (!hoTen.matches("^[\\p{L} ]+$")) {
             MsgBox.alert(this, "Họ và tên chỉ được chứa chữ cái và khoảng trắng!");
             txtHoVaTen.requestFocus();
             return false;
         }
-        
+
         return true;
     }
 }

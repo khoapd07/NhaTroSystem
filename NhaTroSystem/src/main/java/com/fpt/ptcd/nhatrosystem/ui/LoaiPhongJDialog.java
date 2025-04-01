@@ -70,6 +70,8 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
 
         lblMaLP.setText("Mã loại phòng");
 
+        txtMaLP.setEditable(false);
+        txtMaLP.setBackground(new java.awt.Color(204, 204, 204));
         txtMaLP.setAutoscrolls(false);
 
         lblTenLP.setText("Tên loại phòng");
@@ -314,7 +316,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(lblQL)
                 .addGap(18, 18, 18)
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -449,6 +451,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null); // Đưa cửa sổ ra giữa màn hình
         this.fillTable(); // Đổ dữ liệu loại phòng vào bảng
         this.updateStatus(); // Cập nhật trạng thái form
+        txtMaLP.setEnabled(false);
     }
     
     private void fillTable() {
@@ -478,11 +481,6 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
 
         LoaiPhong model = getForm();
         if (model == null) return; // Tránh lỗi khi getForm() trả về null
-
-        if (dao.selectById(model.getMaLoai()) != null) {
-            MsgBox.alert(this, "Mã loại phòng đã tồn tại!");
-            return;
-        }
 
         try {
             dao.insert(model);
@@ -517,8 +515,9 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     
     private void delete(){
         String maLP = txtMaLP.getText().trim();
+        
         if (maLP.isEmpty()) {
-            MsgBox.alert(this, "Vui lòng nhập mã loại phòng cần xóa!");
+            MsgBox.alert(this, "Vui lòng chọn mã loại phòng cần xóa!");
             return;
         }
 
@@ -587,20 +586,11 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     }
     
     private void edit() {
-        if (this.row < 0 || this.row >= tblLoaiPhong.getRowCount()) {
-            MsgBox.alert(this, "Không có dữ liệu để chỉnh sửa!");
-            return;
-        }
-
-        String malp = (String) tblLoaiPhong.getValueAt(this.row, 0);
-        LoaiPhong lp = dao.selectById(malp);
-        if (lp == null) {
-            MsgBox.alert(this, "Không tìm thấy thông tin loại phòng!");
-            return;
-        }
-
+        String mapt = (String) tblLoaiPhong.getValueAt(this.row, 0);
+        LoaiPhong lp = dao.selectById(mapt);
         this.setForm(lp);
         this.updateStatus();
+        tabs.setSelectedIndex(0);
     }
     
     private void first(){
@@ -629,57 +619,63 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     
     private void updateStatus(){
         boolean edit = (this.row >= 0);
+        boolean empty = (tblLoaiPhong.getRowCount() == 0);
         boolean first = (this.row == 0);
         boolean last = (this.row == tblLoaiPhong.getRowCount() - 1);
-        
-        // Trạng thái form
-        txtMaLP.setEditable(!edit);
+
+        // Nếu danh sách trống thì vô hiệu hóa các nút chỉnh sửa
         btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
+        btnSua.setEnabled(edit && !empty);
+        btnXoa.setEnabled(edit && !empty);
+
         // Trạng thái điều hướng
-        btnFirst.setEnabled(edit && !first);
-        btnPrev.setEnabled(edit && !first);
-        btnNext.setEnabled(edit && !last);
-        btnLast.setEnabled(edit && !last);
+        btnFirst.setEnabled(edit && !first && !empty);
+        btnPrev.setEnabled(edit && !first && !empty);
+        btnNext.setEnabled(edit && !last && !empty);
+        btnLast.setEnabled(edit && !last && !empty);
     }
     
     private boolean validateForm() {
-        String maLP = txtMaLP.getText().trim();
-        String tenLP = txtTenLP.getText().trim();
-        String dtPhong = txtDTPhong.getText().trim();
-
-        // Kiểm tra mã loại phòng
-        if (maLP.isEmpty()) {
-            MsgBox.alert(this, "Mã loại phòng không được để trống!");
-            txtMaLP.requestFocus();
-            return false;
-        }
-
         // Kiểm tra tên loại phòng
+        String tenLP = txtTenLP.getText().trim();
         if (tenLP.isEmpty()) {
             MsgBox.alert(this, "Tên loại phòng không được để trống!");
             txtTenLP.requestFocus();
             return false;
         }
 
-        // Kiểm tra diện tích có đúng định dạng số không
-        if (!dtPhong.matches("\\d+")) {
-            MsgBox.alert(this, "Diện tích phòng phải là số nguyên!");
+        // Kiểm tra diện tích phòng (phải là số nguyên dương)
+        String dtPhong = txtDTPhong.getText().trim();
+        try {
+            int dienTich = Integer.parseInt(dtPhong);
+            if (dienTich <= 0) {
+                MsgBox.alert(this, "Diện tích phòng phải lớn hơn 0!");
+                txtDTPhong.requestFocus();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Diện tích phòng phải là số nguyên hợp lệ!");
             txtDTPhong.requestFocus();
             return false;
         }
 
-        // Kiểm tra giá phòng
+        // Kiểm tra giá phòng (phải là số thực dương)
         Object value = txtGiaPhong.getValue();
-        double giaPhong = 0.0;
-        if (value instanceof Number) {
-            giaPhong = ((Number) value).doubleValue();
+        if (value == null) {
+            MsgBox.alert(this, "Giá phòng không được để trống!");
+            txtGiaPhong.requestFocus();
+            return false;
         }
 
-        if (giaPhong <= 0) {
-            MsgBox.alert(this, "Giá phòng phải lớn hơn 0!");
+        try {
+            double giaPhong = Double.parseDouble(value.toString());
+            if (giaPhong <= 0) {
+                MsgBox.alert(this, "Giá phòng phải lớn hơn 0!");
+                txtGiaPhong.requestFocus();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Giá phòng phải là số hợp lệ!");
             txtGiaPhong.requestFocus();
             return false;
         }

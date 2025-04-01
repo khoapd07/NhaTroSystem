@@ -18,11 +18,9 @@ import java.util.List;
  */
 public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
    
-                public void insert(KhachHang model){
-                    System.out.println("cac");
-        String sql="INSERT INTO KhachHang (MaKhach, TenKhach, SDT, DiaChi, CCCD, Email) VALUES (?, ?, ?, ?, ?, ?)";
+    public void insert(KhachHang model){
+        String sql="INSERT INTO KhachHang (TenKhach, SDT, DiaChi, CCCD, Email) VALUES (?, ?, ?, ?, ?)";
         XJdbc.update(sql, 
-                model.getMaKhach(), 
                 model.getTenKhach(), 
                 model.getSoDT(),
                 model.getDiaChi(),
@@ -87,16 +85,16 @@ public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
     }
     
     public String getTenKhachByMaPhieuThue(String maPhieuThue) {
-    String sql = "SELECT TenKhach FROM KhachHang WHERE MaKhach = " +
-                 "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
-    try {
-        ResultSet rs = XJdbc.query(sql, maPhieuThue);
-        if (rs.next()) {
-            return rs.getString("TenKhach");
+        String sql = "SELECT TenKhach FROM KhachHang WHERE MaKhach = " +
+                     "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
+        try {
+            ResultSet rs = XJdbc.query(sql, maPhieuThue);
+            if (rs.next()) {
+                return rs.getString("TenKhach");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return "Không xác định";
     }
-    return "Không xác định";
-}
 }
