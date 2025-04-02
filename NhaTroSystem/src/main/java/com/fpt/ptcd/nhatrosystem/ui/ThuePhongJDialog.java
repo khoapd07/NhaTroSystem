@@ -16,6 +16,8 @@ import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import com.fpt.ptcd.nhatrosystem.utils.XDate;
 import java.awt.HeadlessException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -88,6 +90,8 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
         lblMaKH.setText("Mã khách hàng");
 
         lblMaPhong.setText("Mã phòng");
+
+        txtMaPhieuThue.setEnabled(false);
 
         cboMaKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +274,15 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
             new String [] {
                 "Mã Phiếu Thuê", "Mã Phòng", "Mã Khách", "Mã Nhân Viên", "Tiền Cọc", "Ngày Thuê"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblThuePhong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblThuePhongMouseClicked(evt);
@@ -322,7 +334,7 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblThuePhongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuePhongMouseClicked
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             this.row = tblThuePhong.getSelectedRow();
             this.edit();
         }
@@ -330,46 +342,46 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-                this.first();
+        this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-                this.last();
+        this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-                this.clearForm();
+        this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-                this.delete();
+        this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-                this.update();
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
 
-                this.insert();
+        this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-                this.next();
+        this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-                this.prev();
+        this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void cboMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaKHActionPerformed
-        
+
     }//GEN-LAST:event_cboMaKHActionPerformed
 
     private void cboMaPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaPhongActionPerformed
@@ -378,6 +390,7 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
 
     private void cboMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMaNVActionPerformed
         // TODO add your handling code here:
+        cboMaNV.setEnabled(false);
     }//GEN-LAST:event_cboMaNVActionPerformed
 
     private void btnGetDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetDateActionPerformed
@@ -456,16 +469,16 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtNgayThue;
     private javax.swing.JTextField txtTienCoc;
     // End of variables declaration//GEN-END:variables
-    
+
     KhachHangDAO khdao = new KhachHangDAO();
     ThuePhongDAO dao = new ThuePhongDAO(); //làm việc với bảng nhanvien
     PhongDAO phongdao = new PhongDAO();
     NhanVienDAO nhanviendao = new NhanVienDAO();
     int row = -1; //hàng được chọn hiện tại trên bảng
-    
-    void init(){
+
+    void init() {
         this.setLocationRelativeTo(null);
-        
+
         this.fillTable();
         this.row = -1;
 //        this.updateStatus();
@@ -473,66 +486,66 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
         this.fillCboPhong();
         this.fillCboMaNV();
     }
-    
 
-
-void fillTable(){
+    void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblThuePhong.getModel();
         model.setRowCount(0); //xáo tất cả các hàng trên JTable
-        try{
+        try {
             List<ThuePhong> list = dao.selectAll(); // đọc dữ liệu từ CSDL
-            for(ThuePhong tp : list){
+            for (ThuePhong tp : list) {
                 Object[] row = {tp.getMaPhieuThue(), tp.getMaPhong(), tp.getMaKhach(), tp.getMaNV(), tp.getTienCoc(), tp.getNgayThue()
                 };
                 model.addRow(row); //thêm một hàng vào JTable
             }
-        }
-        catch(Exception e){
-            MsgBox.alert(this,"Lỗi truy vấn dữ liệu!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
 
-    void fillCboKhachHang(){
+    void fillCboKhachHang() {
 
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaKH.getModel();
         model.removeAllElements();
-        try{
+        try {
             List<KhachHang> list = khdao.selectAll();
-            for(KhachHang kh : list){
+            for (KhachHang kh : list) {
                 model.addElement(kh.getMaKhach());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
-    void fillCboPhong(){
+
+    void fillCboPhong() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaPhong.getModel();
         model.removeAllElements();
-        try{
+        try {
             List<Phong> list = phongdao.selectAll();
-            for(Phong ph : list){
+            for (Phong ph : list) {
                 model.addElement(ph.getMaPhong());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
-    void fillCboMaNV(){
+
+    void fillCboMaNV() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboMaNV.getModel();
         model.removeAllElements();
-        try{
+        try {
             List<NhanVien> list = nhanviendao.selectAll();
-            for(NhanVien nv : list){
+            for (NhanVien nv : list) {
                 model.addElement(nv.getMaNV());
             }
-        }catch(Exception ex){
+
+            //chỉ hiển thị nhân viên đang đăng nhập thực hiện
+            cboMaNV.setSelectedItem(Auth.user.getMaNV());
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
-    void clearForm(){
+
+    void clearForm() {
         boolean edit = (this.row >= 0);
         ThuePhong tp = new ThuePhong();
         tp.setMaNV(Auth.user.getMaNV());
@@ -541,18 +554,19 @@ void fillTable(){
         txtMaPhieuThue.setEnabled(edit);
         btnThem.setEnabled(edit);
     }
+
     ThuePhong getForm() {
         ThuePhong tp = new ThuePhong();
         tp.setMaPhieuThue(txtMaPhieuThue.getText());
         tp.setNgayThue(XDate.toDate(txtNgayThue.getText(), "yyyy-MM-dd"));
         tp.setTienCoc(Double.valueOf(txtTienCoc.getText()));
         tp.setMaKhach((String) cboMaKH.getSelectedItem());
-        tp.setMaPhong ( (String) cboMaPhong.getSelectedItem());
+        tp.setMaPhong((String) cboMaPhong.getSelectedItem());
         tp.setMaNV((String) cboMaNV.getSelectedItem());
         return tp;
     }
-    
-    void setForm(ThuePhong tp){
+
+    void setForm(ThuePhong tp) {
         txtMaPhieuThue.setText(tp.getMaPhieuThue());
         txtTienCoc.setText(String.valueOf(tp.getTienCoc()));
         txtNgayThue.setText(XDate.toString(tp.getNgayThue(), "yyyy-MM-dd"));
@@ -560,89 +574,149 @@ void fillTable(){
         cboMaPhong.setSelectedItem(tp.getMaPhong());
         cboMaNV.setSelectedItem(tp.getMaNV());
     }
-    
+
     void insert() {
-        ThuePhong model = getForm();
+        boolean kqkt = kiemTraDinhDang();
+        if (kqkt) {
+            ThuePhong model = getForm();
+
+            // kiem tra phong da duoc thue hay chua
+            if (dao.isPhongDaThue(model.getMaPhong())) {
+                MsgBox.alert(this, "Phòng này đã được thuê, không thể thêm mới!");
+                return;
+            }
+
+            try {
+                dao.insert(model);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Thêm mới thành công!");
+            } catch (HeadlessException e) {
+                MsgBox.alert(this, "Thêm mới thất bại!");
+            }
+        }
+
+    }
+
+    void update() {
+        boolean kqkt = kiemTraDinhDang();
+        if (kqkt) {
+            ThuePhong model = getForm();
+            try {
+                dao.update(model);
+                this.fillTable();
+                MsgBox.alert(this, "Cập nhật thành công!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Cập nhật thất bại!");
+            }
+        }
+
+    }
+
+    void delete() {
+        String maPhieuThue = txtMaPhieuThue.getText();
+        if(maPhieuThue.trim().equals("")){
+            MsgBox.alert(this, "Cần mã phiếu thuê để xóa phòng!");
+            return;
+        }
         try {
-            dao.insert(model);
+            dao.delete(maPhieuThue);
             this.fillTable();
             this.clearForm();
-            MsgBox.alert(this, "Thêm mới thành công!");
-        } catch (HeadlessException e) {
-            MsgBox.alert(this, "Thêm mới thất bại!");
-        }
-    }
-    
-    void update(){
-        ThuePhong model = getForm();
-        try {
-            dao.update(model);
-            this.fillTable();
-            MsgBox.alert(this, "Cập nhật thành công!");
-        } 
-        catch (Exception e) {
-            MsgBox.alert(this, "Cập nhật thất bại!");
+            MsgBox.alert(this, "Xóa thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Xóa thất bại!");
         }
     }
 
-    void delete(){
-            String maPhieuThue = txtMaPhieuThue.getText();
-            try {
-                dao.delete(maPhieuThue);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xóa thành công!");
-            } 
-            catch (Exception e) {
-                MsgBox.alert(this, "Xóa thất bại!");
-            }            
-        }
-    
     void edit() {
         String mapt = (String) tblThuePhong.getValueAt(this.row, 0);
         ThuePhong tp = dao.selectById(mapt);
         this.setForm(tp);
+        txtMaPhieuThue.setEditable(false);
         this.updateStatus();
         tabs.setSelectedIndex(0);
     }
-        
-        void first(){
+
+    void first() {
         this.row = 0;
         this.edit();
     }
-    void prev(){
-        if(this.row > 0){
+
+    void prev() {
+        if (this.row > 0) {
             this.row--;
             this.edit();
         }
     }
-    void next(){
-        if(this.row < tblThuePhong.getRowCount() - 1){
+
+    void next() {
+        if (this.row < tblThuePhong.getRowCount() - 1) {
             this.row++;
             this.edit();
         }
     }
-    void last(){
-         this.row = tblThuePhong.getRowCount() - 1;
+
+    void last() {
+        this.row = tblThuePhong.getRowCount() - 1;
         this.edit();
     }
-    
-    void updateStatus(){
+
+    void updateStatus() {
         boolean edit = (this.row >= 0);
         boolean first = (this.row == 0);
         boolean last = (this.row == tblThuePhong.getRowCount() - 1);
         // Trạng thái form
-        txtMaPhieuThue.setEnabled(!edit);
+//        txtMaPhieuThue.setEnabled(!edit);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
-        
+
         // Trạng thái điều hướng
         btnFirst.setEnabled(edit && !first);
         btnPrev.setEnabled(edit && !first);
         btnNext.setEnabled(edit && !last);
         btnLast.setEnabled(edit && !last);
     }
-    
-} 
 
+    public boolean kiemTraDinhDang() {
+        if (txtTienCoc.getText().trim().isEmpty()) {
+            MsgBox.alert(this, "Tiền cọc không được để trống!");
+            return false;
+        }
+
+        try {
+            Double.parseDouble(txtTienCoc.getText().trim());
+        } catch (NumberFormatException e) {
+            MsgBox.alert(this, "Tiền cọc phải là số hợp lệ!");
+            return false;
+        }
+
+        if (txtNgayThue.getText().trim().isEmpty()) {
+            MsgBox.alert(this, "Ngày thuê không được để trống!");
+            return false;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+        try {
+            sdf.parse(txtNgayThue.getText().trim());
+        } catch (ParseException e) {
+            MsgBox.alert(this, "Ngày thuê không hợp lệ! Vui lòng nhập đúng định dạng yyyy-MM-dd.");
+            return false;
+        }
+
+        if (cboMaKH.getSelectedItem() == null || cboMaKH.getSelectedItem().toString().trim().isEmpty()) {
+            MsgBox.alert(this, "Mã khách hàng không được để trống!");
+            return false;
+        }
+
+        if (cboMaPhong.getSelectedItem() == null || cboMaPhong.getSelectedItem().toString().trim().isEmpty()) {
+            MsgBox.alert(this, "Mã phòng không được để trống!");
+            return false;
+        }
+
+        return true;
+    }
+
+}

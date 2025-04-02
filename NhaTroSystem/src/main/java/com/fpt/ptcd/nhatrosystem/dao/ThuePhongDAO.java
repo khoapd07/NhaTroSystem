@@ -18,9 +18,10 @@ import java.util.List;
 public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
 
     public void insert(ThuePhong model) {
-        String sql = "INSERT INTO ThuePhong (MaPhieuThue, MaPhong, MaKhach, MaNV, TienCoc, NgayThue, NgayTra) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//        String sql = "INSERT INTO ThuePhong (MaPhieuThue, MaPhong, MaKhach, MaNV, TienCoc, NgayThue, NgayTra) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ThuePhong (MaPhong, MaKhach, MaNV, TienCoc, NgayThue, NgayTra) VALUES (?, ?, ?, ?, ?, ?)";
         XJdbc.update(sql,
-                model.getMaPhieuThue(),
+                //                model.getMaPhieuThue(),
                 model.getMaPhong(),
                 model.getMaKhach(),
                 model.getMaNV(),
@@ -30,6 +31,7 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
     }
 
     public void update(ThuePhong model) {
+//        String sql = "UPDATE ThuePhong SET MaPhong=?, MaKhach=?, MaNV=?, TienCoc=?, NgayThue=?, NgayTra=? WHERE MaPhieuThue=?";
         String sql = "UPDATE ThuePhong SET MaPhong=?, MaKhach=?, MaNV=?, TienCoc=?, NgayThue=?, NgayTra=? WHERE MaPhieuThue=?";
         XJdbc.update(sql,
                 model.getMaPhong(),
@@ -140,6 +142,20 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
     public void xoaNgayTra(String maPhieuThue, String maPhong) {
         String sql = "UPDATE ThuePhong SET NgayTra = NULL WHERE MaPhieuThue = ? AND MaPhong = ?";
         XJdbc.update(sql, maPhieuThue, maPhong);
+    }
+
+    public boolean isPhongDaThue(String maPhong) {
+        String sql = "SELECT COUNT(*) FROM ThuePhong WHERE MaPhong = ? AND NgayTra IS NULL";
+        try {
+            ResultSet rs = XJdbc.query(sql, maPhong);
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu số lượng lớn hơn 0 tức là phòng đã được thuê
+            }
+            rs.getStatement().getConnection().close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Loi kiem tra phong da thue: ", e);
+        }
+        return false;
     }
 
 }
