@@ -141,4 +141,42 @@ public class MucGia {
     }
 
   
+    
+    public double tinhTienDien(int soDien) {
+        double tienDien = 0;
+        if (soDien <0 ){
+            System.out.println("Số KWh diện không thể âm!");
+        }
+        if (soDien <= 50 && soDien >=0) {
+            tienDien = soDien * this.getTienDienBac1();
+        } else if (soDien >50 && soDien <= 100) {
+            tienDien = (50 * this.getTienDienBac1()) + ((soDien - 50) * this.getTienDienBac2());
+        } else if (soDien >100 && soDien <=200) {
+            tienDien = (50 * this.getTienDienBac1()) + (50 * this.getTienDienBac2()) + ((soDien - 100) * this.getTienDienBac3());
+        } else if (soDien>200 && soDien<=300){
+            tienDien = (50 * this.getTienDienBac1()) + (50 * this.getTienDienBac2()) + (100 * this.getTienDienBac3()) + ((soDien -200) * this.getTienDienBac4());
+        } else if (soDien>300 && soDien<= 400){
+            tienDien = (50 * this.getTienDienBac1()) + (50 * this.getTienDienBac2()) + (100 * this.getTienDienBac3()) + (100 * this.getTienDienBac4()) + ((soDien - 300) * this.getTienDienBac5());
+        } else{
+            tienDien = (50 * this.getTienDienBac1()) + (50 * this.getTienDienBac2()) + (100 * this.getTienDienBac3()) + (100 * this.getTienDienBac4()) + (100 * this.getTienDienBac5()) + ((soDien -400)* this.getTienDienBac6());
+        }
+        return tienDien;
+    }
+    
+    public double tinhTienNuoc(int soNuoc) {
+        double tienNuoc = 0;
+        if (soNuoc < 0) {
+            System.out.println("Số m3 nước không thể âm!");
+        }else if(soNuoc <=10){
+            tienNuoc = soNuoc * this.getTienNuocBac1();
+        }else if (soNuoc>10 && soNuoc <=20){
+            tienNuoc = (10* this.getTienNuocBac1()) + ((soNuoc-10)*this.getTienNuocBac2());
+        }else if (soNuoc>20 && soNuoc<=30){
+            tienNuoc = (10* this.getTienNuocBac1()) + (10 * this.getTienNuocBac2()) + ((soNuoc -20) * this.getTienNuocBac3());
+        } else{
+            tienNuoc = (10 * this.getTienNuocBac1()) + (10 * this.getTienNuocBac2()) +(10 * this.getTienNuocBac3()) + ((soNuoc-30) *this.getTienNuocBac4());
+        }
+        return tienNuoc;
+    }
+    
 }

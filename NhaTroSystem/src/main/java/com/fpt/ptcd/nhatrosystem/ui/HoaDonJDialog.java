@@ -26,12 +26,15 @@ import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
 import java.awt.HeadlessException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -163,6 +166,10 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         jLabel3.setText("Số m3/Nước");
 
         jLabel2.setText("Số kWh/Điện");
+
+        txtTienWifi.setEnabled(false);
+
+        txtTienRac.setEnabled(false);
 
         jLabel1.setText("Chi phí khác");
 
@@ -491,9 +498,12 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     private javax.swing.JSpinner txtTienWifi;
     // End of variables declaration//GEN-END:variables
 
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    
     ThuePhongDAO tpdao = new ThuePhongDAO();
     MucGiaDAO mgdao = new MucGiaDAO();
     HoaDonDAO hddao = new HoaDonDAO();
+    KhachHangDAO khdao = new KhachHangDAO();
     
     int row = -1; //hàng được chọn hiện tại trên bảng
     
@@ -503,6 +513,12 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         this.fillTable();
         this.row = -1;
         fillComboBoxPhieuThue();
+        
+        MucGiaDAO mucGiaDAO = new MucGiaDAO();
+        MucGia mucGia = mucGiaDAO.selectAll().get(0);
+        
+        txtTienRac.setValue(mucGia.getTienRac());
+        txtTienWifi.setValue(mucGia.getTienWifi());
     }
     
 
@@ -639,11 +655,11 @@ void fillTable() {
     HoaDon hd = new HoaDon();
     hd.setMaHoaDon(txtMaHoaDon.getText());
     hd.setMaPhieuThue((String) cboMaPhieuThue.getSelectedItem());
-    hd.setSoDien((Integer) txtSoDien.getValue());
-    hd.setSoNuoc((Integer) txtSoNuoc.getValue());
-    hd.setTienWifi((Integer) txtTienWifi.getValue());
-    hd.setTienRac((Integer) txtTienRac.getValue());
-    hd.setChiPhiKhac((Integer) txtChiPhiKhac.getValue());
+    hd.setSoDien(((Number) txtSoDien.getValue()).intValue());
+    hd.setSoNuoc(((Number) txtSoNuoc.getValue()).intValue());
+    hd.setTienWifi(((Number) txtTienWifi.getValue()).intValue());
+    hd.setTienRac(((Number) txtTienRac.getValue()).intValue());
+    hd.setChiPhiKhac(((Number) txtChiPhiKhac.getValue()).intValue());
     hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
 
     // Tính tổng tiền trước khi lưu vào database
@@ -813,21 +829,40 @@ void fillTable() {
         return;
     }
 
-    // Giả sử bạn có phương thức lấy email khách hàng từ mã phiếu thuê
-    String emailKhachHang = getEmailByMaPhieuThue(hd.getMaPhieuThue());
+    // Lấy thông tin ngày thuê, ngày trả
+    LocalDate ngayThue = tpdao.getNgayThueByMaPhieuThue(hd.getMaPhieuThue());
+    LocalDate ngayTra = tpdao.getNgayTraByMaPhieuThue(hd.getMaPhieuThue());
+    
+    if (ngayThue == null || ngayTra == null) {
+        MsgBox.alert(this, "Không tìm thấy ngày thuê hoặc ngày trả!");
+        return;
+    }
 
+    // Lấy email khách hàng
+    String emailKhachHang = khdao.getEmailByMaPhieuThue(hd.getMaPhieuThue());
     if (emailKhachHang == null || emailKhachHang.isEmpty()) {
         MsgBox.alert(this, "Không tìm thấy email khách hàng!");
         return;
     }
 
-    try {
-        HoaDonService.guiHoaDon(hd, emailKhachHang);
-        MsgBox.alert(this, "Hóa đơn đã được gửi đến " + emailKhachHang);
-    } catch (Exception e) {
-        MsgBox.alert(this, "Gửi email thất bại!");
-        e.printStackTrace();
-    }
+    String filePath = "F:\\NhaTroSystem\\NhaTroSystem\\src\\main\\java\\excel\\mucGia.xlsx"; // Thay bằng đường dẫn thực tế
+
+    Runnable emailTask = () -> {
+        try {
+            LocalDate today = LocalDate.now();
+            // Kiểm tra nếu hôm nay đã đủ 1 tháng từ ngày thuê và chưa đến ngày trả
+            if (!today.isBefore(ngayThue.plusMonths(1)) && today.isBefore(ngayTra)) {
+                HoaDonService.guiHoaDon(hd, emailKhachHang, filePath);
+                System.out.println("Đã gửi hóa đơn đến " + emailKhachHang);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    };
+
+    // Lên lịch gửi mỗi ngày, bắt đầu từ bây giờ
+    scheduler.scheduleAtFixedRate(emailTask, 0, 1, TimeUnit.DAYS);
+    MsgBox.alert(this, "Hóa đơn sẽ được gửi hàng tháng đến " + emailKhachHang + " cho đến ngày trả.");
 }
     
     

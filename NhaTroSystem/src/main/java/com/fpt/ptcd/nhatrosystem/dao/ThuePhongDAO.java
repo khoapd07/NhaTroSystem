@@ -6,8 +6,10 @@ package com.fpt.ptcd.nhatrosystem.dao;
 
 import com.fpt.ptcd.nhatrosystem.entity.ThuePhong;
 import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,4 +160,29 @@ public class ThuePhongDAO extends QLNhaTroDAO<ThuePhong, String> {
         return false;
     }
 
+    public LocalDate getNgayThueByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT NgayThue FROM ThuePhong WHERE MaPhieuThue = ?";
+    try (PreparedStatement stmt = XJdbc.getStmt(sql, maPhieuThue);
+         ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+            return rs.getDate("NgayThue").toLocalDate();
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null; // Trả về null nếu không tìm thấy
+}
+    
+    public LocalDate getNgayTraByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT NgayTra FROM ThuePhong WHERE MaPhieuThue = ?";
+    try (PreparedStatement stmt = XJdbc.getStmt(sql, maPhieuThue);
+         ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+            return rs.getDate("NgayTra").toLocalDate();
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null; // Trả về null nếu không tìm thấy
+}
 }

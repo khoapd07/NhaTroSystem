@@ -7,6 +7,7 @@ package com.fpt.ptcd.nhatrosystem.dao;
 import com.fpt.ptcd.nhatrosystem.entity.KhachHang;
 import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
 import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -97,4 +98,19 @@ public class KhachHangDAO extends QLNhaTroDAO<KhachHang,String> {
         }
         return "Không xác định";
     }
+    public String getEmailByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT k.Email FROM KhachHang k " +
+                 "JOIN ThuePhong t ON k.MaKhach = t.MaKhach " +
+                 "WHERE t.MaPhieuThue = ?";
+    try (PreparedStatement stmt = XJdbc.getStmt(sql, maPhieuThue);
+         ResultSet rs = stmt.executeQuery()) {
+        if (rs.next()) {
+            return rs.getString("Email");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null; // Trả về null nếu không tìm thấy
+}
+    
 }

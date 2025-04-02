@@ -7,6 +7,8 @@ package com.fpt.ptcd.nhatrosystem.dao;
 import com.fpt.ptcd.nhatrosystem.entity.LoaiPhong;
 import com.fpt.ptcd.nhatrosystem.entity.Phong;
 import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -84,4 +86,17 @@ public class PhongDAO extends QLNhaTroDAO<Phong,String> {
         String sql="SELECT * FROM Phong WHERE TenPhong LIKE ?";
         return this.selectBySql(sql, "%"+keyword+"%");
     }
+    
+    public String getMaPhongByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT MaPhong FROM ThuePhong WHERE MaPhieuThue= ? ";
+    try {
+        ResultSet rs = XJdbc.query(sql, maPhieuThue);
+        if (rs.next()) {
+            return rs.getString("MaPhong");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return "Không xác định";
+}
 }

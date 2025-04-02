@@ -77,4 +77,31 @@ public class LoaiPhongDAO extends QLNhaTroDAO<LoaiPhong,String>{
         }
         return list;
     }
+    
+    public String getLoaiPhongByMaPhong(String maPhong) {
+    String sql = "SELECT TenLoai FROM LoaiPhong WHERE TenLoai = " +
+                 "(SELECT TenLoai FROM Phong WHERE MaPhong = ?)";
+    try {
+        ResultSet rs = XJdbc.query(sql, maPhong);
+        if (rs.next()) {
+            return rs.getString("TenLoai");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return "Không xác định";
+}
+    
+    public double getGiaPhongByTenLoai(String tenLoai) {
+    String sql = "SELECT GiaPhong FROM LoaiPhong WHERE TenLoai = ?";
+    try {
+        ResultSet rs = XJdbc.query(sql, tenLoai);
+        if (rs.next()) {
+            return rs.getDouble("GiaPhong"); // Trả về giá phòng dưới dạng double
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return -1; // Trả về -1 nếu không tìm thấy (hoặc có thể throw Exception)
+}
 }
