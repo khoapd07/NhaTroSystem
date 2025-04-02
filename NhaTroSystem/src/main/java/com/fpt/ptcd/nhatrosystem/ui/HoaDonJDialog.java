@@ -603,16 +603,16 @@ void fillTable() {
             Date ngayThue = thuePhong.getNgayThue();
             Date ngayTra = thuePhong.getNgayTra();
 
-            int soThang = 1; // Mặc định tính 1 tháng nếu ngày trả là null
-
-            if (ngayTra != null) { // Nếu đã trả phòng, tính số tháng thực tế
-                long diffInMillies = ngayTra.getTime() - ngayThue.getTime();
-                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-                soThang = (int) Math.ceil(diffInDays / 31.0); // Làm tròn lên số tháng
-            }
+//            int soThang = 1; // Mặc định tính 1 tháng nếu ngày trả là null
+//
+//            if (ngayTra != null) { // Nếu đã trả phòng, tính số tháng thực tế
+//                long diffInMillies = ngayTra.getTime() - ngayThue.getTime();
+//                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//                soThang = (int) Math.ceil(diffInDays / 31.0); // Làm tròn lên số tháng
+//            }
 
             // Tính tổng tiền phòng theo số tháng
-            double tienPhong = giaPhong * soThang;
+            double tienPhong = giaPhong; //* soThang;
             // Tính tiền điện theo số điện tiêu thụ
             int soDien = hd.getSoDien();
             double tienDien = tinhTienDien(soDien, mucGia);
