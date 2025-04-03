@@ -603,6 +603,10 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
         if (kqkt) {
             ThuePhong model = getForm();
             try {
+                if (dao.isPhongDaThue(model.getMaPhong())) {
+                    MsgBox.alert(this, "Phòng này đã được thuê, không thể thêm mới!");
+                    return;
+                }
                 dao.update(model);
                 this.fillTable();
                 MsgBox.alert(this, "Cập nhật thành công!");
@@ -615,7 +619,7 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
 
     void delete() {
         String maPhieuThue = txtMaPhieuThue.getText();
-        if(maPhieuThue.trim().equals("")){
+        if (maPhieuThue.trim().equals("")) {
             MsgBox.alert(this, "Cần mã phiếu thuê để xóa phòng!");
             return;
         }
