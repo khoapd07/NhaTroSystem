@@ -20,9 +20,10 @@ import java.util.List;
  */
 public class PhongDAO extends QLNhaTroDAO<Phong,String> {
     public void insert(Phong model){
-        String sql="INSERT INTO Phong (MaPhong, MaLoai, TenPhong, TrangThai, GhiChu) VALUES (?, ?, ?, ?, ?)";
+//        String sql="INSERT INTO Phong (MaPhong, MaLoai, TenPhong, TrangThai, GhiChu) VALUES (?, ?, ?, ?, ?)";
+        String sql="INSERT INTO Phong (MaLoai, TenPhong, TrangThai, GhiChu) VALUES (?, ?, ?, ?)";
         XJdbc.update(sql, 
-                model.getMaPhong(), 
+//                model.getMaPhong(), 
                 model.getMaLoai(), 
                 model.getTenPhong(),
                 model.isTrangThai(),

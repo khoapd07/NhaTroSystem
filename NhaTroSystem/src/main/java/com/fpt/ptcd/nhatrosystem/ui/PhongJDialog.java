@@ -113,6 +113,7 @@ public class PhongJDialog extends javax.swing.JDialog {
 
         lblTenPT.setText("Tên phòng trọ");
 
+        txtMaPT.setEditable(false);
         txtMaPT.setAutoscrolls(false);
 
         btnMoi.setText("Mới");
@@ -574,7 +575,8 @@ public class PhongJDialog extends javax.swing.JDialog {
             return;
         } else {
             String maPhongTro = txtMaPT.getText();
-            MsgBox.confirm(this, "Bạn thực sự muốn xóa phòng trọ này?");
+            if(!(MsgBox.confirm(this, "Bạn thực sự muốn xóa phòng trọ này?")))return;
+            
             try {
                 dao.delete(maPhongTro);
                 this.fillTable();
@@ -614,6 +616,7 @@ public class PhongJDialog extends javax.swing.JDialog {
         this.setForm(phong);
         this.row = -1;
         updateStatus();
+        txtMaPT.setEditable(false);
 
     }
 
@@ -630,10 +633,10 @@ public class PhongJDialog extends javax.swing.JDialog {
     }
 
     boolean kiemTraDinhDang(Phong phong) {
-        if (phong.getMaPhong().trim().isEmpty()) {
-            MsgBox.alert(this, "Không bỏ trống mã phòng");
-            return false;
-        }
+//        if (phong.getMaPhong().trim().isEmpty()) {
+//            MsgBox.alert(this, "Không bỏ trống mã phòng");
+//            return false;
+//        }
 
         if (phong.getTenPhong().trim().isEmpty()) {
             MsgBox.alert(this, "Không bỏ trống tên phòng");
@@ -652,7 +655,7 @@ public class PhongJDialog extends javax.swing.JDialog {
         boolean first = (this.row == 0);
         boolean last = (this.row == tblPhong.getRowCount() - 1);
         // Trạng thái form
-        txtMaPT.setEditable(!edit);
+//        txtMaPT.setEditable(!edit);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);

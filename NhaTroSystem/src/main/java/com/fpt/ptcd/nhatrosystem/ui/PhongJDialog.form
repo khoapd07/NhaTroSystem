@@ -273,6 +273,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtMaPT">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="autoscrolls" type="boolean" value="false"/>
               </Properties>
             </Component>
