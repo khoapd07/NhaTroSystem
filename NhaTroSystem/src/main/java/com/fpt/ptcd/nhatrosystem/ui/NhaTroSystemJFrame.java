@@ -53,6 +53,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         pnlTrangThai = new javax.swing.JPanel();
         lblHeQuanLyDaoTao = new javax.swing.JLabel();
         lblDongHo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblTK = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
         mniDangNhap = new javax.swing.JMenuItem();
@@ -74,6 +76,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         mniDoanhThu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         lblHinh.setBackground(new java.awt.Color(255, 255, 255));
         lblHinh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -180,7 +183,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         tbaCongCu.add(jSeparator2);
 
         btnDangXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/icon/Log out.png"))); // NOI18N
-        btnDangXuat.setText("Đặng xuất");
+        btnDangXuat.setText("Đăng xuất");
         btnDangXuat.setFocusable(false);
         btnDangXuat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDangXuat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -210,6 +213,10 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
 
         lblDongHo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/icon/Clock.png"))); // NOI18N
 
+        jLabel1.setText("Tài khoản : ");
+
+        lblTK.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout pnlTrangThaiLayout = new javax.swing.GroupLayout(pnlTrangThai);
         pnlTrangThai.setLayout(pnlTrangThaiLayout);
         pnlTrangThaiLayout.setHorizontalGroup(
@@ -217,6 +224,10 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             .addGroup(pnlTrangThaiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblHeQuanLyDaoTao)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTK, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDongHo)
                 .addContainerGap())
@@ -225,9 +236,12 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTrangThaiLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHeQuanLyDaoTao)
-                    .addComponent(lblDongHo))
+                .addGroup(pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblHeQuanLyDaoTao)
+                        .addComponent(lblDongHo)
+                        .addComponent(jLabel1)))
                 .addContainerGap())
         );
 
@@ -520,7 +534,15 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NhaTroSystemJFrame().setVisible(true);
+//                new NhaTroSystemJFrame().setVisible(true);
+                ChaoJDialog loadingDialog = new ChaoJDialog(null, true);
+                loadingDialog.setVisible(true);
+
+                // Sau khi loading xong, mở màn hình đăng nhập
+                DangNhapJDialog loginForm = new DangNhapJDialog(null, true);
+                loginForm.setLocationRelativeTo(null);
+                loginForm.setVisible(true);
+
             }
         });
     }
@@ -536,6 +558,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnQLTaiKhoan;
     private javax.swing.JButton btnThuePhong;
     private javax.swing.JButton btnTraPhong;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -546,6 +569,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JLabel lblHeQuanLyDaoTao;
     private javax.swing.JLabel lblHinh;
+    private javax.swing.JLabel lblTK;
     private javax.swing.JMenuItem mniDangNhap;
     private javax.swing.JMenuItem mniDangXuat;
     private javax.swing.JMenuItem mniDoanhThu;
@@ -564,15 +588,14 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar tbaCongCu;
     // End of variables declaration//GEN-END:variables
 
-    private void init(){
+    private void init() {
         setIconImage(XImage.getAppIcon());
         this.setLocationRelativeTo(null);
-        new ChaoJDialog(this, true).setVisible(true);
-        new DangNhapJDialog(this, true).setVisible(true);
         checkRole();
         this.startDongHo();
+        lblTK.setText(Auth.user.getMaNV());
     }
-    
+
     private void checkRole() {
         if (Auth.isLogin()) {
             if (!Auth.isManager()) {
@@ -586,8 +609,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             }
         }
     }
-    
-    private void startDongHo(){
+
+    private void startDongHo() {
         new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -595,93 +618,84 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
                 SimpleDateFormat formater = new SimpleDateFormat("hh:mm:ss a");
                 String text = formater.format(now);
                 lblDongHo.setText(text);
-            }  
+            }
         }).start();
     }
-    
-    private void openTaiKhoan(){
-        if(Auth.isLogin()){
+
+    private void openTaiKhoan() {
+        if (Auth.isLogin()) {
             new TaiKhoanJDialog(this, true).setVisible(true);
-        }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
     }
-    
-    private void openLoaiPhong(){
-        if(Auth.isLogin()){
+
+    private void openLoaiPhong() {
+        if (Auth.isLogin()) {
             new LoaiPhongJDialog(this, true).setVisible(true);
-        }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
     }
-    
-    private void openPhong(){
-        if(Auth.isLogin()){
+
+    private void openPhong() {
+        if (Auth.isLogin()) {
             new PhongJDialog(this, true).setVisible(true);
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
-        }        
     }
-    
-    private void openKhachHang(){
-        if(Auth.isLogin()){
+
+    private void openKhachHang() {
+        if (Auth.isLogin()) {
             new KhachHangJDialog(this, true).setVisible(true);
-        }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
     }
-       
-    private void openMucGia(){
-        if(Auth.isLogin()){
+
+    private void openMucGia() {
+        if (Auth.isLogin()) {
             new MucGiaJDialog(this, true).setVisible(true);
-        }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
     }
-    
-    private void openThuePhong(){
-        if(Auth.isLogin()){
+
+    private void openThuePhong() {
+        if (Auth.isLogin()) {
             new ThuePhongJDialog(this, true).setVisible(true);
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
-        }        
     }
-    
-    private void openTraPhong(){
-        if(Auth.isLogin()){
+
+    private void openTraPhong() {
+        if (Auth.isLogin()) {
             new TraPhongJDialog(this, true).setVisible(true);
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
-        }        
     }
-    
-    private void openHoaDon(){
-        if(Auth.isLogin()){
+
+    private void openHoaDon() {
+        if (Auth.isLogin()) {
             new HoaDonJDialog(this, true).setVisible(true);
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
-        else{
-            MsgBox.alert(this,"Vui lòng đăng nhập!");
-        }        
     }
-    
-    private void openThongKe(int index){
-        if(Auth.isLogin()){
-            if(index == 2 && !Auth.isManager()){
+
+    private void openThongKe(int index) {
+        if (Auth.isLogin()) {
+            if (index == 2 && !Auth.isManager()) {
                 MsgBox.alert(this, "Bạn không có quyền xem thông tin doanh thu");
                 return;
             }
             ThongKeJDialog tkwin = new ThongKeJDialog(this, true);
             tkwin.selectTab(index);
             tkwin.setVisible(true);
-        }
-        else{
+        } else {
             MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
     }
@@ -693,7 +707,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Vui lòng đăng nhập");
         }
     }
-    
+
     private void openDangNhap() {
         if (Auth.isLogin()) {
             new DangNhapJDialog(this, true).setVisible(true);
@@ -701,14 +715,18 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Vui lòng đăng nhập");
         }
     }
-    
-    private void dangXuat(){
+
+    private void dangXuat() {
         Auth.clear();
-        new DangNhapJDialog(this, true).setVisible(true);
+        dispose();
+        DangNhapJDialog loginForm = new DangNhapJDialog(null, true);
+        loginForm.setLocationRelativeTo(null);
+        loginForm.setVisible(true);
+
     }
-    
-    private void ketThuc(){
-        if(MsgBox.confirm(this, "Bạn chắc là muốn kết thúc làm việc chứ!!!")){
+
+    private void ketThuc() {
+        if (MsgBox.confirm(this, "Bạn chắc là muốn kết thúc làm việc chứ!!!")) {
             System.exit(0);
         }
     }

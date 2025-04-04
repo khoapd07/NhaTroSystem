@@ -11,7 +11,11 @@ import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,15 +30,9 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        enter();
         setLocationRelativeTo(null);
-        txtMatKhau.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Nếu nhấn Enter
-                    dangNhap(); // Gọi hàm đăng nhập
-                }
-            }
-        });
+        
     }
 
     /**
@@ -257,12 +255,6 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 DangNhapJDialog dialog = new DangNhapJDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
                 dialog.setVisible(true);
             }
         });
@@ -315,15 +307,28 @@ public class DangNhapJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Sai mật khẩu!");
         } else {
             Auth.user = nhanVien;
+
             this.dispose();
+            new NhaTroSystemJFrame().setVisible(true);
         }
 
     }
 
     private void dangXuat() {
-        if (MsgBox.confirm(this, "Bạn có chắc muốn dừng ứng dụng!!!")) {
+        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn dừng ứng dụng!!!");
+        if (confirm) {
             System.exit(0);
         }
     }
 
+    private void enter() {
+        txtMatKhau.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Nếu nhấn Enter
+                    dangNhap(); // Gọi hàm đăng nhập
+                }
+            }
+        });
+    }
 }

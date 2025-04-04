@@ -7,6 +7,7 @@ package com.fpt.ptcd.nhatrosystem.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import javax.swing.JDialog;
 import javax.swing.Timer;
 
 /**
@@ -20,8 +21,11 @@ public class ChaoJDialog extends javax.swing.JDialog {
      */
     public ChaoJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         initComponents();
         init();
+        
+
     }
 
     /**
@@ -98,11 +102,15 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 ChaoJDialog dialog = new ChaoJDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
+                        DangNhapJDialog loginForm = new DangNhapJDialog(null, true);
+                        loginForm.setLocationRelativeTo(null);
+                        loginForm.setVisible(true);
                         System.exit(0);
                     }
                 });
@@ -126,13 +134,18 @@ public class ChaoJDialog extends javax.swing.JDialog {
                 int value = pgdLoading.getValue();
                 if (value < pgdLoading.getMaximum()) {
                     // Sinh số ngẫu nhiên từ 1 đến 13 để tăng thanh loading không đều
-                    int randomIncrement = random.nextInt(13) + 1; 
+                    int randomIncrement = random.nextInt(13) + 1;
                     pgdLoading.setValue(Math.min(value + randomIncrement, pgdLoading.getMaximum()));
                 } else {
+
                     ((Timer) e.getSource()).stop(); // Dừng Timer khi load xong
+
                     ChaoJDialog.this.dispose();
+
                 }
             }
+
         }).start();
+
     }
 }
