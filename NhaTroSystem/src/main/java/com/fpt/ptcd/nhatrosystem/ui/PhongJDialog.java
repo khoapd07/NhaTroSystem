@@ -546,6 +546,11 @@ public class PhongJDialog extends javax.swing.JDialog {
     }
 
     void update() {
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền cập nhật!");
+            return;
+        }
+        
         Phong phong = this.getForm();
         boolean kqkt = kiemTraDinhDang(phong);
         if (kqkt) {
@@ -566,9 +571,10 @@ public class PhongJDialog extends javax.swing.JDialog {
     }
 
     void delete() {
-//        if(!Auth.isManager()){
-//            MsgBox.alert(this, "Bạn không có quyền xóa phòng!");
-//        }
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền xóa!");
+            return;
+        }
 
         if (txtMaPT.getText().trim().isEmpty()) {
             MsgBox.alert(this, "Kiểm tra mã phòng và thử lại!");

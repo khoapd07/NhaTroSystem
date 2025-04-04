@@ -6,6 +6,7 @@ package com.fpt.ptcd.nhatrosystem.ui;
 
 import com.fpt.ptcd.nhatrosystem.dao.MucGiaDAO;
 import com.fpt.ptcd.nhatrosystem.entity.MucGia;
+import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -560,6 +561,11 @@ public class MucGiaJDialog extends javax.swing.JDialog {
     }
 
     void update() {
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền cập nhật!");
+            return;
+        }
+        
         MucGia mucGia = this.getForm();
         boolean kqkt = kiemTraDinhDang(mucGia);
         if (kqkt) {

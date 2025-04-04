@@ -250,7 +250,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 7, Short.MAX_VALUE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         tabs.addTab("CHỈNH SỬA", jPanel1);
@@ -294,7 +294,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -316,8 +316,7 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(lblQL)
                 .addGap(18, 18, 18)
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE))
         );
 
         pack();
@@ -493,6 +492,11 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     }
     
     private void update(){
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền cập nhật!");
+            return;
+        }
+        
         if (!validateForm()) {
             return;
         }
@@ -514,6 +518,11 @@ public class LoaiPhongJDialog extends javax.swing.JDialog {
     }
     
     private void delete(){
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền xóa!");
+            return;
+        }
+        
         String maLP = txtMaLP.getText().trim();
         
         if (maLP.isEmpty()) {

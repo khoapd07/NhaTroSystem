@@ -243,7 +243,7 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
                         .addComponent(btnSua)
                         .addComponent(btnXoa)
                         .addComponent(btnMoi)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Tìm kiếm"));
@@ -298,7 +298,8 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -476,6 +477,11 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     }
 
     private void update() {
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền cập nhật!");
+            return;
+        }
+        
         if (!validateForm()) {
             return;
         }
@@ -497,6 +503,11 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     }
 
     private void delete() {
+        if(!Auth.isManager()){
+            MsgBox.alert(this, "Bạn không có quyền xóa!");
+            return;
+        }
+        
         String manv = txtMaNV.getText().trim(); // Lấy mã nhân viên từ form
 
         if (manv.isEmpty()) {
