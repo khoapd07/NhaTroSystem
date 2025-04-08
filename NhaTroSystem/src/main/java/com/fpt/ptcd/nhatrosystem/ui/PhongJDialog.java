@@ -491,6 +491,7 @@ public class PhongJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtTimKiem1;
     // End of variables declaration//GEN-END:variables
+    
     LoaiPhongDAO lpdao = new LoaiPhongDAO();
     PhongDAO dao = new PhongDAO(); //làm việc với bảng nhanvien
     int row = -1; //hàng được chọn hiện tại trên bảng

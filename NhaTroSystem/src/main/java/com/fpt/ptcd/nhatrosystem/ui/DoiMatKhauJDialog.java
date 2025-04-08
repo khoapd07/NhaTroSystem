@@ -9,6 +9,7 @@ import com.fpt.ptcd.nhatrosystem.entity.NhanVien;
 import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import java.awt.Color;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
 
 /**
@@ -218,25 +219,49 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     }
     NhanVienDAO dao = new NhanVienDAO();
     
-    private void doiMatKhau(){
-        String manv = txtMaNV.getText();
-        String matKhau = new String(txtMatKhauMoi.getPassword());
-        String matKhauMoi = new String(txtMatKhau.getPassword());
-        String matKhauMoi2 = new String(txtMatKhauMoi2.getPassword());
-        if(!manv.equalsIgnoreCase(Auth.user.getMaNV())){
-            MsgBox.alert(this, "Sai tên đăng nhập!");
+    private void doiMatKhau() {
+        String manv = txtMaNV.getText().trim();
+        char[] oldPassArray = txtMatKhau.getPassword();
+        char[] newPassArray = txtMatKhauMoi.getPassword();
+        char[] confirmPassArray = txtMatKhauMoi2.getPassword();
+
+        String oldPass = new String(oldPassArray);
+        String newPass = new String(newPassArray);
+        String confirmPass = new String(confirmPassArray);
+
+        StringBuilder sb = new StringBuilder();
+
+        if (!manv.equalsIgnoreCase(Auth.user.getMaNV())) {
+            sb.append("Sai tên đăng nhập!\n");
         }
-        else if(!matKhau.equals(Auth.user.getMatKhau())){
-            MsgBox.alert(this, "Sai mật khẩu!");
+        if (!oldPass.equals(Auth.user.getMatKhau())) {
+            sb.append("Sai mật khẩu!\n");
         }
-        else if(!matKhauMoi.equals(matKhauMoi2)){
-            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
+        if (newPass.trim().isEmpty()) {
+            sb.append("Mật khẩu mới không được để trống!\n");
         }
-        else{
-            Auth.user.setMatKhau(matKhauMoi);
+        if (!newPass.equals(confirmPass)) {
+            sb.append("Xác nhận mật khẩu không đúng!\n");
+        }
+
+        // Nếu có lỗi thì hiển thị và kết thúc
+        if (sb.length() > 0) {
+            MsgBox.alert(this, sb.toString());
+        } else {
+            Auth.user.setMatKhau(newPass);
             dao.update(Auth.user);
             MsgBox.alert(this, "Đổi mật khẩu thành công!");
+
+            // Xóa dữ liệu trên form
+            txtMatKhau.setText("");
+            txtMatKhauMoi.setText("");
+            txtMatKhauMoi2.setText("");
         }
+
+        // Xóa dữ liệu nhạy cảm khỏi bộ nhớ
+        Arrays.fill(oldPassArray, '0');
+        Arrays.fill(newPassArray, '0');
+        Arrays.fill(confirmPassArray, '0');
     }
     
     private void huyBo(){

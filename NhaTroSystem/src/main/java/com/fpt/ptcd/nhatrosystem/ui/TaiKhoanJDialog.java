@@ -503,15 +503,20 @@ public class TaiKhoanJDialog extends javax.swing.JDialog {
     }
 
     private void delete() {
-        if(!Auth.isManager()){
+        if (!Auth.isManager()) {
             MsgBox.alert(this, "Bạn không có quyền xóa!");
             return;
         }
-        
+
         String manv = txtMaNV.getText().trim(); // Lấy mã nhân viên từ form
 
         if (manv.isEmpty()) {
             MsgBox.alert(this, "Vui lòng chọn nhân viên cần xóa!");
+            return;
+        }
+
+        if (manv.equals(Auth.user.getMaNV())) {
+            MsgBox.alert(this, "Bạn không được xóa chính bạn!");
             return;
         }
 
