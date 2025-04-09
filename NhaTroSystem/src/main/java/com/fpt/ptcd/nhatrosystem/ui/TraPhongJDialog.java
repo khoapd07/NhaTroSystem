@@ -443,7 +443,6 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     private void btnTimKiem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiem1ActionPerformed
         // TODO add your handling code here:
         this.timKiem();
-        System.out.println("");
     }//GEN-LAST:event_btnTimKiem1ActionPerformed
 
     /**
@@ -554,7 +553,6 @@ public class TraPhongJDialog extends javax.swing.JDialog {
                     tp.getTienCoc(),
                     tp.getNgayTra()
                 };
-//                System.out.println(tp.getMaKhach());
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -637,16 +635,6 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
             fillComboboxMaPhongTheoKH(maKH); // Cập nhật danh sách phòng
 
-//            SwingUtilities.invokeLater(() -> {
-//                String maPhong = (String) cboMaPhong.getSelectedItem();
-//                if (maPhong != null && !maPhong.trim().isEmpty()) {
-//                    System.out.println("Ma phong sau khi cap nhat: " + maPhong);
-////                    setFormWithMaPhong();
-//                } else {
-//                    System.out.println("Không tìm thấy phòng hợp lệ sau khi cập nhật.");
-//                }
-//            });
-
         } finally {
             isUpdating = false; // Kết thúc quá trình cập nhật
         }
@@ -664,30 +652,11 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         try {
             String maPhong = (String) cboMaPhong.getSelectedItem();
             String maKH = (String) cboMaKH.getSelectedItem();
-
-            
-//            debug
-//            if (maPhong == null || maPhong.trim().isEmpty() || maKH == null || maKH.trim().isEmpty()) {
-//                System.out.println("Lỗi: Mã phòng hoặc mã khách rỗng.");
-//                return;
-//            }
-
-//            System.out.println("Dang set form voi MaPhong: " + maPhong + " va MaKH: " + maKH);
             ThuePhong tp = dao.selectByMaPhongVaMaKhach(maPhong, maKH);
 
             if (tp != null) {
-//                System.out.println("Du lieu tu DB: " + tp.getMaPhieuThue() + ", "
-//                        + tp.getMaPhong() + ", " + tp.getMaKhach() + ", "
-//                        + tp.getNgayThue() + ", " + tp.getTienCoc() + ", "
-//                        + tp.getNgayTra());
                 this.setForm(tp);
-            } else {
-//                System.out.println("Không tìm thấy phiếu thuê!");
             }
-//            row = 0;
-//            edit();
-//            dungDieuHuong = true;
-//            voHieuHoaDieuHuong();
         } finally {
             isUpdating = false; // Kết thúc quá trình cập nhật
         }
@@ -781,7 +750,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
     void clearForm() {
         ThuePhong thuePhong = new ThuePhong();
         this.setForm(thuePhong);
-
+        txtMaPhieuThue.setEditable(false);
         this.row = -1;
         updateStatus();
     }
@@ -841,7 +810,8 @@ public class TraPhongJDialog extends javax.swing.JDialog {
         boolean hasData = (tblTraPhong.getRowCount() > 0);
 
         // Trạng thái form
-        txtMaPhieuThue.setEditable(!edit);
+//        txtMaPhieuThue.setEditable(!edit);
+        txtMaPhieuThue.setEditable(false);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
@@ -893,19 +863,7 @@ public class TraPhongJDialog extends javax.swing.JDialog {
 
         }
     }
-
-//    void voHieuHoaDieuHuong(){
-//        if (!dungDieuHuong) return;
-//        
-//        btnFirst.setEnabled(false);
-//        btnPrev.setEnabled(false);
-//        btnNext.setEnabled(false);
-//        btnLast.setEnabled(false);
-//        
-//    }
-    
-    
-    //hàm gán định dạng ngày mặc địng sẽ là 0001/01/01
+    //hàm gán định dạng ngày mặc định sẽ là 0001/01/01
     Date parseDateOrDefault(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false); // Không chấp nhận ngày không hợp lệ
