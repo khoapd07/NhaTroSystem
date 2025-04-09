@@ -55,6 +55,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         lblDongHo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lblTK = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblLH = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
         mniDangNhap = new javax.swing.JMenuItem();
@@ -216,6 +218,11 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         jLabel1.setText("Tài khoản : ");
 
         lblTK.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTK.setForeground(new java.awt.Color(0, 51, 255));
+
+        jLabel2.setText("Email : dung9012@gmail.com");
+
+        lblLH.setText("Liên Hệ : 0939079015");
 
         javax.swing.GroupLayout pnlTrangThaiLayout = new javax.swing.GroupLayout(pnlTrangThai);
         pnlTrangThai.setLayout(pnlTrangThaiLayout);
@@ -229,12 +236,16 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTK, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblLH, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jLabel2)
+                .addGap(61, 61, 61)
                 .addComponent(lblDongHo)
                 .addContainerGap())
         );
         pnlTrangThaiLayout.setVerticalGroup(
             pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTrangThaiLayout.createSequentialGroup()
+            .addGroup(pnlTrangThaiLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlTrangThaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -243,6 +254,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
                         .addComponent(lblDongHo)
                         .addComponent(jLabel1)))
                 .addContainerGap())
+            .addComponent(lblLH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         mnuHeThong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/icon/Globe.png"))); // NOI18N
@@ -559,6 +572,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnThuePhong;
     private javax.swing.JButton btnTraPhong;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -569,6 +583,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JLabel lblHeQuanLyDaoTao;
     private javax.swing.JLabel lblHinh;
+    private javax.swing.JLabel lblLH;
     private javax.swing.JLabel lblTK;
     private javax.swing.JMenuItem mniDangNhap;
     private javax.swing.JMenuItem mniDangXuat;
