@@ -10,6 +10,7 @@ import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,13 +21,14 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
     int bienNull = 0;
 
     public void insert(HoaDon model) {
-        String sql = "INSERT INTO HoaDon (MaHoaDon, MaPhieuThue, SoDien, SoNuoc, TienWifi, TienRac, ChiPhiKhac, TongTien, Ngay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        XJdbc.update(sql, model.getMaHoaDon(), model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay());
+//        String sql = "INSERT INTO HoaDon (MaHoaDon, MaPhieuThue, SoDien, SoNuoc, TienWifi, TienRac, ChiPhiKhac, TongTien, Ngay) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO HoaDon (MaPhieuThue, SoDien, SoNuoc, TienWifi, TienRac, ChiPhiKhac, TongTien, Ngay, TrangThai) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        XJdbc.update(sql, model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay(), model.isTrangThai());
     }
 
     public void update(HoaDon model) {
-        String sql = "UPDATE HoaDon SET MaPhieuThue=?, SoDien=?, SoNuoc=?, TienWifi=?, TienRac=?, ChiPhiKhac=?, TongTien=?, Ngay=? WHERE MaHoaDon=?";
-        XJdbc.update(sql, model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay(), model.getMaHoaDon());
+        String sql = "UPDATE HoaDon SET MaPhieuThue=?, SoDien=?, SoNuoc=?, TienWifi=?, TienRac=?, ChiPhiKhac=?, TongTien=?, Ngay=?, TrangThai=? WHERE MaHoaDon=?";
+        XJdbc.update(sql, model.getMaPhieuThue(), model.getSoDien(), model.getSoNuoc(), model.getTienWifi(), model.getTienRac(), model.getChiPhiKhac(), model.getTongTien(), model.getNgay(), model.isTrangThai(), model.getMaHoaDon());
     }
 
     
@@ -61,7 +63,8 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
                         rs.getInt("TienRac"),
                         rs.getInt("ChiPhiKhac"),
                         rs.getInt("TongTien"),
-                        rs.getDate("Ngay")
+                        rs.getDate("Ngay"),
+                        rs.getBoolean("TrangThai")
                 );
                 list.add(entity);
             }
@@ -94,4 +97,21 @@ public class HoaDonDAO extends QLNhaTroDAO<HoaDon, String> {
 
         return tienDien + tienNuoc + tienWifi + tienRac;
     }
+    
+    public HoaDon selectByMaPhieuThue(String maPhieuThue) {
+    String sql = "SELECT * FROM HoaDon WHERE MaPhieuThue = ?";
+    List<HoaDon> list = this.selectBySql(sql, maPhieuThue);
+    return list.isEmpty() ? null : list.get(0);
+}
+    
+    public HoaDon selectByMaPhieuThueAndNgay(String maPhieuThue, Date ngay) {
+    String sql = "SELECT * FROM HoaDon WHERE MaPhieuThue = ? AND CONVERT(date, Ngay) = CONVERT(date, ?)";
+    List<HoaDon> list = this.selectBySql(sql, maPhieuThue, ngay);
+    return list.isEmpty() ? null : list.get(0);
+}
+    public HoaDon selectByMaPhieuThueAndNgayLap(String maPhieuThue, Date ngayLap) {
+    String sql = "SELECT * FROM HoaDon WHERE MaPhieuThue = ? AND CONVERT(date, Ngay) = CONVERT(date, ?)";
+    List<HoaDon> list = this.selectBySql(sql, maPhieuThue, ngayLap);
+    return list.isEmpty() ? null : list.get(0);
+}
 }

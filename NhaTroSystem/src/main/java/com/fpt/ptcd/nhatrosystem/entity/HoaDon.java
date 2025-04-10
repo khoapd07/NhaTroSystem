@@ -18,11 +18,11 @@ public class HoaDon {
     private int chiPhiKhac;
     private int tongTien;
     private Date ngay;
-
+    private boolean trangThai;
     public HoaDon() {
     }
 
-    public HoaDon(String maHoaDon, String maPhieuThue, int soDien, int soNuoc, int tienWifi, int tienRac, int chiPhiKhac, int tongTien, Date ngay) {
+    public HoaDon(String maHoaDon, String maPhieuThue, int soDien, int soNuoc, int tienWifi, int tienRac, int chiPhiKhac, int tongTien, Date ngay, boolean trangThai) {
         this.maHoaDon = maHoaDon;
         this.maPhieuThue = maPhieuThue;
         this.soDien = soDien;
@@ -32,6 +32,7 @@ public class HoaDon {
         this.chiPhiKhac = chiPhiKhac;
         this.tongTien = tongTien;
         this.ngay = ngay;
+        this.trangThai = trangThai;
     }
 
     public String getMaHoaDon() {
@@ -106,6 +107,13 @@ public class HoaDon {
         this.ngay = ngay;
     }
 
+    public boolean isTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
+    }
+    
     
 }
-
