@@ -7,10 +7,17 @@ package com.fpt.ptcd.nhatrosystem.ui;
 import com.fpt.ptcd.nhatrosystem.utils.Auth;
 import com.fpt.ptcd.nhatrosystem.utils.MsgBox;
 import com.fpt.ptcd.nhatrosystem.utils.XImage;
+import com.fpt.ptcd.nhatrosystem.utils.XJdbc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -25,6 +32,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     public NhaTroSystemJFrame() {
         initComponents();
         init();
+
     }
 
     /**
@@ -55,7 +63,6 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         lblDongHo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lblTK = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         lblLH = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
@@ -220,8 +227,6 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         lblTK.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTK.setForeground(new java.awt.Color(0, 51, 255));
 
-        jLabel2.setText("Email : dung9012@gmail.com");
-
         lblLH.setText("Liên Hệ : 0939079015");
 
         javax.swing.GroupLayout pnlTrangThaiLayout = new javax.swing.GroupLayout(pnlTrangThai);
@@ -236,10 +241,8 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTK, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblLH, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(jLabel2)
-                .addGap(61, 61, 61)
+                .addComponent(lblLH)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDongHo)
                 .addContainerGap())
         );
@@ -255,7 +258,6 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addContainerGap())
             .addComponent(lblLH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         mnuHeThong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/icon/Globe.png"))); // NOI18N
@@ -572,7 +574,6 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnThuePhong;
     private javax.swing.JButton btnTraPhong;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -609,6 +610,7 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         checkRole();
         this.startDongHo();
         lblTK.setText(Auth.user.getMaNV());
+
     }
 
     private void checkRole() {
