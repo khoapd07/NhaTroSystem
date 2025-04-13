@@ -500,46 +500,46 @@ public class HoaDonJDialog extends javax.swing.JDialog {
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-                this.clearForm();
+        this.clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-                this.delete();
+        this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-                this.update();
+        this.update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-            this.insert();
+        this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-                this.next();
+        this.next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-                this.prev();
+        this.prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-                this.first();
+        this.first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-                this.last();
+        this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             this.row = tblHoaDon.getSelectedRow();
             this.edit();
         }
@@ -657,46 +657,45 @@ public class HoaDonJDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    
+
     ThuePhongDAO tpdao = new ThuePhongDAO();
     MucGiaDAO mgdao = new MucGiaDAO();
     HoaDonDAO hddao = new HoaDonDAO();
     KhachHangDAO khdao = new KhachHangDAO();
-    
+
     int row = -1; //hàng được chọn hiện tại trên bảng
-    
-    void init(){
+
+    void init() {
         this.setLocationRelativeTo(null);
-        
+
         this.fillTable();
         this.row = -1;
         fillComboBoxPhieuThue();
-        
+
         MucGiaDAO mucGiaDAO = new MucGiaDAO();
         MucGia mucGia = mucGiaDAO.selectAll().get(0);
-        
+
         txtTienRac.setValue(mucGia.getTienRac());
         txtTienWifi.setValue(mucGia.getTienWifi());
     }
-    
 
     public double tinhTienDien(int soDien, MucGia mucGia) {
         double tienDien = 0;
-        if (soDien <0 ){
+        if (soDien < 0) {
             MsgBox.alert(this, "Số KWh diện không thể âm!");
         }
-        if (soDien <= 50 && soDien >=0) {
+        if (soDien <= 50 && soDien >= 0) {
             tienDien = soDien * mucGia.getTienDienBac1();
-        } else if (soDien >50 && soDien <= 100) {
+        } else if (soDien > 50 && soDien <= 100) {
             tienDien = (50 * mucGia.getTienDienBac1()) + ((soDien - 50) * mucGia.getTienDienBac2());
-        } else if (soDien >100 && soDien <=200) {
+        } else if (soDien > 100 && soDien <= 200) {
             tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + ((soDien - 100) * mucGia.getTienDienBac3());
-        } else if (soDien>200 && soDien<=300){
-            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + ((soDien -200) * mucGia.getTienDienBac4());
-        } else if (soDien>300 && soDien<= 400){
+        } else if (soDien > 200 && soDien <= 300) {
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + ((soDien - 200) * mucGia.getTienDienBac4());
+        } else if (soDien > 300 && soDien <= 400) {
             tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + (100 * mucGia.getTienDienBac4()) + ((soDien - 300) * mucGia.getTienDienBac5());
-        } else{
-            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + (100 * mucGia.getTienDienBac4()) + (100 * mucGia.getTienDienBac5()) + ((soDien -400)* mucGia.getTienDienBac6());
+        } else {
+            tienDien = (50 * mucGia.getTienDienBac1()) + (50 * mucGia.getTienDienBac2()) + (100 * mucGia.getTienDienBac3()) + (100 * mucGia.getTienDienBac4()) + (100 * mucGia.getTienDienBac5()) + ((soDien - 400) * mucGia.getTienDienBac6());
         }
         return tienDien;
     }
@@ -705,61 +704,65 @@ public class HoaDonJDialog extends javax.swing.JDialog {
         double tienNuoc = 0;
         if (soNuoc < 0) {
             MsgBox.alert(this, "Số m3 nước không thể âm!");
-        }else if(soNuoc <=10){
+        } else if (soNuoc <= 10) {
             tienNuoc = soNuoc * mucGia.getTienNuocBac1();
-        }else if (soNuoc>10 && soNuoc <=20){
-            tienNuoc = (10* mucGia.getTienNuocBac1()) + ((soNuoc-10)*mucGia.getTienNuocBac2());
-        }else if (soNuoc>20 && soNuoc<=30){
-            tienNuoc = (10* mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) + ((soNuoc -20) * mucGia.getTienNuocBac3());
-        } else{
-            tienNuoc = (10 * mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) +(10 * mucGia.getTienNuocBac3()) + ((soNuoc-30) *mucGia.getTienNuocBac4());
+        } else if (soNuoc > 10 && soNuoc <= 20) {
+            tienNuoc = (10 * mucGia.getTienNuocBac1()) + ((soNuoc - 10) * mucGia.getTienNuocBac2());
+        } else if (soNuoc > 20 && soNuoc <= 30) {
+            tienNuoc = (10 * mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) + ((soNuoc - 20) * mucGia.getTienNuocBac3());
+        } else {
+            tienNuoc = (10 * mucGia.getTienNuocBac1()) + (10 * mucGia.getTienNuocBac2()) + (10 * mucGia.getTienNuocBac3()) + ((soNuoc - 30) * mucGia.getTienNuocBac4());
         }
         return tienNuoc;
     }
-    
+
     void fillComboBoxPhieuThue() {
-    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboMaPhieuThue.getModel();
-    model.removeAllElements(); // Xóa dữ liệu cũ
-    
-    List<String> list = tpdao.getPhieuThueDaTra(); // Gọi phương thức từ ThuePhongDAO
-    
-    for (String maPT : list) {
-        model.addElement(maPT); // Thêm vào ComboBox
-    }
-}
-    
-void fillTable() {
-    DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
-    model.setRowCount(0); // Xóa tất cả các hàng trên JTable
-    
-    try {
-        List<HoaDon> list = hddao.selectAll(); // Lấy danh sách hóa đơn từ CSDL
-        List<MucGia> mucGiaList = mgdao.selectAll(); // Lấy mức giá từ CSDL
-        
-        if (mucGiaList.isEmpty()) {
-            MsgBox.alert(this, "Không có dữ liệu mức giá! Hãy thêm mức giá trước.");
-            return;
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboMaPhieuThue.getModel();
+        model.removeAllElements(); // Xóa dữ liệu cũ
+
+        List<String> list = tpdao.getPhieuThueDaTra(); // Gọi phương thức từ ThuePhongDAO
+
+        for (String maPT : list) {
+            model.addElement(maPT); // Thêm vào ComboBox
         }
-        
-        // Lấy mức giá đầu tiên (giả sử chỉ có một mức giá)
-        MucGia mucGia = mucGiaList.get(0);
+    }
 
-        for (HoaDon hd : list) {
-            ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
-            if (thuePhong == null) continue;
-            String maPhong = thuePhong.getMaPhong();
-            PhongDAO pdao = new PhongDAO();
-            Phong phong = pdao.selectById(maPhong);
-            if (phong == null) continue;
-            
-            String maLoai = phong.getMaLoai();
+    void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        model.setRowCount(0); // Xóa tất cả các hàng trên JTable
 
-            // Lấy giá phòng từ mã loại
-            LoaiPhongDAO lpdao = new LoaiPhongDAO();
-            LoaiPhong loaiPhong = lpdao.selectById(maLoai);
-            double giaPhong = (loaiPhong != null) ? loaiPhong.getGiaPhong() : 0;
-            Date ngayThue = thuePhong.getNgayThue();
-            Date ngayTra = thuePhong.getNgayTra();
+        try {
+            List<HoaDon> list = hddao.selectAll(); // Lấy danh sách hóa đơn từ CSDL
+            List<MucGia> mucGiaList = mgdao.selectAll(); // Lấy mức giá từ CSDL
+
+            if (mucGiaList.isEmpty()) {
+                MsgBox.alert(this, "Không có dữ liệu mức giá! Hãy thêm mức giá trước.");
+                return;
+            }
+
+            // Lấy mức giá đầu tiên (giả sử chỉ có một mức giá)
+            MucGia mucGia = mucGiaList.get(0);
+
+            for (HoaDon hd : list) {
+                ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
+                if (thuePhong == null) {
+                    continue;
+                }
+                String maPhong = thuePhong.getMaPhong();
+                PhongDAO pdao = new PhongDAO();
+                Phong phong = pdao.selectById(maPhong);
+                if (phong == null) {
+                    continue;
+                }
+
+                String maLoai = phong.getMaLoai();
+
+                // Lấy giá phòng từ mã loại
+                LoaiPhongDAO lpdao = new LoaiPhongDAO();
+                LoaiPhong loaiPhong = lpdao.selectById(maLoai);
+                double giaPhong = (loaiPhong != null) ? loaiPhong.getGiaPhong() : 0;
+                Date ngayThue = thuePhong.getNgayThue();
+                Date ngayTra = thuePhong.getNgayTra();
 
 //            int soThang = 1; // Mặc định tính 1 tháng nếu ngày trả là null
 //
@@ -768,41 +771,38 @@ void fillTable() {
 //                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 //                soThang = (int) Math.ceil(diffInDays / 31.0); // Làm tròn lên số tháng
 //            }
+                // Tính tổng tiền phòng theo số tháng
+                double tienPhong = giaPhong; //* soThang;
+                // Tính tiền điện theo số điện tiêu thụ
+                int soDien = hd.getSoDien();
+                double tienDien = tinhTienDien(soDien, mucGia);
 
-            // Tính tổng tiền phòng theo số tháng
-            double tienPhong = giaPhong; //* soThang;
-            // Tính tiền điện theo số điện tiêu thụ
-            int soDien = hd.getSoDien();
-            double tienDien = tinhTienDien(soDien, mucGia);
-            
-            // Tính tiền nước
-            int soNuoc = hd.getSoNuoc();
-            double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
-            
-            // Tổng tiền: Tiền điện + Tiền nước + WiFi + Rác + Chi phí khác
-            double tongTien = tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac() + tienPhong;
+                // Tính tiền nước
+                int soNuoc = hd.getSoNuoc();
+                double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
 
-            // Thêm dòng vào bảng
-            Object[] row = { 
-                hd.getMaHoaDon(), 
-                hd.getMaPhieuThue(), 
-                hd.getSoDien(), 
-                hd.getSoNuoc(),
-                tongTien, // Tổng tiền sau khi tính toán
-                hd.getNgay(),
-                hd.isTrangThai() ?"Đã Đóng" : "Chưa Đóng"
-            };
-            model.addRow(row);
+                // Tổng tiền: Tiền điện + Tiền nước + WiFi + Rác + Chi phí khác
+                double tongTien = tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac() + tienPhong;
+
+                // Thêm dòng vào bảng
+                Object[] row = {
+                    hd.getMaHoaDon(),
+                    hd.getMaPhieuThue(),
+                    hd.getSoDien(),
+                    hd.getSoNuoc(),
+                    tongTien, // Tổng tiền sau khi tính toán
+                    hd.getNgay(),
+                    hd.isTrangThai() ? "Đã Đóng" : "Chưa Đóng"
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
     }
-}
 
-
-        
-    void clearForm(){
+    void clearForm() {
         boolean edit = (this.row >= 0);
         HoaDon hd = new HoaDon();
         hd.setNgay(new Date());
@@ -810,59 +810,60 @@ void fillTable() {
         btnThem.setEnabled(edit);
         cboMaPhieuThue.setEnabled(edit);
     }
+
     HoaDon getForm() {
-    HoaDon hd = new HoaDon();
-    hd.setMaHoaDon(txtMaHoaDon.getText());
-    hd.setMaPhieuThue((String) cboMaPhieuThue.getSelectedItem());
-    hd.setSoDien(((Number) txtSoDien.getValue()).intValue());
-    hd.setSoNuoc(((Number) txtSoNuoc.getValue()).intValue());
-    hd.setTienWifi(((Number) txtTienWifi.getValue()).intValue());
-    hd.setTienRac(((Number) txtTienRac.getValue()).intValue());
-    hd.setChiPhiKhac(((Number) txtChiPhiKhac.getValue()).intValue());
-    hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
-    hd.setTrangThai(rdoDaDong.isSelected());
-    // Tính tổng tiền trước khi lưu vào database
-    int soDien = hd.getSoDien();
-    int soNuoc = hd.getSoNuoc();
+        HoaDon hd = new HoaDon();
+        hd.setMaHoaDon(txtMaHoaDon.getText());
+        hd.setMaPhieuThue((String) cboMaPhieuThue.getSelectedItem());
+        hd.setSoDien(((Number) txtSoDien.getValue()).intValue());
+        hd.setSoNuoc(((Number) txtSoNuoc.getValue()).intValue());
+        hd.setTienWifi(((Number) txtTienWifi.getValue()).intValue());
+        hd.setTienRac(((Number) txtTienRac.getValue()).intValue());
+        hd.setChiPhiKhac(((Number) txtChiPhiKhac.getValue()).intValue());
+        hd.setNgay(XDate.toDate(txtNgayDT.getText(), "yyyy-MM-dd"));
+        hd.setTrangThai(rdoDaDong.isSelected());
+        // Tính tổng tiền trước khi lưu vào database
+        int soDien = hd.getSoDien();
+        int soNuoc = hd.getSoNuoc();
 
-    // Lấy thông tin mức giá từ database
-    List<MucGia> mucGiaList = mgdao.selectAll();
-    if (mucGiaList.isEmpty()) {
-        MsgBox.alert(this, "Không có dữ liệu mức giá!");
-        return null;
-    }
-    MucGia mucGia = mucGiaList.get(0);
+        // Lấy thông tin mức giá từ database
+        List<MucGia> mucGiaList = mgdao.selectAll();
+        if (mucGiaList.isEmpty()) {
+            MsgBox.alert(this, "Không có dữ liệu mức giá!");
+            return null;
+        }
+        MucGia mucGia = mucGiaList.get(0);
 
-    // Tính tiền điện, nước
-    double tienDien = tinhTienDien(soDien, mucGia);
-    double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
+        // Tính tiền điện, nước
+        double tienDien = tinhTienDien(soDien, mucGia);
+        double tienNuoc = tinhTienNuoc(soNuoc, mucGia);
 
-    // Lấy giá phòng từ mã phiếu thuê
-    ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
-    if (thuePhong != null) {
-        Phong phong = new PhongDAO().selectById(thuePhong.getMaPhong());
-        if (phong != null) {
-            LoaiPhong loaiPhong = new LoaiPhongDAO().selectById(phong.getMaLoai());
-            if (loaiPhong != null) {
-                // Tính số tháng thuê
-                int soThang = 1;
-                if (thuePhong.getNgayTra() != null) {
-                    long diffInMillies = thuePhong.getNgayTra().getTime() - thuePhong.getNgayThue().getTime();
-                    long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-                    soThang = (int) Math.ceil(diffInDays / 31.0);
+        // Lấy giá phòng từ mã phiếu thuê
+        ThuePhong thuePhong = tpdao.selectById(hd.getMaPhieuThue());
+        if (thuePhong != null) {
+            Phong phong = new PhongDAO().selectById(thuePhong.getMaPhong());
+            if (phong != null) {
+                LoaiPhong loaiPhong = new LoaiPhongDAO().selectById(phong.getMaLoai());
+                if (loaiPhong != null) {
+                    // Tính số tháng thuê
+                    int soThang = 1;
+                    if (thuePhong.getNgayTra() != null) {
+                        long diffInMillies = thuePhong.getNgayTra().getTime() - thuePhong.getNgayThue().getTime();
+                        long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                        soThang = (int) Math.ceil(diffInDays / 31.0);
+                    }
+                    double tienPhong = loaiPhong.getGiaPhong() * soThang;
+
+                    // Tổng tiền = tiền phòng + điện + nước + wifi + rác + chi phí khác
+                    double tongTien = tienPhong + tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac();
+                    hd.setTongTien((int) tongTien); // Cập nhật tổng tiền vào đối tượng
                 }
-                double tienPhong = loaiPhong.getGiaPhong() * soThang;
-                
-                // Tổng tiền = tiền phòng + điện + nước + wifi + rác + chi phí khác
-                double tongTien = tienPhong + tienDien + tienNuoc + hd.getTienWifi() + hd.getTienRac() + hd.getChiPhiKhac();
-                hd.setTongTien((int) tongTien); // Cập nhật tổng tiền vào đối tượng
             }
         }
+        return hd;
     }
-    return hd;
-}
-    
-    void setForm(HoaDon hd){
+
+    void setForm(HoaDon hd) {
         txtMaHoaDon.setText(hd.getMaHoaDon());
         cboMaPhieuThue.setSelectedItem(hd.getMaPhieuThue());
         txtSoDien.setValue(hd.getSoDien());
@@ -874,11 +875,12 @@ void fillTable() {
         rdoDaDong.setSelected(hd.isTrangThai());
         rdoChuaDong.setSelected(!hd.isTrangThai());
     }
-    
+
     void insert() {
         HoaDon model = getForm();
-        if (model == null) return; // Nếu có lỗi khi lấy dữ liệu, dừng lại
-
+        if (model == null) {
+            return; // Nếu có lỗi khi lấy dữ liệu, dừng lại
+        }
         // Kiểm tra mã phiếu thuê có tồn tại không
         ThuePhong thuePhong = tpdao.selectById(model.getMaPhieuThue());
         if (thuePhong == null) {
@@ -894,11 +896,13 @@ void fillTable() {
         } catch (HeadlessException e) {
             MsgBox.alert(this, "Thêm mới thất bại!");
         }
-    }   
-    
-    void update(){
+    }
+
+    void update() {
         HoaDon model = getForm();
-        if (model == null) return;
+        if (model == null) {
+            return;
+        }
 
         try {
             hddao.update(model); // Cập nhật database
@@ -909,19 +913,18 @@ void fillTable() {
         }
     }
 
-    void delete(){
-            String maHoaDon = txtMaHoaDon.getText();
-            try {
-                hddao.delete(maHoaDon);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Xóa thành công!");
-            } 
-            catch (Exception e) {
-                MsgBox.alert(this, "Xóa thất bại!");
-            }            
+    void delete() {
+        String maHoaDon = txtMaHoaDon.getText();
+        try {
+            hddao.delete(maHoaDon);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Xóa thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Xóa thất bại!");
         }
-    
+    }
+
     void edit() {
         String mapt = (String) tblHoaDon.getValueAt(this.row, 0);
         HoaDon hd = hddao.selectById(mapt);
@@ -929,29 +932,32 @@ void fillTable() {
         this.updateStatus();
         tabs.setSelectedIndex(0);
     }
-        
-        void first(){
+
+    void first() {
         this.row = 0;
         this.edit();
     }
-    void prev(){
-        if(this.row > 0){
+
+    void prev() {
+        if (this.row > 0) {
             this.row--;
             this.edit();
         }
     }
-    void next(){
-        if(this.row < tblHoaDon.getRowCount() - 1){
+
+    void next() {
+        if (this.row < tblHoaDon.getRowCount() - 1) {
             this.row++;
             this.edit();
         }
     }
-    void last(){
-         this.row = tblHoaDon.getRowCount() - 1;
+
+    void last() {
+        this.row = tblHoaDon.getRowCount() - 1;
         this.edit();
     }
-    
-    void updateStatus(){
+
+    void updateStatus() {
         boolean edit = (this.row >= 0);
         boolean first = (this.row == 0);
         boolean last = (this.row == tblHoaDon.getRowCount() - 1);
@@ -960,17 +966,17 @@ void fillTable() {
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
-        
+
         // Trạng thái điều hướng
         btnFirst.setEnabled(edit && !first);
         btnPrev.setEnabled(edit && !first);
         btnNext.setEnabled(edit && !last);
         btnLast.setEnabled(edit && !last);
     }
-    
+
     public String getEmailByMaPhieuThue(String maPhieuThue) {
         String sql = "SELECT Email FROM KhachHang WHERE MaKhach = "
-                   + "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
+                + "(SELECT MaKhach FROM ThuePhong WHERE MaPhieuThue = ?)";
         try {
             ResultSet rs = XJdbc.query(sql, maPhieuThue);
             if (rs.next()) {
@@ -981,90 +987,90 @@ void fillTable() {
         }
         return null;
     }
-    
- void sendHoaDonEmail() {
-    String maHoaDon = txtMaHoaDon.getText();
-    HoaDon hd = hddao.selectById(maHoaDon);
-    if (hd == null) {
-        MsgBox.alert(this, "Không tìm thấy hóa đơn!");
-        return;
-    }
 
-    // Lấy thông tin ngày thuê, ngày trả
-    LocalDate ngayThue = tpdao.getNgayThueByMaPhieuThue(hd.getMaPhieuThue());
-    LocalDate ngayTra = tpdao.getNgayTraByMaPhieuThue(hd.getMaPhieuThue());
-    
-    if (ngayThue == null || ngayTra == null) {
-        MsgBox.alert(this, "Không tìm thấy ngày thuê hoặc ngày trả!");
-        return;
-    }
-
-    // Lấy email khách hàng
-    String emailKhachHang = khdao.getEmailByMaPhieuThue(hd.getMaPhieuThue());
-    if (emailKhachHang == null || emailKhachHang.isEmpty()) {
-        MsgBox.alert(this, "Không tìm thấy email khách hàng!");
-        return;
-    }
-
-    String filePath = "F:\\NhaTroSystem\\NhaTroSystem\\src\\main\\java\\excel\\mucGia.xlsx"; // Thay bằng đường dẫn thực tế
-
-    Runnable emailTask = () -> {
-        try {
-            LocalDate today = LocalDate.now();
-            // Kiểm tra nếu hôm nay đã đủ 1 tháng từ ngày thuê và chưa đến ngày trả
-            if (!today.isBefore(ngayThue.plusMonths(1)) && today.isBefore(ngayTra)) {
-                HoaDonService.guiHoaDon(hd, emailKhachHang, filePath);
-                System.out.println("Đã gửi hóa đơn đến " + emailKhachHang);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    };
-
-    // Lên lịch gửi mỗi ngày, bắt đầu từ bây giờ
-    scheduler.scheduleAtFixedRate(emailTask, 0, 1, TimeUnit.DAYS);
-    MsgBox.alert(this, "Hóa đơn sẽ được gửi hàng tháng đến " + emailKhachHang + " cho đến ngày trả.");
-}
-    
-    void taoHoaDonTuThuePhongDaTra() {
-    try {
-        // Lấy ngày lập từ ô nhập txtNgay
-        String ngayStr = txtNgayDT.getText();
-        if (ngayStr.isEmpty()) {
-            MsgBox.alert(this, "Vui lòng nhập ngày lập hóa đơn trước khi tạo.");
+    void sendHoaDonEmail() {
+        String maHoaDon = txtMaHoaDon.getText();
+        HoaDon hd = hddao.selectById(maHoaDon);
+        if (hd == null) {
+            MsgBox.alert(this, "Không tìm thấy hóa đơn!");
             return;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date ngayLap = sdf.parse(ngayStr);
+        // Lấy thông tin ngày thuê, ngày trả
+        LocalDate ngayThue = tpdao.getNgayThueByMaPhieuThue(hd.getMaPhieuThue());
+        LocalDate ngayTra = tpdao.getNgayTraByMaPhieuThue(hd.getMaPhieuThue());
 
-        List<ThuePhong> danhSachThuePhong = tpdao.selectAll();
-        MucGia mucGia = mgdao.selectAll().get(0); // Giả sử chỉ có 1 mức giá
-
-        for (ThuePhong tp : danhSachThuePhong) {
-            double tienRac = mucGia.getTienRac();
-            double tienWifi = mucGia.getTienWifi();
-
-            // Đã trả phòng + chưa có hóa đơn cho ngày đó
-            if (tp.getNgayTra() != null && hddao.selectByMaPhieuThueAndNgayLap(tp.getMaPhieuThue(), ngayLap) == null) {
-                String maHoaDon = "HD" + System.currentTimeMillis();
-                HoaDon hd = new HoaDon();
-                hd.setMaHoaDon(maHoaDon);
-                hd.setMaPhieuThue(tp.getMaPhieuThue());
-                hd.setNgay(ngayLap); // dùng ngày đã nhập
-                hd.setTienRac((int) tienRac);
-                hd.setTienWifi((int) tienWifi);
-                hd.setTongTien(hd.getTienRac() + hd.getTienWifi());
-
-                hddao.insert(hd);
-            }
+        if (ngayThue == null || ngayTra == null) {
+            MsgBox.alert(this, "Không tìm thấy ngày thuê hoặc ngày trả!");
+            return;
         }
 
-        fillTable();
-        MsgBox.alert(this, "Đã tạo hóa đơn cho các thuê phòng đã trả (nếu chưa có hóa đơn trùng ngày).");
-    } catch (Exception e) {
-        e.printStackTrace();
-        MsgBox.alert(this, "Lỗi khi tạo hóa đơn!");
+        // Lấy email khách hàng
+        String emailKhachHang = khdao.getEmailByMaPhieuThue(hd.getMaPhieuThue());
+        if (emailKhachHang == null || emailKhachHang.isEmpty()) {
+            MsgBox.alert(this, "Không tìm thấy email khách hàng!");
+            return;
+        }
+
+        String filePath = "F:\\NhaTroSystem\\NhaTroSystem\\src\\main\\java\\excel\\mucGia.xlsx"; // Thay bằng đường dẫn thực tế
+
+        Runnable emailTask = () -> {
+            try {
+                LocalDate today = LocalDate.now();
+                // Kiểm tra nếu hôm nay đã đủ 1 tháng từ ngày thuê và chưa đến ngày trả
+                if (!today.isBefore(ngayThue.plusMonths(1)) && today.isBefore(ngayTra)) {
+                    HoaDonService.guiHoaDon(hd, emailKhachHang, filePath);
+                    System.out.println("Đã gửi hóa đơn đến " + emailKhachHang);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        // Lên lịch gửi mỗi ngày, bắt đầu từ bây giờ
+        scheduler.scheduleAtFixedRate(emailTask, 0, 1, TimeUnit.DAYS);
+        MsgBox.alert(this, "Hóa đơn sẽ được gửi hàng tháng đến " + emailKhachHang + " cho đến ngày trả.");
     }
-}
+
+    void taoHoaDonTuThuePhongDaTra() {
+        try {
+            // Lấy ngày lập từ ô nhập txtNgay
+            String ngayStr = txtNgayDT.getText();
+            if (ngayStr.isEmpty()) {
+                MsgBox.alert(this, "Vui lòng nhập ngày lập hóa đơn trước khi tạo.");
+                return;
+            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date ngayLap = sdf.parse(ngayStr);
+
+            List<ThuePhong> danhSachThuePhong = tpdao.selectAll();
+            MucGia mucGia = mgdao.selectAll().get(0); // Giả sử chỉ có 1 mức giá
+
+            for (ThuePhong tp : danhSachThuePhong) {
+                double tienRac = mucGia.getTienRac();
+                double tienWifi = mucGia.getTienWifi();
+
+                // Đã trả phòng + chưa có hóa đơn cho ngày đó
+                if (tp.getNgayTra() != null && hddao.selectByMaPhieuThueAndNgayLap(tp.getMaPhieuThue(), ngayLap) == null) {
+                    String maHoaDon = "HD" + System.currentTimeMillis();
+                    HoaDon hd = new HoaDon();
+                    hd.setMaHoaDon(maHoaDon);
+                    hd.setMaPhieuThue(tp.getMaPhieuThue());
+                    hd.setNgay(ngayLap); // dùng ngày đã nhập
+                    hd.setTienRac((int) tienRac);
+                    hd.setTienWifi((int) tienWifi);
+                    hd.setTongTien(hd.getTienRac() + hd.getTienWifi());
+
+                    hddao.insert(hd);
+                }
+            }
+
+            fillTable();
+            MsgBox.alert(this, "Đã tạo hóa đơn cho các thuê phòng đã trả (nếu chưa có hóa đơn trùng ngày).");
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Lỗi khi tạo hóa đơn!");
+        }
+    }
 }

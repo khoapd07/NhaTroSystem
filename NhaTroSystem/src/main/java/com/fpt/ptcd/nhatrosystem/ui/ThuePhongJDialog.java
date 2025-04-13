@@ -590,6 +590,7 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
                 dao.insert(model);
                 this.fillTable();
                 this.clearForm();
+                phongdao.updateTrangThaiPhong(model.getMaPhong(), true);
                 MsgBox.alert(this, "Thêm mới thành công!");
             } catch (HeadlessException e) {
                 MsgBox.alert(this, "Thêm mới thất bại!");
@@ -627,6 +628,8 @@ public class ThuePhongJDialog extends javax.swing.JDialog {
             dao.delete(maPhieuThue);
             this.fillTable();
             this.clearForm();
+            String maPhongCuaMaPhieuThue = dao.selectById(maPhieuThue).getMaPhong();
+            phongdao.updateTrangThaiPhong(maPhongCuaMaPhieuThue, false);
             MsgBox.alert(this, "Xóa thành công!");
         } catch (Exception e) {
             MsgBox.alert(this, "Xóa thất bại!");
