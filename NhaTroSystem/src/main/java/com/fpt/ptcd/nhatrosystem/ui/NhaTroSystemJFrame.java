@@ -609,8 +609,13 @@ public class NhaTroSystemJFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         checkRole();
         this.startDongHo();
-        lblTK.setText(Auth.user.getMaNV());
-
+//        lblTK.setText(Auth.user.getMaNV());
+        if (Auth.user != null) {
+            String maNV = Auth.user.getMaNV();
+            lblTK.setText(maNV);
+        } else {
+            System.out.println("Chưa đăng nhập!");
+        }
     }
 
     private void checkRole() {
